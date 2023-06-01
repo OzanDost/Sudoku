@@ -8,3 +8,10 @@ using Managers;
 public class GameStateChanged : ASignal<GameState, GameState>{}
 
 public class RequestGameStateChange : ASignal<GameState>{}
+
+
+
+#region UI Signals
+public class FakeLoadingFinished : ASignal{}
+
+#endregion
