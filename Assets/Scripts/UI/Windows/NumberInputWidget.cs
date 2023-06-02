@@ -5,8 +5,7 @@ namespace UI.Windows
     public class NumberInputWidget : MonoBehaviour
     {
         [SerializeField] private NumberButton[] buttons;
-
-
+        
         public void Initialize(RectTransform boardRect)
         {
             for (var index = 0; index < buttons.Length; index++)
@@ -35,7 +34,7 @@ namespace UI.Windows
 
             var padding = buttonWidth / 4f;
             var availableWidth = boardSize.x - padding * 2;
-            var spaceBetween = (availableWidth - buttonWidth * 9f) / 8f + buttonWidth / 9f;
+            var spaceBetween = (availableWidth - buttonWidth * 9f) / 8f + buttonWidth / 8f;
 
             var buttonTargetPosition = new Vector2(padding, 0);
             for (int i = 0; i < buttons.Length; i++)

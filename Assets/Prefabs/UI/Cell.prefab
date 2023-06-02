@@ -136,6 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d033c5b477e4ade8b7ccf7e48bab0d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cellBackground: {fileID: 3019464101230469043}
   rectTransform: {fileID: 6699467665222364797}
   numberText: {fileID: 8342458221402472277}
 --- !u!1 &1739592098702319216
