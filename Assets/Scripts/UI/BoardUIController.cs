@@ -20,6 +20,7 @@ namespace UI
             Signals.Get<BoardGridCreationRequested>().Dispatch(board);
             AdjustCellSize();
             FillTheCells(levelData);
+            Signals.Get<LevelBoardConfigured>().Dispatch(levelData);
         }
 
         private void FillTheCells(LevelData levelData)

@@ -36,7 +36,7 @@ namespace Game.Managers
             if (debugTestLevel)
             {
                 var levelData = GetLevelData(testLevel);
-                Signals.Get<LevelLoaded>().Dispatch(levelData);
+                Signals.Get<LevelLoaded>().Dispatch(levelData );
             }
 
             //todo
