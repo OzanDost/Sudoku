@@ -20,8 +20,8 @@ namespace DefaultNamespace.UI
 
         private void LoadingCompleted()
         {
-            Signals.Get<FakeLoadingFinished>().Dispatch();
             CloseRequest?.Invoke(this);
+            Signals.Get<FakeLoadingFinished>().Dispatch();
         }
 
         public override void UI_Close()

@@ -15,4 +15,6 @@ MonoBehaviour:
   templateUIPrefab: {fileID: 40960105698032243, guid: becbf8355de0a4afebfa8962b8351d6d, type: 3}
   screensToRegister:
   - {fileID: 6239844366527178385, guid: 5b5302009ba44405680bd3f473b01383, type: 3}
+  - {fileID: 3542800864921880313, guid: 6726e695224214a268c5eafb96d93196, type: 3}
+  - {fileID: 2343108394741864914, guid: cde1b166eb1594dc2882d49218804d52, type: 3}
   deactivateScreenGOs: 1

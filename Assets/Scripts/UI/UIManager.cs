@@ -32,6 +32,16 @@ namespace DefaultNamespace.UI
             {
                 _uiFrame.OpenWindow("FakeLoadingWindow");
             }
+
+            if (newState == GameState.Menu)
+            {
+                _uiFrame.OpenWindow("MainMenuWindow");
+            }
+
+            if (newState == GameState.Gameplay)
+            {
+                _uiFrame.OpenWindow("GameplayWindow");
+            }
         }
     }
 }

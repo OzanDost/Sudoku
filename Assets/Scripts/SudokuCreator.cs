@@ -69,8 +69,9 @@ namespace DefaultNamespace
                 }
 
                 // Exit if no empty cells left
-                if (isFinished) return true;
             }
+
+            if (isFinished) return true;
 
             // Iterate through possible numbers (1 to 9) and attempt to place them in the cell
             for (int num = 1; num <= length; num++)
