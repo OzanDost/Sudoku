@@ -68,6 +68,13 @@ namespace Game.Managers
             Signals.Get<LevelLoaded>().Dispatch(levelData);
         }
 
+        public void ContinueLevel()
+        {
+            var boardState = SaveManager.GetContinueLevel();
+            Signals.Get<LevelContinued>().Dispatch(boardState);
+            Signals.Get<LevelLoaded>().Dispatch(boardState.levelData);
+        }
+
         public void RetryLevel()
         {
             if (_lastActiveLevel != null)
@@ -78,11 +85,9 @@ namespace Game.Managers
 
         private LevelData GetLevelData(LevelSaveData levelSaveData)
         {
-            var levelData = new LevelData();
-            levelData.id = levelSaveData.id;
-            levelData.difficulty = levelSaveData.difficulty;
-            levelData.levelGrid = LevelDataHelper.ArrayToGrid(levelSaveData.levelGrid);
-            levelData.solutionGrid = LevelDataHelper.ArrayToGrid(levelSaveData.solutionGrid);
+            var levelData = new LevelData(levelSaveData.id, levelSaveData.difficulty,
+                levelSaveData.levelGrid,
+                levelSaveData.solutionGrid);
             return levelData;
         }
     }

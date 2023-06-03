@@ -46,8 +46,8 @@ namespace Editor
             LevelSaveData saveData = CreateInstance<LevelSaveData>();
             saveData.id = id;
             saveData.difficulty = levelDifficulty;
-            saveData.levelGrid = LevelDataHelper.GridToArray(levelGrid);
-            saveData.solutionGrid = LevelDataHelper.GridToArray(solutionGrid);
+            saveData.levelGrid = Utils.GridToArray(levelGrid);
+            saveData.solutionGrid = Utils.GridToArray(solutionGrid);
 
             AssetDatabase.CreateAsset(saveData,
                 $"{LevelSavePath}/Level{id}_{Enum.GetName(typeof(LevelDifficulty), levelDifficulty)}.asset");

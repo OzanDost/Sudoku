@@ -1,11 +1,13 @@
 using Data;
 using UnityEngine;
 
-namespace Managers
+namespace Game.Managers
 {
-    public class SaveManager
+    public static class SaveManager
     {
         private const string LevelJson = "levelJson";
+        private const string ContinueLevelJson = "continueLevelJson";
+
 
         public static LevelSaveData GetSavedLevel()
         {
@@ -21,6 +23,32 @@ namespace Managers
         {
             string json = JsonUtility.ToJson(level);
             PlayerPrefs.SetString(LevelJson, json);
+        }
+
+        public static bool CanContinueLevel()
+        {
+            return PlayerPrefs.HasKey(ContinueLevelJson);
+        }
+
+        public static void SaveContinueLevel(BoardSaveStateData level)
+        {
+            string json = JsonUtility.ToJson(level);
+            PlayerPrefs.SetString(ContinueLevelJson, json);
+        }
+
+        public static BoardSaveStateData GetContinueLevel()
+        {
+            string json = PlayerPrefs.GetString(ContinueLevelJson, "");
+
+            if (string.IsNullOrEmpty(json))
+                return null;
+
+            return JsonUtility.FromJson<BoardSaveStateData>(json);
+        }
+
+        public static void ClearContinueLevel()
+        {
+            PlayerPrefs.DeleteKey(ContinueLevelJson);
         }
     }
 }

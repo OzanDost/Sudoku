@@ -174,6 +174,12 @@ MonoBehaviour:
     hideOnForegroundLost: 1
     windowQueuePriority: 0
     isPopup: 0
+    score: 0
+    difficulty: 0
+  continueButton: {fileID: 3895150046421476563}
+  scoreText: {fileID: 0}
+  durationText: {fileID: 0}
+  difficultyText: {fileID: 0}
 --- !u!1 &5107309957700901454
 GameObject:
   m_ObjectHideFlags: 0

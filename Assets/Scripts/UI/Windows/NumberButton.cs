@@ -13,6 +13,9 @@ namespace UI.Windows
         [SerializeField] private Button button;
         [SerializeField] private int number;
         [SerializeField] private TextMeshProUGUI numberText;
+        
+        //todo for testing only, remove later
+        public Button ButtonForTest => button;
 
         private void Awake()
         {

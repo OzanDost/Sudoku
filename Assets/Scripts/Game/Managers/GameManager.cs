@@ -1,3 +1,4 @@
+using Data;
 using deVoid.Utils;
 using Game.Managers;
 using UnityEngine;
@@ -15,15 +16,35 @@ namespace Managers
             // Subscribing to events
             Signals.Get<RequestGameStateChange>().AddListener(OnGameStateChangeRequested);
             Signals.Get<FakeLoadingFinished>().AddListener(OnFakeLoadingFinished);
-            Signals.Get<PlayButtonClicked>().AddListener(MainMenu_OnPlayButtonClicked);
+            Signals.Get<PlayLevelRequested>().AddListener(MainMenu_OnPlayButtonClicked);
+            Signals.Get<ContinueLevelRequested>().AddListener(MainMenu_OnContinueButtonClicked);
+            Signals.Get<SuccessContinueButtonClicked>().AddListener(Success_OnContinueButtonClicked);
             Signals.Get<LevelFailed>().AddListener(OnLevelFailed);
             Signals.Get<LevelQuit>().AddListener(OnLevelQuit);
             Signals.Get<LevelRetryRequested>().AddListener(OnLevelRetryRequested);
+            Signals.Get<LevelSuccess>().AddListener(OnLevelSuccess);
+
 
             ChangeGameState(GameState.Loading);
 
             levelManager.Initialize();
             UndoManager.Initialize();
+        }
+
+        private void MainMenu_OnContinueButtonClicked()
+        {
+            levelManager.ContinueLevel();
+            ChangeGameState(GameState.Gameplay);
+        }
+
+        private void Success_OnContinueButtonClicked()
+        {
+            ChangeGameState(GameState.Menu);
+        }
+
+        private void OnLevelSuccess(LevelSuccessData data)
+        {
+            ChangeGameState(GameState.Success);
         }
 
         private void OnLevelQuit()

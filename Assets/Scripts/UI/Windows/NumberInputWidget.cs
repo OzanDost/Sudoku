@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace UI.Windows
@@ -5,7 +6,7 @@ namespace UI.Windows
     public class NumberInputWidget : MonoBehaviour
     {
         [SerializeField] private NumberButton[] buttons;
-        
+
         public void Initialize(RectTransform boardRect)
         {
             for (var index = 0; index < buttons.Length; index++)
@@ -42,6 +43,49 @@ namespace UI.Windows
                 buttons[i].RectTransform.anchoredPosition = buttonTargetPosition;
                 buttonTargetPosition.x += buttonWidth + spaceBetween;
             }
+        }
+
+        //testing only
+        private void Update()
+        {
+#if UNITY_EDITOR
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                buttons[0].ButtonForTest.onClick.Invoke();
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                buttons[1].ButtonForTest.onClick.Invoke();
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                buttons[2].ButtonForTest.onClick.Invoke();
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha4))
+            {
+                buttons[3].ButtonForTest.onClick.Invoke();
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha5))
+            {
+                buttons[4].ButtonForTest.onClick.Invoke();
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha6))
+            {
+                buttons[5].ButtonForTest.onClick.Invoke();
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha7))
+            {
+                buttons[6].ButtonForTest.onClick.Invoke();
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha8))
+            {
+                buttons[7].ButtonForTest.onClick.Invoke();
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha9))
+            {
+                buttons[8].ButtonForTest.onClick.Invoke();
+            }
+#endif
         }
     }
 }

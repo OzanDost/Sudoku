@@ -2,8 +2,8 @@ using System;
 using Data;
 using deVoid.UIFramework;
 using deVoid.Utils;
-using Game.Managers;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace UI.Windows
 {
@@ -11,6 +11,25 @@ namespace UI.Windows
     {
         [SerializeField] private RectTransform boardGridContainer;
         [SerializeField] private NumberInputWidget numberInputWidget;
+        [SerializeField] private Button pauseButton;
+        [SerializeField] private Button quitButton;
+        [SerializeField] private BoardInfoWidget boardInfoWidget;
+
+        protected override void Awake()
+        {
+            base.Awake();
+            pauseButton.onClick.AddListener(OnPauseButtonClicked);
+            quitButton.onClick.AddListener(OnQuitButtonClicked);
+        }
+
+        private void OnQuitButtonClicked()
+        {
+            
+        }
+
+        private void OnPauseButtonClicked()
+        {
+        }
 
         protected override void OnPropertiesSet()
         {

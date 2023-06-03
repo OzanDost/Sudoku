@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Data;
 using deVoid.Utils;
@@ -28,13 +29,50 @@ namespace UI
             SelectedCell = _cellGrid[position.x, position.y];
         }
 
+
+        //todo for testing only, remove later
+        private void Update()
+        {
+#if UNITY_EDITOR
+            //move SelectedCell with arrow keys
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                if (SelectedCell == null) return;
+                if (SelectedCell.PositionOnGrid.y - 1 < 0) return;
+                SelectedCell = _cellGrid[SelectedCell.PositionOnGrid.x, SelectedCell.PositionOnGrid.y - 1];
+                SelectedCell.OnPointerDown(null);
+            }
+            else if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                if (SelectedCell == null) return;
+                if (SelectedCell.PositionOnGrid.y + 1 > 8) return;
+                SelectedCell = _cellGrid[SelectedCell.PositionOnGrid.x, SelectedCell.PositionOnGrid.y + 1];
+                SelectedCell.OnPointerDown(null);
+            }
+            else if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                if (SelectedCell == null) return;
+                if (SelectedCell.PositionOnGrid.x - 1 < 0) return;
+                SelectedCell = _cellGrid[SelectedCell.PositionOnGrid.x - 1, SelectedCell.PositionOnGrid.y];
+                SelectedCell.OnPointerDown(null);
+            }
+            else if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                if (SelectedCell == null) return;
+                if (SelectedCell.PositionOnGrid.x + 1 > 8) return;
+                SelectedCell = _cellGrid[SelectedCell.PositionOnGrid.x + 1, SelectedCell.PositionOnGrid.y];
+                SelectedCell.OnPointerDown(null);
+            }
+#endif
+        }
+
         private void OnNumberButtonClicked(int number)
         {
             if (SelectedCell == null) return;
             if (!SelectedCell.IsEmpty) return;
 
             SelectedCell.GetFilled(number, true);
-            Signals.Get<CellFilled>().Dispatch(SelectedCell.PositionOnGrid, number);
+            Signals.Get<CellFilled>().Dispatch(SelectedCell);
         }
 
         private void BoardManager_OnSameNumberListDispatched(List<Vector2Int> positions)
@@ -90,7 +128,8 @@ namespace UI
                 var x = i % (dimensionLength);
                 var y = i / (dimensionLength);
 
-                var fill = levelData.levelGrid[x, y];
+                // var fill = levelData.levelGrid[x, y];
+                var fill = levelData.levelGrid[i];
                 cells[i].GetFilled(fill, false);
                 cells[i].SetPosition(x, y);
             }

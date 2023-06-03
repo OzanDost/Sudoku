@@ -23,13 +23,15 @@ namespace DefaultNamespace.UI
             // Subscribing to events
             Signals.Get<GameStateChanged>().AddListener(GameManager_OnGameStateChanged);
             Signals.Get<LevelBoardConfigured>().AddListener(OnLevelBoardConfigured);
-
-            //
+            Signals.Get<LevelSuccess>().AddListener(OnLevelSuccess);
         }
 
-        private void OnGameFinished(bool isSuccessful)
+        private void OnLevelSuccess(LevelSuccessData data)
         {
+            _uiFrame.OpenWindow("SuccessWindow",
+                new SuccessWindowProperties(data.duration, data.score, data.difficulty));
         }
+
 
         private void OnLevelBoardConfigured(LevelData data)
         {

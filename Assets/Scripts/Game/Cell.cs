@@ -16,11 +16,13 @@ namespace Game
 
         private Tween _punchTween;
         public Vector2Int PositionOnGrid { get; private set; }
+        public int Number { get; private set; }
         public bool IsEmpty => string.IsNullOrEmpty(numberText.text);
 
 
         public void GetFilled(int number, bool filledByPlayer)
         {
+            Number = number;
             string fill = number == 0 ? "" : number.ToString();
             numberText.SetText(fill);
 

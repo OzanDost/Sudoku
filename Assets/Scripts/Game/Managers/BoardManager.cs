@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Data;
@@ -11,7 +12,7 @@ namespace Game.Managers
         private int[,] LevelGrid { get; set; }
         private int[,] SolutionGrid { get; set; }
 
-        private int _mistakeCount = 0;
+        private LevelData CurrentLevelData { get; set; }
 
         private void Awake()
         {
@@ -21,25 +22,28 @@ namespace Game.Managers
             Signals.Get<CellFilled>().AddListener(OnCellFilled);
         }
 
-        private void OnCellFilled(Vector2Int position, int number)
+        private void OnCellFilled(Cell cell)
         {
-            LevelGrid[position.x, position.y] = number;
-            //todo check true-false
-            //check game finish - fail
+            LevelGrid[cell.PositionOnGrid.x, cell.PositionOnGrid.y] = cell.Number;
+            // CurrentLevelData.levelGrid[cell.PositionOnGrid.x, cell.PositionOnGrid.y] = cell.Number;
+
+            if (!IsCorrectPlacement(cell.PositionOnGrid, cell.Number))
+            {
+                Signals.Get<WrongNumberPlaced>().Dispatch(cell);
+                return;
+            }
+
             if (IsBoardFull())
             {
-                Signals.Get<LevelSuccess>().Dispatch();
+                Signals.Get<LevelSuccess>()
+                    .Dispatch(new LevelSuccessData(new TimeSpan(0, 0, 0), 0, LevelDifficulty.Easy));
             }
             else
             {
-                if (!IsCorrectPlacement(position, number))
-                {
-                    _mistakeCount++;
-                    if(_mistakeCount >= GlobalGameConfigs.MistakeLimit)
-                    {
-                        Signals.Get<LevelFailed>().Dispatch();
-                    }
-                }
+                CurrentLevelData.levelGrid = Utils.GridToArray(LevelGrid);
+                Signals.Get<BoardStateSaveRequested>().Dispatch(CurrentLevelData);
+                // SaveManager.SaveContinueLevel(new BoardSaveStateData(0, new TimeSpan(0, 0, 0).ToString(), 0,
+                    // CurrentLevelData));
             }
         }
 
@@ -66,9 +70,9 @@ namespace Game.Managers
 
         private void OnLevelLoaded(LevelData levelData)
         {
-            LevelGrid = levelData.levelGrid;
-            SolutionGrid = levelData.solutionGrid;
-            _mistakeCount = 0;
+            LevelGrid = Utils.ArrayToGrid(levelData.levelGrid);
+            SolutionGrid = Utils.ArrayToGrid(levelData.solutionGrid);
+            CurrentLevelData = levelData;
         }
 
         private void OnCellPointerDown(Vector2Int position)
@@ -84,9 +88,9 @@ namespace Game.Managers
 
         private void DispatchColorizationList(Vector2Int position)
         {
-            Vector2Int[] boxPositions = GetBox(position);
-            Vector2Int[] rowPositions = GetRow(position);
-            Vector2Int[] colPositions = GetColumn(position);
+            Vector2Int[] boxPositions = BoardHelper.GetBox(position);
+            Vector2Int[] rowPositions = BoardHelper.GetRow(position);
+            Vector2Int[] colPositions = BoardHelper.GetColumn(position);
 
             Vector2Int[] collectivePositions = boxPositions.Concat(rowPositions).Concat(colPositions).ToArray();
 
@@ -120,46 +124,6 @@ namespace Game.Managers
             }
 
             Signals.Get<SameNumberListDispatched>().Dispatch(numberPositions);
-        }
-
-        private Vector2Int[] GetBox(Vector2Int position)
-        {
-            int boxRow = position.x / 3;
-            int boxCol = position.y / 3;
-            Vector2Int[] boxPositions = new Vector2Int[9];
-
-            int index = 0;
-            for (int row = boxRow * 3; row < boxRow * 3 + 3; row++)
-            {
-                for (int col = boxCol * 3; col < boxCol * 3 + 3; col++)
-                {
-                    boxPositions[index++] = new Vector2Int(row, col);
-                }
-            }
-
-            return boxPositions;
-        }
-
-        private Vector2Int[] GetRow(Vector2Int position)
-        {
-            Vector2Int[] rowPositions = new Vector2Int[9];
-            for (int i = 0; i < 9; i++)
-            {
-                rowPositions[i] = new Vector2Int(position.x, i);
-            }
-
-            return rowPositions;
-        }
-
-        private Vector2Int[] GetColumn(Vector2Int position)
-        {
-            Vector2Int[] colPositions = new Vector2Int[9];
-            for (int i = 0; i < 9; i++)
-            {
-                colPositions[i] = new Vector2Int(i, position.y);
-            }
-
-            return colPositions;
         }
     }
 }
