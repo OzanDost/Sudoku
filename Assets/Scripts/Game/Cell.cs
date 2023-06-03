@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using deVoid.Utils;
 using DG.Tweening;
 using Game.Managers;
@@ -13,11 +14,15 @@ namespace Game
         [SerializeField] private Image cellBackground;
         [SerializeField] private RectTransform rectTransform;
         [SerializeField] private TextMeshProUGUI numberText;
+        [SerializeField] private GameObject[] noteNumbers;
 
         private Tween _punchTween;
         public Vector2Int PositionOnGrid { get; private set; }
         public int Number { get; private set; }
         public bool IsEmpty => string.IsNullOrEmpty(numberText.text);
+        private bool IsWrongNumber { get; set; }
+
+        private Sequence _wrongNumberSequence;
 
 
         public void GetFilled(int number, bool filledByPlayer)
@@ -26,10 +31,16 @@ namespace Game
             string fill = number == 0 ? "" : number.ToString();
             numberText.SetText(fill);
 
-            if (filledByPlayer)
+            if (filledByPlayer && number != 0)
             {
+                Signals.Get<CellFilled>().Dispatch(this);
+
                 Signals.Get<UndoableActionMade>()
-                    .Dispatch(new UndoableAction(UndoActionType.CellFill, number, null, this));
+                    .Dispatch(new UndoableAction(() =>
+                    {
+                        GetFilled(0, false);
+                        OnPointerDown(null);
+                    }));
             }
         }
 
@@ -57,9 +68,14 @@ namespace Game
             Signals.Get<CellPointerUp>().Dispatch(PositionOnGrid);
         }
 
-        public void SetColor(Color color)
+        public void SetBackgroundColor(Color color)
         {
             cellBackground.color = color;
+        }
+
+        public void SetNumberColor(Color color)
+        {
+            numberText.color = color;
         }
 
         public void PunchScale()
@@ -67,6 +83,85 @@ namespace Game
             _punchTween?.Kill();
             _punchTween = numberText.rectTransform.DOPunchScale(Vector3.one * 1.1f, 0.4f, 1, 0.5f)
                 .OnKill(() => numberText.rectTransform.localScale = Vector3.one);
+        }
+
+        public void AddNote(int number, bool shouldAddToUndoStack)
+        {
+            GameObject targetNote = noteNumbers[number - 1];
+            if (targetNote.activeInHierarchy)
+            {
+                RemoveNote(number, shouldAddToUndoStack);
+                return;
+            }
+
+            targetNote.SetActive(true);
+            if (shouldAddToUndoStack)
+            {
+                Signals.Get<UndoableActionMade>().Dispatch(new UndoableAction(() => { RemoveNote(number, false); }));
+            }
+        }
+
+        private bool RemoveNote(int number, bool shouldAddToUndoStack)
+        {
+            GameObject targetNote = noteNumbers[number - 1];
+            if (!targetNote.activeInHierarchy) return false;
+            targetNote.SetActive(false);
+            if (shouldAddToUndoStack)
+            {
+                Signals.Get<UndoableActionMade>().Dispatch(new UndoableAction(() => { AddNote(number, false); }));
+            }
+
+            return true;
+        }
+
+        private void EraseCellNotes(bool shouldAddToUndoStack = true)
+        {
+            List<int> erasedNotes = new List<int>();
+
+            for (var i = 0; i < noteNumbers.Length; i++)
+            {
+                var noteNumber = noteNumbers[i];
+                if (noteNumber.activeInHierarchy)
+                {
+                    if (RemoveNote(i + 1, false))
+                    {
+                        erasedNotes.Add(i + 1);
+                    }
+                }
+            }
+
+            //early return to avoid unnecessary undo registration
+            if (erasedNotes.Count == 0) return;
+
+            if (shouldAddToUndoStack)
+            {
+                Signals.Get<UndoableActionMade>().Dispatch(new UndoableAction(() =>
+                {
+                    foreach (var erasedNote in erasedNotes)
+                    {
+                        AddNote(erasedNote, false);
+                    }
+                }));
+            }
+        }
+
+        private void EraseCellNumber()
+        {
+            if (!IsWrongNumber) return;
+            GetFilled(0, false);
+            IsWrongNumber = false;
+        }
+
+        public void EraseCellContent()
+        {
+            EraseCellNotes();
+            EraseCellNumber();
+        }
+
+        public void OnWrongNumberPlaced()
+        {
+            SetNumberColor(Color.red);
+            IsWrongNumber = true;
         }
     }
 }

@@ -1,15 +1,10 @@
 using deVoid.Utils;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace DefaultNamespace.UI
 {
     public class BoardBorderUIController : MonoBehaviour
     {
-        [SerializeField] private RectTransform verticalLeft;
-        [SerializeField] private RectTransform verticalRight;
-        [SerializeField] private RectTransform horizontalTop;
-        [SerializeField] private RectTransform horizontalBottom;
         [SerializeField] private RectTransform innerVerticalFirst;
         [SerializeField] private RectTransform innerVerticalSecond;
         [SerializeField] private RectTransform innerHorizontalFirst;
@@ -37,38 +32,26 @@ namespace DefaultNamespace.UI
             ConfigureGridLines(2);
         }
 
-        public void ConfigureBorders(float width)
+        private void ConfigureBorders(float width)
         {
-            Vector2 boardSize = _lastActiveBoard.rect.size;
+            float boardSize = _lastActiveBoard.rect.size.y;
 
-            verticalLeft.anchoredPosition = Vector2.zero;
-            verticalLeft.sizeDelta = new Vector2(width, boardSize.y);
+            innerVerticalFirst.anchoredPosition = new Vector2(boardSize / 3f - width / 2f, 0);
+            innerVerticalFirst.sizeDelta = new Vector2(width, boardSize);
 
-            verticalRight.anchoredPosition = new Vector2(boardSize.x - width, 0);
-            verticalRight.sizeDelta = new Vector2(width, boardSize.y);
+            innerVerticalSecond.anchoredPosition = new Vector2(boardSize / 3f * 2 - width / 2f, 0);
+            innerVerticalSecond.sizeDelta = new Vector2(width, boardSize);
 
-            horizontalTop.anchoredPosition = Vector2.zero;
-            horizontalTop.sizeDelta = new Vector2(boardSize.x, width);
+            innerHorizontalFirst.anchoredPosition = new Vector2(0, -boardSize / 3f + width / 2f);
+            innerHorizontalFirst.sizeDelta = new Vector2(boardSize, width);
 
-            horizontalBottom.anchoredPosition = new Vector2(0, -boardSize.y + width);
-            horizontalBottom.sizeDelta = new Vector2(boardSize.x, width);
-
-            innerVerticalFirst.anchoredPosition = new Vector2(boardSize.x / 3f - width / 2f, 0);
-            innerVerticalFirst.sizeDelta = new Vector2(width, boardSize.y);
-
-            innerVerticalSecond.anchoredPosition = new Vector2(boardSize.x / 3f * 2 - width / 2f, 0);
-            innerVerticalSecond.sizeDelta = new Vector2(width, boardSize.y);
-
-            innerHorizontalFirst.anchoredPosition = new Vector2(0, -boardSize.y / 3f + width / 2f);
-            innerHorizontalFirst.sizeDelta = new Vector2(boardSize.x, width);
-
-            innerHorizontalSecond.anchoredPosition = new Vector2(0, -boardSize.y / 3f * 2 + width / 2f);
-            innerHorizontalSecond.sizeDelta = new Vector2(boardSize.x, width);
+            innerHorizontalSecond.anchoredPosition = new Vector2(0, -boardSize / 3f * 2 + width / 2f);
+            innerHorizontalSecond.sizeDelta = new Vector2(boardSize, width);
         }
 
         private void ConfigureGridLines(float width)
         {
-            Vector2 boardSize = _lastActiveBoard.rect.size;
+            float boardSize = _lastActiveBoard.rect.size.y;
             int n = 0;
             for (int i = 0; i < verticalGridLines.Length; i++)
             {
@@ -83,11 +66,11 @@ namespace DefaultNamespace.UI
                 }
 
 
-                float targetX = boardSize.x / 9f * n - width / 2f;
+                float targetX = boardSize / 9f * n - width / 2f;
 
                 // float x = ((2 * n) % 3 == 0 ? 2 * n - 1 : n + 1) * boardSize.x / 8f;
                 verticalGridLines[i].anchoredPosition = new Vector2(targetX, 0);
-                verticalGridLines[i].sizeDelta = new Vector2(width, boardSize.y);
+                verticalGridLines[i].sizeDelta = new Vector2(width, boardSize);
             }
 
             n = 0;
@@ -102,19 +85,11 @@ namespace DefaultNamespace.UI
                     n++;
                 }
 
-                float targetY = -boardSize.y / 9f * n + width / 2f;
+                float targetY = -boardSize / 9f * n + width / 2f;
 
                 horizontalGridLines[i].anchoredPosition = new Vector2(0, targetY);
-                horizontalGridLines[i].sizeDelta = new Vector2(boardSize.x, width);
+                horizontalGridLines[i].sizeDelta = new Vector2(boardSize, width);
             }
-        }
-
-
-        [Button]
-        private void Test()
-        {
-            Debug.Log(
-                $"Anchored position: {verticalLeft.anchoredPosition}\n local position: {verticalLeft.localPosition}\n position: {verticalLeft.position}");
         }
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using deVoid.Utils;
 using TMPro;
 using UnityEngine;
@@ -16,7 +15,7 @@ namespace UI.Windows
         
         //todo for testing only, remove later
         public Button ButtonForTest => button;
-
+        
         private void Awake()
         {
             button.onClick.AddListener(OnNumberButtonClicked);

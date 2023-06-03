@@ -1,16 +1,17 @@
-using System;
 using System.Collections.Generic;
 using Data;
 using deVoid.Utils;
 using Game;
+using UI.Windows;
 using UnityEngine;
 
 namespace UI
 {
     public class BoardUIController : MonoBehaviour
     {
-        public RectTransform board;
-        public Cell[] cells;
+        [SerializeField] private RectTransform board;
+        [SerializeField] private Cell[] cells;
+        [SerializeField] private GridLayout cellGrid;
 
         private Cell[,] _cellGrid;
         private Cell SelectedCell { get; set; }
@@ -21,7 +22,16 @@ namespace UI
             Signals.Get<CellPointerDown>().AddListener(OnCellPointerDown);
             Signals.Get<ColorizationListDispatched>().AddListener(BoardManager_OnColorizationListDispatched);
             Signals.Get<SameNumberListDispatched>().AddListener(BoardManager_OnSameNumberListDispatched);
-            Signals.Get<NumberButtonClicked>().AddListener(OnNumberButtonClicked);
+            Signals.Get<NumberInputMade>().AddListener(OnNumberInputMade);
+            Signals.Get<EraseRequested>().AddListener(OnEraseRequested);
+            Signals.Get<WrongNumberPlaced>().AddListener(OnWrongNumberPlaced);
+        }
+
+        private void OnEraseRequested()
+        {
+            if (SelectedCell == null) return;
+
+            SelectedCell.EraseCellContent();
         }
 
         private void OnCellPointerDown(Vector2Int position)
@@ -31,6 +41,7 @@ namespace UI
 
 
         //todo for testing only, remove later
+
         private void Update()
         {
 #if UNITY_EDITOR
@@ -66,14 +77,26 @@ namespace UI
 #endif
         }
 
-        private void OnNumberButtonClicked(int number)
+        private void OnNumberInputMade(int number, NumberInputMode inputMode)
         {
             if (SelectedCell == null) return;
-            if (!SelectedCell.IsEmpty) return;
 
-            SelectedCell.GetFilled(number, true);
-            Signals.Get<CellFilled>().Dispatch(SelectedCell);
+            if (inputMode == NumberInputMode.Normal)
+            {
+                if (!SelectedCell.IsEmpty) return;
+                SelectedCell.GetFilled(number, true);
+            }
+            else
+            {
+                SelectedCell.AddNote(number, true);
+            }
         }
+
+        private void OnWrongNumberPlaced(Cell cell)
+        {
+            cell.OnWrongNumberPlaced();
+        }
+
 
         private void BoardManager_OnSameNumberListDispatched(List<Vector2Int> positions)
         {
@@ -87,7 +110,7 @@ namespace UI
         {
             foreach (var cell in cells)
             {
-                cell.SetColor(Color.white);
+                cell.SetBackgroundColor(Color.white);
             }
         }
 
@@ -98,7 +121,7 @@ namespace UI
             ResetSelectionHighlight();
             foreach (var position in positions)
             {
-                _cellGrid[position.x, position.y].SetColor(Color.cyan);
+                _cellGrid[position.x, position.y].SetBackgroundColor(Color.cyan);
             }
         }
 
@@ -137,7 +160,7 @@ namespace UI
 
         private void AdjustCellSize()
         {
-            float cellSize = board.rect.width / 9;
+            float cellSize = board.rect.height / 9;
             foreach (Cell cell in cells)
             {
                 cell.SetSizeDelta(cellSize * Vector2.one);

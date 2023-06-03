@@ -6,7 +6,7 @@ using deVoid.Utils;
 using Game;
 using Game.Managers;
 using Managers;
-using UI.Popups;
+using UI.Windows;
 using UnityEngine;
 
 /// <summary>
@@ -21,8 +21,12 @@ public class LevelSuccess: ASignal<LevelSuccessData>{}
 public class LevelQuit : ASignal{}
 public class LevelRetryRequested : ASignal{}
 
+
 public class UndoableActionMade : ASignal<UndoableAction>{}
 public class UndoRequested : ASignal{}
+public class EraseRequested : ASignal{}
+public class NoteModeToggleRequested : ASignal{}
+public class HintRequested : ASignal{}
 
 public class ColorizationListDispatched : ASignal<HashSet<Vector2Int>>{}
 public class SameNumberListDispatched : ASignal<List<Vector2Int>>{}
@@ -56,3 +60,4 @@ public class CellPointerUp : ASignal<Vector2Int>{}
 
 public class CellFilled : ASignal<Cell>{}
 public class NumberButtonClicked : ASignal<int>{}
+public class NumberInputMade : ASignal<int, NumberInputMode>{}

@@ -1,3 +1,4 @@
+using deVoid.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,31 +8,35 @@ namespace UI
     {
         [SerializeField] private Button undoButton;
         [SerializeField] private Button eraseButton;
-        [SerializeField] private Button noteButton;
-        [SerializeField] private Button hintButton;
+        [SerializeField] private NoteButton noteButton;
+        [SerializeField] private HintButton hintButton;
 
         private void Awake()
         {
             undoButton.onClick.AddListener(OnUndoButtonClicked);
             eraseButton.onClick.AddListener(OnEraseButtonClicked);
-            noteButton.onClick.AddListener(OnNoteButtonClicked);
-            hintButton.onClick.AddListener(OnHintButtonClicked);
+            noteButton.Button.onClick.AddListener(OnNoteButtonClicked);
+            hintButton.Button.onClick.AddListener(OnHintButtonClicked);
         }
 
         private void OnHintButtonClicked()
         {
+            Signals.Get<HintRequested>().Dispatch();
         }
 
         private void OnNoteButtonClicked()
         {
+            Signals.Get<NoteModeToggleRequested>().Dispatch();
         }
 
         private void OnEraseButtonClicked()
         {
+            Signals.Get<EraseRequested>().Dispatch();
         }
 
         private void OnUndoButtonClicked()
         {
+            Signals.Get<UndoRequested>().Dispatch();
         }
     }
 }

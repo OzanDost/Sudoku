@@ -8,7 +8,6 @@ namespace Managers
     public class GameManager : MonoBehaviour
     {
         [SerializeField] private LevelManager levelManager;
-        [SerializeField] private BoardManager boardManager;
         public GameState CurrentGameState { get; private set; }
 
         private void Start()
@@ -29,6 +28,7 @@ namespace Managers
 
             levelManager.Initialize();
             UndoManager.Initialize();
+            BoardManager.Initialize();
         }
 
         private void MainMenu_OnContinueButtonClicked()

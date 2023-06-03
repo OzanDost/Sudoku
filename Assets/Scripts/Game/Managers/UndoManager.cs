@@ -4,7 +4,7 @@ using deVoid.Utils;
 
 namespace Game.Managers
 {
-    public class UndoManager
+    public static class UndoManager
     {
         private static Stack<Action> _undoStack;
 
@@ -28,57 +28,18 @@ namespace Game.Managers
 
         private static void OnUndoableActionMade(UndoableAction action)
         {
-            Action undoableAction = ConvertToUndoAction(action);
-            _undoStack.Push(undoableAction);
-        }
-
-        private static Action ConvertToUndoAction(UndoableAction action)
-        {
-            Action undoAction = null;
-            switch (action.Type)
-            {
-                case UndoActionType.CellFill:
-                    undoAction = () =>
-                    {
-                        action.Cell.GetFilled(0, false);
-                        action.Cell.OnPointerDown(null);
-                    };
-                    break;
-                case UndoActionType.CellErase:
-                    break;
-                case UndoActionType.NoteFill:
-                    break;
-                case UndoActionType.NoteErase:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            return undoAction;
+            // Action undoableAction = ConvertToUndoAction(action);
+            _undoStack.Push(action.UndoAction);
         }
     }
 
     public class UndoableAction
     {
-        public UndoActionType Type { get; set; }
-        public int? Number { get; set; }
-        public int? AddedNote { get; set; }
-        public Cell Cell { get; set; }
+        public Action UndoAction { get; set; }
 
-        public UndoableAction(UndoActionType type, int? number, int? addedNote, Cell cell)
+        public UndoableAction(Action undoAction)
         {
-            Type = type;
-            Number = number;
-            AddedNote = addedNote;
-            Cell = cell;
+            UndoAction = undoAction;
         }
-    }
-
-    public enum UndoActionType
-    {
-        CellFill,
-        CellErase,
-        NoteFill,
-        NoteErase
     }
 }
