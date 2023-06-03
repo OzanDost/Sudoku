@@ -2,6 +2,7 @@ using Data;
 using deVoid.UIFramework;
 using deVoid.Utils;
 using Managers;
+using UI.Popups;
 using UI.Windows;
 using UnityEngine;
 
@@ -24,6 +25,12 @@ namespace DefaultNamespace.UI
             Signals.Get<GameStateChanged>().AddListener(GameManager_OnGameStateChanged);
             Signals.Get<LevelBoardConfigured>().AddListener(OnLevelBoardConfigured);
             Signals.Get<LevelSuccess>().AddListener(OnLevelSuccess);
+            Signals.Get<PausePopupRequested>().AddListener(OnPausePopupRequested);
+        }
+
+        private void OnPausePopupRequested()
+        {
+            _uiFrame.OpenWindow("PausePopup");
         }
 
         private void OnLevelSuccess(LevelSuccessData data)

@@ -6,6 +6,7 @@ using deVoid.Utils;
 using Game;
 using Game.Managers;
 using Managers;
+using UI.Popups;
 using UnityEngine;
 
 /// <summary>
@@ -30,6 +31,16 @@ public class WrongNumberPlaced: ASignal<Cell>{}
 
 public class BoardStateSaveRequested : ASignal<LevelData>{}
 public class BoardInfoUpdated: ASignal<TimeSpan, int,int>{}
+
+public class ReturnToMenuRequested : ASignal{}
+
+
+//bool is for showing or not showing the pause popup
+public class GamePaused : ASignal<bool>{}
+
+public class GameUnpaused : ASignal{}
+
+public class PausePopupRequested : ASignal{}
 
 
 #region UI Signals

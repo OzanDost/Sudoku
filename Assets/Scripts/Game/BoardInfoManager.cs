@@ -26,10 +26,21 @@ namespace Game
             Signals.Get<GameStateChanged>().AddListener(OnGameStateChanged);
             Signals.Get<WrongNumberPlaced>().AddListener(OnWrongNumberPlaced);
             Signals.Get<BoardStateSaveRequested>().AddListener(OnBoardStateSaveRequested);
+            Signals.Get<GamePaused>().AddListener(OnGamePaused);
+            
 
             _oneSecondSpan = new TimeSpan(0, 0, 1);
             _oneSecondWait = new WaitForSeconds(1);
             BoardInfoUpdatedSignal = Signals.Get<BoardInfoUpdated>();
+        }
+
+        private void OnGamePaused(bool showPausePopup)
+        {
+            StopTimer();
+            if (showPausePopup)
+            {
+                Signals.Get<PausePopupRequested>().Dispatch();
+            }
         }
 
         private void OnBoardStateSaveRequested(LevelData levelData)
@@ -49,11 +60,9 @@ namespace Game
 
         private void ResetValues()
         {
-            if (_timerRoutine != null)
-            {
-                StopCoroutine(_timerRoutine);
-                _currentPlayTime = new TimeSpan(0, 0, 0);
-            }
+            StopTimer();
+            _currentPlayTime = new TimeSpan(0, 0, 0);
+
 
             _mistakeCount = 0;
             _currentScore = 0;
@@ -92,11 +101,22 @@ namespace Game
             StartCoroutine(_timerRoutine);
         }
 
+        private void StopTimer()
+        {
+            if (_timerRoutine != null)
+            {
+                StopCoroutine(_timerRoutine);
+            }
+        }
+
         private IEnumerator TimerRoutine()
         {
-            _currentPlayTime = _currentPlayTime.Add(_oneSecondSpan);
-            BoardInfoUpdatedSignal.Dispatch(_currentPlayTime, _currentScore, _mistakeCount);
-            yield return _oneSecondWait;
+            while (true)
+            {
+                _currentPlayTime = _currentPlayTime.Add(_oneSecondSpan);
+                BoardInfoUpdatedSignal.Dispatch(_currentPlayTime, _currentScore, _mistakeCount);
+                yield return _oneSecondWait;
+            }
         }
     }
 }

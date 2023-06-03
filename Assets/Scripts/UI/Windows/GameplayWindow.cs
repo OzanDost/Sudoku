@@ -24,11 +24,12 @@ namespace UI.Windows
 
         private void OnQuitButtonClicked()
         {
-            
+            Signals.Get<ReturnToMenuRequested>().Dispatch();
         }
 
         private void OnPauseButtonClicked()
         {
+            Signals.Get<GamePaused>().Dispatch(true);
         }
 
         protected override void OnPropertiesSet()

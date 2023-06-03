@@ -22,7 +22,7 @@ namespace UI
 
         private void OnLevelLoaded(LevelData levelData)
         {
-            difficultyText.text = nameof(levelData.difficulty);
+            difficultyText.text = levelData.difficulty.DifficultyEnumToStringFast();
         }
 
         private void OnBoardInfoUpdated(TimeSpan playTime, int score, int mistakeCount)

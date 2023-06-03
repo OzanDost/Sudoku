@@ -1,3 +1,4 @@
+using Data;
 using UnityEngine;
 
 public static class Utils
@@ -29,5 +30,16 @@ public static class Utils
 
         return numberArray;
     }
-    
+
+    public static string DifficultyEnumToStringFast(this LevelDifficulty difficulty)
+    {
+        return difficulty switch
+        {
+            LevelDifficulty.Easy => "Easy",
+            LevelDifficulty.Medium => "Medium",
+            LevelDifficulty.Hard => "Hard",
+            LevelDifficulty.Extreme => "Extreme",
+            _ => "Easy"
+        };
+    }
 }

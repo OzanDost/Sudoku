@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Data;
 using deVoid.Utils;
+using Managers;
 using UnityEngine;
 
 namespace Game.Managers
@@ -20,12 +21,20 @@ namespace Game.Managers
             Signals.Get<CellPointerDown>().AddListener(OnCellPointerDown);
             Signals.Get<CellPointerUp>().AddListener(OnCellPointerUp);
             Signals.Get<CellFilled>().AddListener(OnCellFilled);
+            Signals.Get<ReturnToMenuRequested>().AddListener(GameplayWindow_OnReturnToMenuRequested);
         }
+
+        private void GameplayWindow_OnReturnToMenuRequested()
+        {
+            CurrentLevelData.levelGrid = Utils.GridToArray(LevelGrid);
+            Signals.Get<BoardStateSaveRequested>().Dispatch(CurrentLevelData);
+            Signals.Get<RequestGameStateChange>().Dispatch(GameState.Menu);
+        }
+
 
         private void OnCellFilled(Cell cell)
         {
             LevelGrid[cell.PositionOnGrid.x, cell.PositionOnGrid.y] = cell.Number;
-            // CurrentLevelData.levelGrid[cell.PositionOnGrid.x, cell.PositionOnGrid.y] = cell.Number;
 
             if (!IsCorrectPlacement(cell.PositionOnGrid, cell.Number))
             {
@@ -37,13 +46,6 @@ namespace Game.Managers
             {
                 Signals.Get<LevelSuccess>()
                     .Dispatch(new LevelSuccessData(new TimeSpan(0, 0, 0), 0, LevelDifficulty.Easy));
-            }
-            else
-            {
-                CurrentLevelData.levelGrid = Utils.GridToArray(LevelGrid);
-                Signals.Get<BoardStateSaveRequested>().Dispatch(CurrentLevelData);
-                // SaveManager.SaveContinueLevel(new BoardSaveStateData(0, new TimeSpan(0, 0, 0).ToString(), 0,
-                    // CurrentLevelData));
             }
         }
 

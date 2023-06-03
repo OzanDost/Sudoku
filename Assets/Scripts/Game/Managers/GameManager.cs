@@ -55,6 +55,7 @@ namespace Managers
         private void OnLevelFailed()
         {
             ChangeGameState(GameState.Fail);
+            SaveManager.ClearContinueLevel();
         }
 
         private void MainMenu_OnPlayButtonClicked()
