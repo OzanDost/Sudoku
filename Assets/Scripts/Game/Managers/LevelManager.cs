@@ -20,6 +20,7 @@ namespace Game.Managers
 
         private List<LevelSaveData> _levelList;
         private Dictionary<int, LevelSaveData> _levels;
+        private LevelSaveData _lastActiveLevel;
 
         public void Initialize()
         {
@@ -31,12 +32,20 @@ namespace Game.Managers
             }
         }
 
-        public void CreateLevel()
+        public void CreateLevel(bool retryLevel = false)
         {
+            LevelData levelData = null;
+
+            if (retryLevel)
+            {
+                levelData = GetLevelData(_lastActiveLevel);
+                Signals.Get<LevelLoaded>().Dispatch(levelData);
+                return;
+            }
+
             if (debugTestLevel)
             {
-                var levelData = GetLevelData(testLevel);
-                Signals.Get<LevelLoaded>().Dispatch(levelData );
+                levelData = GetLevelData(testLevel);
             }
 
             //todo
@@ -53,6 +62,17 @@ namespace Game.Managers
                 else
                 {
                 }
+            }
+
+            _lastActiveLevel = testLevel;
+            Signals.Get<LevelLoaded>().Dispatch(levelData);
+        }
+
+        public void RetryLevel()
+        {
+            if (_lastActiveLevel != null)
+            {
+                CreateLevel(true);
             }
         }
 

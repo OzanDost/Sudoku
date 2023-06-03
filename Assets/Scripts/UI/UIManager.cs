@@ -27,9 +27,13 @@ namespace DefaultNamespace.UI
             //
         }
 
+        private void OnGameFinished(bool isSuccessful)
+        {
+        }
+
         private void OnLevelBoardConfigured(LevelData data)
         {
-            if (gameManager.CurrentGameState is GameState.Menu)
+            if (gameManager.CurrentGameState is GameState.Menu or GameState.Fail)
             {
                 _uiFrame.OpenWindow("GameplayWindow", new GameplayWindowProperties(data));
             }
@@ -47,6 +51,11 @@ namespace DefaultNamespace.UI
             if (newState == GameState.Menu)
             {
                 _uiFrame.OpenWindow("MainMenuWindow");
+            }
+
+            if (newState == GameState.Fail)
+            {
+                _uiFrame.OpenWindow("FailWindow");
             }
         }
     }

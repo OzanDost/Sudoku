@@ -1,5 +1,6 @@
 using deVoid.Utils;
 using DG.Tweening;
+using Game.Managers;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -18,9 +19,16 @@ namespace Game
         public bool IsEmpty => string.IsNullOrEmpty(numberText.text);
 
 
-        public void GetFilled(string number)
+        public void GetFilled(int number, bool filledByPlayer)
         {
-            numberText.SetText(number);
+            string fill = number == 0 ? "" : number.ToString();
+            numberText.SetText(fill);
+
+            if (filledByPlayer)
+            {
+                Signals.Get<UndoableActionMade>()
+                    .Dispatch(new UndoableAction(UndoActionType.CellFill, number, null, this));
+            }
         }
 
         public void SetSizeDelta(Vector2 sizeDelta)

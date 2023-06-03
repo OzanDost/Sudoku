@@ -30,9 +30,10 @@ namespace UI
 
         private void OnNumberButtonClicked(int number)
         {
+            if (SelectedCell == null) return;
             if (!SelectedCell.IsEmpty) return;
 
-            SelectedCell.GetFilled(number.ToString());
+            SelectedCell.GetFilled(number, true);
             Signals.Get<CellFilled>().Dispatch(SelectedCell.PositionOnGrid, number);
         }
 
@@ -44,14 +45,19 @@ namespace UI
             }
         }
 
-        private void BoardManager_OnColorizationListDispatched(HashSet<Vector2Int> positions)
+        private void ResetSelectionHighlight()
         {
-            //todo refactor this maybe add animation
             foreach (var cell in cells)
             {
                 cell.SetColor(Color.white);
             }
+        }
 
+        private void BoardManager_OnColorizationListDispatched(HashSet<Vector2Int> positions)
+        {
+            //todo refactor this maybe add animation
+
+            ResetSelectionHighlight();
             foreach (var position in positions)
             {
                 _cellGrid[position.x, position.y].SetColor(Color.cyan);
@@ -64,6 +70,8 @@ namespace UI
 
             AdjustCellSize();
             FillTheCells(levelData);
+            ResetSelectionHighlight();
+            SelectedCell = null;
 
             Signals.Get<LevelBoardConfigured>().Dispatch(levelData);
 
@@ -82,8 +90,8 @@ namespace UI
                 var x = i % (dimensionLength);
                 var y = i / (dimensionLength);
 
-                var fill = levelData.levelGrid[x, y] == 0 ? "" : levelData.levelGrid[x, y].ToString();
-                cells[i].GetFilled(fill);
+                var fill = levelData.levelGrid[x, y];
+                cells[i].GetFilled(fill, false);
                 cells[i].SetPosition(x, y);
             }
         }

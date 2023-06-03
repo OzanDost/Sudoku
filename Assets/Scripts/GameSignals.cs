@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Data;
 using deVoid.Utils;
+using Game.Managers;
 using Managers;
 using UnityEngine;
 
@@ -12,7 +13,13 @@ public class GameStateChanged : ASignal<GameState, GameState>{}
 public class RequestGameStateChange : ASignal<GameState>{}
 public class LevelLoaded : ASignal<LevelData>{}
 public class LevelBoardConfigured : ASignal<LevelData>{}
+public class LevelFailed : ASignal{}
+public class LevelSuccess: ASignal{}
+public class LevelQuit : ASignal{}
+public class LevelRetryRequested : ASignal{}
 
+public class UndoableActionMade : ASignal<UndoableAction>{}
+public class UndoRequested : ASignal{}
 
 public class ColorizationListDispatched : ASignal<HashSet<Vector2Int>>{}
 public class SameNumberListDispatched : ASignal<List<Vector2Int>>{}

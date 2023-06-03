@@ -11,6 +11,8 @@ namespace Game.Managers
         private int[,] LevelGrid { get; set; }
         private int[,] SolutionGrid { get; set; }
 
+        private int _mistakeCount = 0;
+
         private void Awake()
         {
             Signals.Get<LevelLoaded>().AddListener(OnLevelLoaded);
@@ -24,6 +26,21 @@ namespace Game.Managers
             LevelGrid[position.x, position.y] = number;
             //todo check true-false
             //check game finish - fail
+            if (IsBoardFull())
+            {
+                Signals.Get<LevelSuccess>().Dispatch();
+            }
+            else
+            {
+                if (!IsCorrectPlacement(position, number))
+                {
+                    _mistakeCount++;
+                    if(_mistakeCount >= GlobalGameConfigs.MistakeLimit)
+                    {
+                        Signals.Get<LevelFailed>().Dispatch();
+                    }
+                }
+            }
         }
 
 
@@ -51,6 +68,7 @@ namespace Game.Managers
         {
             LevelGrid = levelData.levelGrid;
             SolutionGrid = levelData.solutionGrid;
+            _mistakeCount = 0;
         }
 
         private void OnCellPointerDown(Vector2Int position)

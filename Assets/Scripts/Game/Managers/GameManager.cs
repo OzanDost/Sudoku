@@ -16,22 +16,38 @@ namespace Managers
             Signals.Get<RequestGameStateChange>().AddListener(OnGameStateChangeRequested);
             Signals.Get<FakeLoadingFinished>().AddListener(OnFakeLoadingFinished);
             Signals.Get<PlayButtonClicked>().AddListener(MainMenu_OnPlayButtonClicked);
+            Signals.Get<LevelFailed>().AddListener(OnLevelFailed);
+            Signals.Get<LevelQuit>().AddListener(OnLevelQuit);
+            Signals.Get<LevelRetryRequested>().AddListener(OnLevelRetryRequested);
 
             ChangeGameState(GameState.Loading);
 
             levelManager.Initialize();
+            UndoManager.Initialize();
+        }
+
+        private void OnLevelQuit()
+        {
+            ChangeGameState(GameState.Menu);
+        }
+
+        private void OnLevelFailed()
+        {
+            ChangeGameState(GameState.Fail);
         }
 
         private void MainMenu_OnPlayButtonClicked()
         {
-            StartGameplay();
-        }
-
-        public void StartGameplay()
-        {
             levelManager.CreateLevel();
             ChangeGameState(GameState.Gameplay);
         }
+
+        private void OnLevelRetryRequested()
+        {
+            levelManager.RetryLevel();
+            ChangeGameState(GameState.Gameplay);
+        }
+
 
         private void OnFakeLoadingFinished()
         {

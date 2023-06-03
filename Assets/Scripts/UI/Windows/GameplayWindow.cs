@@ -1,6 +1,8 @@
 using System;
 using Data;
 using deVoid.UIFramework;
+using deVoid.Utils;
+using Game.Managers;
 using UnityEngine;
 
 namespace UI.Windows
@@ -14,6 +16,16 @@ namespace UI.Windows
         {
             base.OnPropertiesSet();
             numberInputWidget.Initialize(boardGridContainer);
+        }
+
+        private void Update()
+        {
+#if UNITY_EDITOR
+            if (Input.GetKeyDown(KeyCode.U))
+            {
+                Signals.Get<UndoRequested>().Dispatch();
+            }
+#endif
         }
     }
 
