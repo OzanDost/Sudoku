@@ -61,6 +61,7 @@ namespace Game.Managers
         private void OnHintUsed()
         {
             Signals.Get<HintCountUpdated>().Dispatch(_remainingHints);
+            SaveManager.SaveHintCount(_remainingHints);
         }
     }
 }

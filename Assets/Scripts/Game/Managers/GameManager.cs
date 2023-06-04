@@ -29,6 +29,13 @@ namespace Managers
             levelManager.Initialize();
             UndoManager.Initialize();
             BoardManager.Initialize();
+
+            ApplyConfigs();
+        }
+
+        private void ApplyConfigs()
+        {
+            Application.targetFrameRate = GlobalGameConfigs.TargetFrameRate;
         }
 
         private void MainMenu_OnContinueButtonClicked()
