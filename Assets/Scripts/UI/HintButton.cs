@@ -4,13 +4,11 @@ using UnityEngine.UI;
 
 namespace UI
 {
-    public class HintButton : MonoBehaviour
+    public class HintButton : AWidgetButton
     {
-        [SerializeField] private Button button;
         [SerializeField] private TextMeshProUGUI remainingHintCountText;
         [SerializeField] private GameObject adIcon;
 
-        public Button Button => button;
         private int RemainingHintCount { get; set; }
 
         public void SetRemainingHintCount(int remainingHintCount)
@@ -25,6 +23,10 @@ namespace UI
             bool hasHint = RemainingHintCount > 0;
             remainingHintCountText.gameObject.SetActive(hasHint);
             adIcon.SetActive(!hasHint);
+        }
+
+        public override void Animate()
+        {
         }
     }
 }

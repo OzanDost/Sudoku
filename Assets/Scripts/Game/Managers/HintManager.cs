@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Game.Managers
 {
-    public class PlayerInfoManager : MonoBehaviour
+    public class HintManager : MonoBehaviour
     {
         private int _remainingHints;
 
@@ -22,7 +22,17 @@ namespace Game.Managers
         {
             if (_remainingHints <= 0)
             {
-                Signals.Get<RewardedPopupRequested>().Dispatch(() => { Signals.Get<HintAuthorized>().Dispatch(cell); });
+                void SuccessActionCallBack()
+                {
+                    Signals.Get<HintAuthorized>().Dispatch(cell);
+                }
+
+                void FailedActionCallBack()
+                {
+                    Signals.Get<HintNotAuthorized>().Dispatch();
+                }
+
+                Signals.Get<RewardedPopupRequested>().Dispatch(SuccessActionCallBack, FailedActionCallBack);
             }
             else
             {
@@ -39,8 +49,6 @@ namespace Game.Managers
 
         private void OnLevelLoaded(LevelData levelData, bool fromContinue)
         {
-            // if (_remainingHints > 0) return;
-
             if (_remainingHints <= 0)
             {
                 _remainingHints = fromContinue ? 0 : GlobalGameConfigs.HintOnNewLevel;

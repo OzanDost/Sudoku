@@ -23,6 +23,7 @@ namespace Game.Managers
 
             Action undoAction = _undoStack.Pop();
             undoAction?.Invoke();
+            Signals.Get<UndoMade>().Dispatch();
         }
 
 

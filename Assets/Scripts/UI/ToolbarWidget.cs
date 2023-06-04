@@ -1,24 +1,33 @@
 using deVoid.Utils;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace UI
 {
     public class ToolbarWidget : MonoBehaviour
     {
-        [SerializeField] private Button undoButton;
-        [SerializeField] private Button eraseButton;
+        [SerializeField] private UndoButton undoButton;
+        [SerializeField] private EraseButton eraseButton;
         [SerializeField] private NoteButton noteButton;
         [SerializeField] private HintButton hintButton;
 
         private void Awake()
         {
-            undoButton.onClick.AddListener(OnUndoButtonClicked);
-            eraseButton.onClick.AddListener(OnEraseButtonClicked);
+            undoButton.Button.onClick.AddListener(OnUndoButtonClicked);
+            eraseButton.Button.onClick.AddListener(OnEraseButtonClicked);
             noteButton.Button.onClick.AddListener(OnNoteButtonClicked);
             hintButton.Button.onClick.AddListener(OnHintButtonClicked);
 
             Signals.Get<HintCountUpdated>().AddListener(OnHintCountUpdated);
+            Signals.Get<HintNotAuthorized>().AddListener(OnHintNotAuthorized);
+            Signals.Get<UndoResponseSent>().AddListener(OnUndoResponseSent);
+        }
+
+        private void OnHintNotAuthorized()
+        {
+        }
+
+        private void OnUndoResponseSent(bool success)
+        {
         }
 
         private void OnHintCountUpdated(int newHintAmount)

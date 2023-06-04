@@ -31,9 +31,9 @@ namespace DefaultNamespace.UI
             Signals.Get<RewardedPopupRequested>().AddListener(OnRewardedPopupRequested);
         }
 
-        private void OnRewardedPopupRequested(Action successActionCallBack)
+        private void OnRewardedPopupRequested(Action successActionCallBack, Action failedActionCallBack)
         {
-            _uiFrame.OpenWindow("FakeRewardedPopup", new FakeRewardedPopupProperties(successActionCallBack));
+            _uiFrame.OpenWindow("FakeRewardedPopup", new FakeRewardedPopupProperties(successActionCallBack, failedActionCallBack));
         }
 
         private void OnNewGameButtonClicked()

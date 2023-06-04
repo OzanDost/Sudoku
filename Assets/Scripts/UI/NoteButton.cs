@@ -6,15 +6,13 @@ using UnityEngine.UI;
 namespace UI
 {
     [Serializable]
-    public class NoteButton : MonoBehaviour
+    public class NoteButton : AWidgetButton
     {
-        [SerializeField] private Button button;
         [SerializeField] private TextMeshProUGUI stateText;
         [SerializeField] private Image stateBackgroundImage;
         [SerializeField] private Color enabledColor;
         [SerializeField] private Color disabledColor;
 
-        public Button Button => button;
         private bool IsEnabled { get; set; }
 
         protected void Awake()
@@ -52,6 +50,10 @@ namespace UI
                 targetTextColor.a = 1f;
                 stateText.color = targetTextColor;
             }
+        }
+
+        public override void Animate()
+        {
         }
     }
 }

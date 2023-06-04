@@ -57,10 +57,12 @@ namespace UI.Popups
     public class FakeRewardedPopupProperties : WindowProperties
     {
         public Action successActionCallBack;
+        public Action failedActionCallBack;
 
-        public FakeRewardedPopupProperties(Action successActionCallBack)
+        public FakeRewardedPopupProperties(Action successActionCallBack, Action failedActionCallBack)
         {
             this.successActionCallBack = successActionCallBack;
+            this.failedActionCallBack = failedActionCallBack;
         }
     }
 }
