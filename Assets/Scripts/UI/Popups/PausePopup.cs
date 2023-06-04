@@ -23,6 +23,7 @@ namespace UI.Popups
         protected override void On_UIClose()
         {
             base.On_UIClose();
+            Signals.Get<GameUnpaused>().Dispatch();
             Signals.Get<PausePopupClosed>().Dispatch();
         }
     }

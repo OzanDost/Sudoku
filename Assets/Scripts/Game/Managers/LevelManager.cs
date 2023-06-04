@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Data;
 using deVoid.Utils;
-using Managers;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -47,7 +46,7 @@ namespace Game.Managers
             if (retryLevel)
             {
                 levelData = GetLevelData(_lastActiveLevel);
-                Signals.Get<LevelLoaded>().Dispatch(levelData);
+                Signals.Get<LevelLoaded>().Dispatch(levelData, false);
                 return;
             }
 
@@ -61,7 +60,7 @@ namespace Game.Managers
             }
 
             levelData = GetLevelData(targetLevelSaveData);
-            Signals.Get<LevelLoaded>().Dispatch(levelData);
+            Signals.Get<LevelLoaded>().Dispatch(levelData, false);
             _lastActiveLevel = targetLevelSaveData;
         }
 
@@ -69,7 +68,7 @@ namespace Game.Managers
         {
             var boardState = SaveManager.GetContinueLevel();
             Signals.Get<LevelContinued>().Dispatch(boardState);
-            Signals.Get<LevelLoaded>().Dispatch(boardState.levelData);
+            Signals.Get<LevelLoaded>().Dispatch(boardState.levelData, true);
         }
 
         public void RetryLevel()

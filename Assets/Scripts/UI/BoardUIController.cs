@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Data;
 using deVoid.Utils;
 using Game;
+using Game.Managers;
 using UI.Windows;
 using UnityEngine;
 
@@ -11,7 +12,6 @@ namespace UI
     {
         [SerializeField] private RectTransform board;
         [SerializeField] private Cell[] cells;
-        [SerializeField] private GridLayout cellGrid;
 
         private Cell[,] _cellGrid;
         private Cell SelectedCell { get; set; }
@@ -25,6 +25,15 @@ namespace UI
             Signals.Get<NumberInputMade>().AddListener(OnNumberInputMade);
             Signals.Get<EraseRequested>().AddListener(OnEraseRequested);
             Signals.Get<WrongNumberPlaced>().AddListener(OnWrongNumberPlaced);
+            Signals.Get<HintButtonClicked>().AddListener(HintButtonClicked);
+        }
+
+        private void HintButtonClicked()
+        {
+            if (SelectedCell == null) return;
+            if (!SelectedCell.IsEmpty && !SelectedCell.IsWrongNumber) return;
+            
+            Signals.Get<HintRequested>().Dispatch(SelectedCell);
         }
 
         private void OnEraseRequested()
@@ -125,7 +134,7 @@ namespace UI
             }
         }
 
-        private void OnLevelLoaded(LevelData levelData)
+        private void OnLevelLoaded(LevelData levelData, bool fromContinue)
         {
             Signals.Get<BoardGridCreationRequested>().Dispatch(board);
 

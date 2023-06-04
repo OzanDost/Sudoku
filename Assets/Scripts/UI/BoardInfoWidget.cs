@@ -20,7 +20,7 @@ namespace UI
             Signals.Get<LevelLoaded>().AddListener(OnLevelLoaded);
         }
 
-        private void OnLevelLoaded(LevelData levelData)
+        private void OnLevelLoaded(LevelData levelData, bool fromContinue)
         {
             difficultyText.text = levelData.difficulty.DifficultyEnumToStringFast();
         }

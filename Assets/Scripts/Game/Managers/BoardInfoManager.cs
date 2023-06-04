@@ -2,11 +2,10 @@ using System;
 using System.Collections;
 using Data;
 using deVoid.Utils;
-using Game.Managers;
 using Managers;
 using UnityEngine;
 
-namespace Game
+namespace Game.Managers
 {
     public class BoardInfoManager : MonoBehaviour
     {
@@ -27,7 +26,7 @@ namespace Game
             Signals.Get<WrongNumberPlaced>().AddListener(OnWrongNumberPlaced);
             Signals.Get<BoardStateSaveRequested>().AddListener(OnBoardStateSaveRequested);
             Signals.Get<GamePaused>().AddListener(OnGamePaused);
-            Signals.Get<PausePopupClosed>().AddListener(OnPausePopupClosed);
+            Signals.Get<GameUnpaused>().AddListener(OnPausePopupClosed);
 
 
             _oneSecondSpan = new TimeSpan(0, 0, 1);
@@ -51,9 +50,9 @@ namespace Game
 
         private void OnBoardStateSaveRequested(LevelData levelData)
         {
-            BoardSaveStateData saveStateData = new BoardSaveStateData(_currentScore, _currentPlayTime.ToString(),
+            BoardStateSaveData stateSaveData = new BoardStateSaveData(_currentScore, _currentPlayTime.ToString(),
                 _mistakeCount, levelData);
-            SaveManager.SaveContinueLevel(saveStateData);
+            SaveManager.SaveContinueLevel(stateSaveData);
         }
 
         private void OnGameStateChanged(GameState oldState, GameState newState)
@@ -67,14 +66,13 @@ namespace Game
         private void ResetValues()
         {
             StopTimer();
+
             _currentPlayTime = new TimeSpan(0, 0, 0);
-
-
             _mistakeCount = 0;
             _currentScore = 0;
         }
 
-        private void OnLevelLoaded(LevelData data)
+        private void OnLevelLoaded(LevelData data, bool fromContinue)
         {
             StartTimer();
         }
@@ -89,12 +87,12 @@ namespace Game
             }
         }
 
-        private void OnLevelContinued(BoardSaveStateData data)
+        private void OnLevelContinued(BoardStateSaveData data)
         {
             Configure(data);
         }
 
-        private void Configure(BoardSaveStateData data)
+        private void Configure(BoardStateSaveData data)
         {
             _currentPlayTime = TimeSpan.Parse(data.timeSpan);
             _currentScore = data.score;

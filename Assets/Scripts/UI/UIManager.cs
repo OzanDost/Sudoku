@@ -1,3 +1,4 @@
+using System;
 using Data;
 using deVoid.UIFramework;
 using deVoid.Utils;
@@ -27,6 +28,12 @@ namespace DefaultNamespace.UI
             Signals.Get<LevelSuccess>().AddListener(OnLevelSuccess);
             Signals.Get<PausePopupRequested>().AddListener(OnPausePopupRequested);
             Signals.Get<NewGameButtonClicked>().AddListener(OnNewGameButtonClicked);
+            Signals.Get<RewardedPopupRequested>().AddListener(OnRewardedPopupRequested);
+        }
+
+        private void OnRewardedPopupRequested(Action successActionCallBack)
+        {
+            _uiFrame.OpenWindow("FakeRewardedPopup", new FakeRewardedPopupProperties(successActionCallBack));
         }
 
         private void OnNewGameButtonClicked()

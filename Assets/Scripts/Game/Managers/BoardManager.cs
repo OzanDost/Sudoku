@@ -4,7 +4,6 @@ using System.Linq;
 using Data;
 using deVoid.Utils;
 using Managers;
-using UI.Windows;
 using UnityEngine;
 
 namespace Game.Managers
@@ -23,6 +22,17 @@ namespace Game.Managers
             Signals.Get<CellPointerUp>().AddListener(OnCellPointerUp);
             Signals.Get<CellFilled>().AddListener(OnCellFilled);
             Signals.Get<ReturnToMenuRequested>().AddListener(GameplayWindow_OnReturnToMenuRequested);
+            Signals.Get<HintAuthorized>().AddListener(OnHintAuthorized);
+        }
+
+        private static void OnHintAuthorized(Cell cell)
+        {
+            if (cell == null) return;
+            if (!cell.IsEmpty && !cell.IsWrongNumber) return;
+
+            int solution = GetSolutionForCell(cell);
+            cell.GetFilled(solution, true);
+            Signals.Get<HintUsed>().Dispatch();
         }
 
 
@@ -55,10 +65,6 @@ namespace Game.Managers
             }
         }
 
-        private static void OnCellEraseRequested()
-        {
-        }
-
 
         private static bool IsCorrectPlacement(Vector2Int position, int number)
         {
@@ -80,7 +86,12 @@ namespace Game.Managers
             return true;
         }
 
-        private static void OnLevelLoaded(LevelData levelData)
+        private static int GetSolutionForCell(Cell cell)
+        {
+            return SolutionGrid[cell.PositionOnGrid.x, cell.PositionOnGrid.y];
+        }
+
+        private static void OnLevelLoaded(LevelData levelData, bool fromContinue)
         {
             LevelGrid = Utils.ArrayToGrid(levelData.levelGrid);
             SolutionGrid = Utils.ArrayToGrid(levelData.solutionGrid);

@@ -17,11 +17,18 @@ namespace UI
             eraseButton.onClick.AddListener(OnEraseButtonClicked);
             noteButton.Button.onClick.AddListener(OnNoteButtonClicked);
             hintButton.Button.onClick.AddListener(OnHintButtonClicked);
+
+            Signals.Get<HintCountUpdated>().AddListener(OnHintCountUpdated);
+        }
+
+        private void OnHintCountUpdated(int newHintAmount)
+        {
+            hintButton.SetRemainingHintCount(newHintAmount);
         }
 
         private void OnHintButtonClicked()
         {
-            Signals.Get<HintRequested>().Dispatch();
+            Signals.Get<HintButtonClicked>().Dispatch();
         }
 
         private void OnNoteButtonClicked()

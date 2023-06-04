@@ -19,8 +19,8 @@ namespace Game
         private Tween _punchTween;
         public Vector2Int PositionOnGrid { get; private set; }
         public int Number { get; private set; }
-        public bool IsEmpty => string.IsNullOrEmpty(numberText.text);
-        private bool IsWrongNumber { get; set; }
+        public bool IsEmpty => Number == 0;
+        public bool IsWrongNumber { get; set; }
 
         private Sequence _wrongNumberSequence;
 
