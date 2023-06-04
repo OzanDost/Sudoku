@@ -27,11 +27,17 @@ namespace Game
             Signals.Get<WrongNumberPlaced>().AddListener(OnWrongNumberPlaced);
             Signals.Get<BoardStateSaveRequested>().AddListener(OnBoardStateSaveRequested);
             Signals.Get<GamePaused>().AddListener(OnGamePaused);
-            
+            Signals.Get<PausePopupClosed>().AddListener(OnPausePopupClosed);
+
 
             _oneSecondSpan = new TimeSpan(0, 0, 1);
             _oneSecondWait = new WaitForSeconds(1);
             BoardInfoUpdatedSignal = Signals.Get<BoardInfoUpdated>();
+        }
+
+        private void OnPausePopupClosed()
+        {
+            StartTimer();
         }
 
         private void OnGamePaused(bool showPausePopup)

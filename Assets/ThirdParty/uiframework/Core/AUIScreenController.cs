@@ -12,12 +12,12 @@ namespace deVoid.UIFramework
     public abstract class AUIScreenController<TProps> : MonoBehaviour, IUIScreenController
         where TProps : IScreenProperties
     {
-        [Header("Screen Animations")] 
-        [Tooltip("Animation that shows the screen")] 
+        [Header("Screen Animations")]
+        [Tooltip("Animation that shows the screen")]
         [SerializeField]
         private ATransitionComponent animIn;
 
-        [Tooltip("Animation that hides the screen")] 
+        [Tooltip("Animation that hides the screen")]
         [SerializeField]
         private ATransitionComponent animOut;
 
@@ -71,6 +71,8 @@ namespace deVoid.UIFramework
         /// </summary>
         /// <value>The destruction action.</value>
         public Action<IUIScreenController> ScreenDestroyed { get; set; }
+
+        public Action<IUIScreenController> OpenRequest { get; set; }
 
         /// <summary>
         /// Is this screen currently visible?
@@ -177,7 +179,7 @@ namespace deVoid.UIFramework
             {
                 if (props is TProps)
                 {
-                    SetProperties((TProps) props);
+                    SetProperties((TProps)props);
                 }
                 else
                 {
@@ -193,6 +195,7 @@ namespace deVoid.UIFramework
             if (!gameObject.activeSelf)
             {
                 DoAnimation(animIn, OnTransitionInFinished, true);
+                On_UIOPen();
             }
             else
             {
@@ -243,6 +246,17 @@ namespace deVoid.UIFramework
             {
                 OutTransitionFinished(this);
             }
+
+            On_UIClose();
+        }
+
+        protected virtual void On_UIClose()
+        {
+        }
+
+        protected virtual void On_UIOPen()
+        {
+            OpenRequest?.Invoke(this);
         }
     }
 }

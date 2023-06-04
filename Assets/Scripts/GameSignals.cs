@@ -42,7 +42,7 @@ public class ReturnToMenuRequested : ASignal{}
 //bool is for showing or not showing the pause popup
 public class GamePaused : ASignal<bool>{}
 
-public class GameUnpaused : ASignal{}
+public class PausePopupClosed : ASignal{}
 
 public class PausePopupRequested : ASignal{}
 

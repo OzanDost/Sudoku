@@ -20,10 +20,10 @@ namespace UI.Popups
             CloseRequest?.Invoke(this);
         }
 
-        public override void UI_Close()
+        protected override void On_UIClose()
         {
-            base.UI_Close();
-            Signals.Get<GameUnpaused>().Dispatch();
+            base.On_UIClose();
+            Signals.Get<PausePopupClosed>().Dispatch();
         }
     }
 }
