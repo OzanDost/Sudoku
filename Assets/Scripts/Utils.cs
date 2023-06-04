@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using Data;
 using UnityEngine;
 
@@ -41,5 +43,10 @@ public static class Utils
             LevelDifficulty.Extreme => "Extreme",
             _ => "Easy"
         };
+    }
+
+    public static T GetRandomElement<T>(this List<T> list)
+    {
+        return list[Random.Range(0, list.Count)];
     }
 }

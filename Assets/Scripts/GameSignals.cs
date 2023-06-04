@@ -49,7 +49,8 @@ public class PausePopupRequested : ASignal{}
 
 #region UI Signals
 public class FakeLoadingFinished : ASignal{}
-public class PlayLevelRequested : ASignal{}
+public class NewGameButtonClicked : ASignal{}
+public class LevelDifficultySelected : ASignal<LevelDifficulty>{}
 public class ContinueLevelRequested : ASignal{}
 public class BoardGridCreationRequested : ASignal<RectTransform>{}
 public class SuccessContinueButtonClicked : ASignal{}

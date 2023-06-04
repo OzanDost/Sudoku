@@ -15,13 +15,13 @@ namespace Managers
             // Subscribing to events
             Signals.Get<RequestGameStateChange>().AddListener(OnGameStateChangeRequested);
             Signals.Get<FakeLoadingFinished>().AddListener(OnFakeLoadingFinished);
-            Signals.Get<PlayLevelRequested>().AddListener(MainMenu_OnPlayButtonClicked);
             Signals.Get<ContinueLevelRequested>().AddListener(MainMenu_OnContinueButtonClicked);
             Signals.Get<SuccessContinueButtonClicked>().AddListener(Success_OnContinueButtonClicked);
             Signals.Get<LevelFailed>().AddListener(OnLevelFailed);
             Signals.Get<LevelQuit>().AddListener(OnLevelQuit);
             Signals.Get<LevelRetryRequested>().AddListener(OnLevelRetryRequested);
             Signals.Get<LevelSuccess>().AddListener(OnLevelSuccess);
+            Signals.Get<LevelDifficultySelected>().AddListener(OnLevelDifficultySelected);
 
 
             ChangeGameState(GameState.Loading);
@@ -58,11 +58,13 @@ namespace Managers
             SaveManager.ClearContinueLevel();
         }
 
-        private void MainMenu_OnPlayButtonClicked()
+
+        private void OnLevelDifficultySelected(LevelDifficulty difficulty)
         {
-            levelManager.CreateLevel();
+            levelManager.CreateLevel(difficulty);
             ChangeGameState(GameState.Gameplay);
         }
+
 
         private void OnLevelRetryRequested()
         {

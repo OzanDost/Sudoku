@@ -31,6 +31,8 @@ namespace Game
             string fill = number == 0 ? "" : number.ToString();
             numberText.SetText(fill);
 
+            EraseCellNotes();
+
             if (filledByPlayer && number != 0)
             {
                 Signals.Get<CellFilled>().Dispatch(this);
@@ -120,13 +122,9 @@ namespace Game
 
             for (var i = 0; i < noteNumbers.Length; i++)
             {
-                var noteNumber = noteNumbers[i];
-                if (noteNumber.activeInHierarchy)
+                if (RemoveNote(i + 1, false))
                 {
-                    if (RemoveNote(i + 1, false))
-                    {
-                        erasedNotes.Add(i + 1);
-                    }
+                    erasedNotes.Add(i + 1);
                 }
             }
 

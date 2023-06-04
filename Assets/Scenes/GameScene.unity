@@ -408,7 +408,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5420d4aa70664bceb38c722050316ba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugTestLevel: 1
+  debugTestLevel: 0
   testLevel: {fileID: 11400000, guid: 9687b7181233442279cf352254986b74, type: 2}
 --- !u!1 &2075620526
 GameObject:

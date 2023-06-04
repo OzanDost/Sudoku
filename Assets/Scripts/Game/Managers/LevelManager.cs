@@ -19,22 +19,30 @@ namespace Game.Managers
         [SerializeField] private LevelSaveData testLevel;
 
         private List<LevelSaveData> _levelList;
-        private Dictionary<int, LevelSaveData> _levels;
         private LevelSaveData _lastActiveLevel;
+
+        private Dictionary<LevelDifficulty, List<LevelSaveData>> _categoryLevelDictionary;
 
         public void Initialize()
         {
+            _categoryLevelDictionary = new Dictionary<LevelDifficulty, List<LevelSaveData>>(10);
             _levelList = Resources.LoadAll<LevelSaveData>(LevelSaveDataPath).ToList();
-            _levels = new Dictionary<int, LevelSaveData>();
-            foreach (var level in _levelList)
+
+            foreach (var levelSaveData in _levelList)
             {
-                _levels.Add(level.id, level);
+                if (!_categoryLevelDictionary.ContainsKey(levelSaveData.difficulty))
+                {
+                    _categoryLevelDictionary.Add(levelSaveData.difficulty, new List<LevelSaveData>());
+                }
+
+                _categoryLevelDictionary[levelSaveData.difficulty].Add(levelSaveData);
             }
         }
 
-        public void CreateLevel(bool retryLevel = false)
+        public void CreateLevel(LevelDifficulty levelDifficulty, bool retryLevel = false)
         {
             LevelData levelData = null;
+            LevelSaveData targetLevelSaveData = null;
 
             if (retryLevel)
             {
@@ -45,27 +53,16 @@ namespace Game.Managers
 
             if (debugTestLevel)
             {
-                levelData = GetLevelData(testLevel);
-            }
-
-            //todo
-            var level = SaveManager.GetSavedLevel();
-            if (level is null)
-            {
+                targetLevelSaveData = testLevel;
             }
             else
             {
-                _levels.TryGetValue(level.id, out var levelSaveData);
-                if (levelSaveData is null)
-                {
-                }
-                else
-                {
-                }
+                targetLevelSaveData = _categoryLevelDictionary[levelDifficulty].GetRandomElement();
             }
 
-            _lastActiveLevel = testLevel;
+            levelData = GetLevelData(targetLevelSaveData);
             Signals.Get<LevelLoaded>().Dispatch(levelData);
+            _lastActiveLevel = targetLevelSaveData;
         }
 
         public void ContinueLevel()
@@ -79,7 +76,8 @@ namespace Game.Managers
         {
             if (_lastActiveLevel != null)
             {
-                CreateLevel(true);
+                //Difficulty is not important here since we are retrying the last level
+                CreateLevel(LevelDifficulty.Easy, true);
             }
         }
 

@@ -26,6 +26,12 @@ namespace DefaultNamespace.UI
             Signals.Get<LevelBoardConfigured>().AddListener(OnLevelBoardConfigured);
             Signals.Get<LevelSuccess>().AddListener(OnLevelSuccess);
             Signals.Get<PausePopupRequested>().AddListener(OnPausePopupRequested);
+            Signals.Get<NewGameButtonClicked>().AddListener(OnNewGameButtonClicked);
+        }
+
+        private void OnNewGameButtonClicked()
+        {
+            _uiFrame.OpenWindow("DifficultySelectorPopup");
         }
 
         private void OnPausePopupRequested()

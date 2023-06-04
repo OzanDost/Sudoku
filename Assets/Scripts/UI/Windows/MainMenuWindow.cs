@@ -36,7 +36,7 @@ namespace UI.Windows
 
         private void OnPlayButtonClicked()
         {
-            Signals.Get<PlayLevelRequested>().Dispatch();
+            Signals.Get<NewGameButtonClicked>().Dispatch();
         }
     }
 }
