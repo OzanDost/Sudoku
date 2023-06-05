@@ -148,6 +148,7 @@ namespace Game
         {
             if (!IsWrongNumber) return false;
             IsWrongNumber = false;
+            SetNumberColor(Color.white);
             return true;
         }
 
