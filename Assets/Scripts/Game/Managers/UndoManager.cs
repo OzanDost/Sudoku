@@ -18,12 +18,12 @@ namespace Game.Managers
 
         private static void OnUndoRequested()
         {
+            Signals.Get<UndoResponseSent>().Dispatch(_undoStack.Count > 0);
+            
             if (_undoStack.Count == 0) return;
-            //todo maybe show toaster here.
 
             Action undoAction = _undoStack.Pop();
             undoAction?.Invoke();
-            Signals.Get<UndoMade>().Dispatch();
         }
 
 

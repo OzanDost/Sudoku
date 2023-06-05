@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Data;
 using deVoid.Utils;
 using Game;
-using Game.Managers;
 using UI.Windows;
 using UnityEngine;
 
@@ -18,13 +17,11 @@ namespace UI
 
         private void Awake()
         {
-            Signals.Get<LevelLoaded>().AddListener(OnLevelLoaded);
+            Signals.Get<BoardReady>().AddListener(OnLevelLoaded);
             Signals.Get<CellPointerDown>().AddListener(OnCellPointerDown);
-            Signals.Get<ColorizationListDispatched>().AddListener(BoardManager_OnColorizationListDispatched);
             Signals.Get<SameNumberListDispatched>().AddListener(BoardManager_OnSameNumberListDispatched);
             Signals.Get<NumberInputMade>().AddListener(OnNumberInputMade);
-            Signals.Get<EraseRequested>().AddListener(OnEraseRequested);
-            Signals.Get<WrongNumberPlaced>().AddListener(OnWrongNumberPlaced);
+            Signals.Get<EraseButtonClicked>().AddListener(OnEraseButtonClicked);
             Signals.Get<HintButtonClicked>().AddListener(HintButtonClicked);
         }
 
@@ -32,15 +29,19 @@ namespace UI
         {
             if (SelectedCell == null) return;
             if (!SelectedCell.IsEmpty && !SelectedCell.IsWrongNumber) return;
-            
+
             Signals.Get<HintRequested>().Dispatch(SelectedCell);
         }
 
-        private void OnEraseRequested()
+        private void OnEraseButtonClicked()
         {
-            if (SelectedCell == null) return;
+            if (SelectedCell == null)
+            {
+                Signals.Get<CellEraseResponseSent>().Dispatch(false);
+                return;
+            }
 
-            SelectedCell.EraseCellContent();
+            Signals.Get<EraseRequested>().Dispatch(SelectedCell);
         }
 
         private void OnCellPointerDown(Vector2Int position)
@@ -101,11 +102,6 @@ namespace UI
             }
         }
 
-        private void OnWrongNumberPlaced(Cell cell)
-        {
-            cell.OnWrongNumberPlaced();
-        }
-
 
         private void BoardManager_OnSameNumberListDispatched(List<Vector2Int> positions)
         {
@@ -115,24 +111,6 @@ namespace UI
             }
         }
 
-        private void ResetSelectionHighlight()
-        {
-            foreach (var cell in cells)
-            {
-                cell.SetBackgroundColor(Color.white);
-            }
-        }
-
-        private void BoardManager_OnColorizationListDispatched(HashSet<Vector2Int> positions)
-        {
-            //todo refactor this maybe add animation
-
-            ResetSelectionHighlight();
-            foreach (var position in positions)
-            {
-                _cellGrid[position.x, position.y].SetBackgroundColor(Color.cyan);
-            }
-        }
 
         private void OnLevelLoaded(LevelData levelData, bool fromContinue)
         {
@@ -140,7 +118,6 @@ namespace UI
 
             AdjustCellSize();
             FillTheCells(levelData);
-            ResetSelectionHighlight();
             SelectedCell = null;
 
             Signals.Get<LevelBoardConfigured>().Dispatch(levelData);
@@ -150,20 +127,18 @@ namespace UI
             {
                 _cellGrid[cell.PositionOnGrid.x, cell.PositionOnGrid.y] = cell;
             }
+
+            Signals.Get<CellsConfigured>().Dispatch(_cellGrid);
         }
 
         private void FillTheCells(LevelData levelData)
         {
-            int dimensionLength = (int)Mathf.Sqrt(cells.Length);
             for (int i = 0; i < cells.Length; i++)
             {
-                var x = i % (dimensionLength);
-                var y = i / (dimensionLength);
-
-                // var fill = levelData.levelGrid[x, y];
-                var fill = levelData.levelGrid[i];
+                var fill = levelData.levelArray[i];
+                Vector2Int position = Utils.GetPositionFromArray(levelData.levelArray, i);
+                cells[i].SetPosition(position.x, position.y);
                 cells[i].GetFilled(fill, false);
-                cells[i].SetPosition(x, y);
             }
         }
 

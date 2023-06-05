@@ -33,10 +33,9 @@ namespace Game
 
             EraseCellNotes();
 
+            Signals.Get<CellFilled>().Dispatch(this, filledByPlayer);
             if (filledByPlayer && number != 0)
             {
-                Signals.Get<CellFilled>().Dispatch(this);
-
                 Signals.Get<UndoableActionMade>()
                     .Dispatch(new UndoableAction(() =>
                     {
@@ -116,7 +115,7 @@ namespace Game
             return true;
         }
 
-        private void EraseCellNotes(bool shouldAddToUndoStack = true)
+        public bool EraseCellNotes(bool shouldAddToUndoStack = true)
         {
             List<int> erasedNotes = new List<int>();
 
@@ -129,7 +128,7 @@ namespace Game
             }
 
             //early return to avoid unnecessary undo registration
-            if (erasedNotes.Count == 0) return;
+            if (erasedNotes.Count == 0) return false;
 
             if (shouldAddToUndoStack)
             {
@@ -141,20 +140,17 @@ namespace Game
                     }
                 }));
             }
+
+            return true;
         }
 
-        private void EraseCellNumber()
+        public bool EraseCellNumber()
         {
-            if (!IsWrongNumber) return;
-            GetFilled(0, false);
+            if (!IsWrongNumber) return false;
             IsWrongNumber = false;
+            return true;
         }
 
-        public void EraseCellContent()
-        {
-            EraseCellNotes();
-            EraseCellNumber();
-        }
 
         public void OnWrongNumberPlaced()
         {

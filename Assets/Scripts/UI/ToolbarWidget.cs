@@ -18,21 +18,8 @@ namespace UI
             hintButton.Button.onClick.AddListener(OnHintButtonClicked);
 
             Signals.Get<HintCountUpdated>().AddListener(OnHintCountUpdated);
-            Signals.Get<HintNotAuthorized>().AddListener(OnHintNotAuthorized);
             Signals.Get<UndoResponseSent>().AddListener(OnUndoResponseSent);
-        }
-
-        private void OnHintNotAuthorized()
-        {
-        }
-
-        private void OnUndoResponseSent(bool success)
-        {
-        }
-
-        private void OnHintCountUpdated(int newHintAmount)
-        {
-            hintButton.SetRemainingHintCount(newHintAmount);
+            Signals.Get<CellEraseResponseSent>().AddListener(OnCellEraseResponseSent);
         }
 
         private void OnHintButtonClicked()
@@ -47,12 +34,41 @@ namespace UI
 
         private void OnEraseButtonClicked()
         {
-            Signals.Get<EraseRequested>().Dispatch();
+            Signals.Get<EraseButtonClicked>().Dispatch();
         }
 
         private void OnUndoButtonClicked()
         {
             Signals.Get<UndoRequested>().Dispatch();
+        }
+
+        private void OnCellEraseResponseSent(bool erased)
+        {
+            if (erased)
+            {
+                eraseButton.Animate();
+            }
+            else
+            {
+                eraseButton.NoFunctionAnimate();
+            }
+        }
+
+        private void OnHintCountUpdated(int newHintAmount)
+        {
+            hintButton.SetRemainingHintCount(newHintAmount);
+        }
+
+        private void OnUndoResponseSent(bool success)
+        {
+            if (success)
+            {
+                undoButton.Animate();
+            }
+            else
+            {
+                undoButton.NoFunctionAnimate();
+            }
         }
     }
 }

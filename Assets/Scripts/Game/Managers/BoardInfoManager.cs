@@ -21,7 +21,7 @@ namespace Game.Managers
         private void Awake()
         {
             Signals.Get<LevelContinued>().AddListener(OnLevelContinued);
-            Signals.Get<LevelLoaded>().AddListener(OnLevelLoaded);
+            Signals.Get<BoardReady>().AddListener(OnLevelLoaded);
             Signals.Get<GameStateChanged>().AddListener(OnGameStateChanged);
             Signals.Get<WrongNumberPlaced>().AddListener(OnWrongNumberPlaced);
             Signals.Get<BoardStateSaveRequested>().AddListener(OnBoardStateSaveRequested);
@@ -77,8 +77,9 @@ namespace Game.Managers
             StartTimer();
         }
 
-        private void OnWrongNumberPlaced(Cell cell)
+        private void OnWrongNumberPlaced(Cell cell, bool filledByPlayer)
         {
+            if (!filledByPlayer) return;
             _mistakeCount++;
             BoardInfoUpdatedSignal.Dispatch(_currentPlayTime, _currentScore, _mistakeCount);
             if (_mistakeCount >= GlobalGameConfigs.MistakeLimit)

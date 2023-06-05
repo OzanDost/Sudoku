@@ -50,15 +50,18 @@ namespace Game.Managers
                 return;
             }
 
+#if UNITY_EDITOR
+
             if (debugTestLevel)
             {
                 targetLevelSaveData = testLevel;
+                levelData = GetLevelData(targetLevelSaveData);
+                Signals.Get<LevelLoaded>().Dispatch(levelData, false);
+                return;
             }
-            else
-            {
-                targetLevelSaveData = _categoryLevelDictionary[levelDifficulty].GetRandomElement();
-            }
+#endif
 
+            targetLevelSaveData = _categoryLevelDictionary[levelDifficulty].GetRandomElement();
             levelData = GetLevelData(targetLevelSaveData);
             Signals.Get<LevelLoaded>().Dispatch(levelData, false);
             _lastActiveLevel = targetLevelSaveData;
@@ -67,6 +70,7 @@ namespace Game.Managers
         public void ContinueLevel()
         {
             var boardState = SaveManager.GetContinueLevel();
+            _lastActiveLevel = _levelList.Find(x => x.id == boardState.levelData.id);
             Signals.Get<LevelContinued>().Dispatch(boardState);
             Signals.Get<LevelLoaded>().Dispatch(boardState.levelData, true);
         }

@@ -10,7 +10,7 @@ namespace Game.Managers
 
         private void Awake()
         {
-            Signals.Get<LevelLoaded>().AddListener(OnLevelLoaded);
+            Signals.Get<BoardReady>().AddListener(OnLevelLoaded);
             Signals.Get<GamePaused>().AddListener(OnGamePaused);
             Signals.Get<HintRequested>().AddListener(OnHintRequested);
             Signals.Get<HintUsed>().AddListener(OnHintUsed);
@@ -26,13 +26,8 @@ namespace Game.Managers
                 {
                     Signals.Get<HintAuthorized>().Dispatch(cell);
                 }
-
-                void FailedActionCallBack()
-                {
-                    Signals.Get<HintNotAuthorized>().Dispatch();
-                }
-
-                Signals.Get<RewardedPopupRequested>().Dispatch(SuccessActionCallBack, FailedActionCallBack);
+                
+                Signals.Get<RewardedPopupRequested>().Dispatch(SuccessActionCallBack, null);
             }
             else
             {

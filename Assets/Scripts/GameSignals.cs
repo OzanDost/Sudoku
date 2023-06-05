@@ -15,6 +15,8 @@ using UnityEngine;
 public class GameStateChanged : ASignal<GameState, GameState>{}
 public class RequestGameStateChange : ASignal<GameState>{}
 
+public class CellsConfigured : ASignal<Cell[,]>{}
+
 //the bool is for telling whether the game is loaded from a save or not
 public class LevelLoaded : ASignal<LevelData,bool>{}
 public class LevelBoardConfigured : ASignal<LevelData>{}
@@ -22,16 +24,17 @@ public class LevelFailed : ASignal{}
 public class LevelSuccess: ASignal<LevelSuccessData>{}
 public class LevelQuit : ASignal{}
 public class LevelRetryRequested : ASignal{}
+public class BoardReady : ASignal<LevelData, bool>{}
 
 
 public class UndoableActionMade : ASignal<UndoableAction>{}
 public class UndoRequested : ASignal{}
 public class UndoResponseSent : ASignal<bool>{}
-public class UndoMade : ASignal{}
 
 
-public class EraseRequested : ASignal{}
-
+public class EraseButtonClicked : ASignal{}
+public class EraseRequested : ASignal<Cell>{}
+public class CellEraseResponseSent : ASignal<bool>{}
 public class NoteModeToggleRequested : ASignal{}
 
 
@@ -40,12 +43,13 @@ public class HintRequested : ASignal<Cell>{}
 public class HintCountUpdated : ASignal<int>{}
 public class HintUsed : ASignal{}
 public class HintAuthorized : ASignal<Cell>{}
-public class HintNotAuthorized : ASignal{}
 
-public class ColorizationListDispatched : ASignal<HashSet<Vector2Int>>{}
+public class ColorizationListDispatched : ASignal<HashSet<Vector2Int>, Vector2Int>{}
 public class SameNumberListDispatched : ASignal<List<Vector2Int>>{}
 public class LevelContinued : ASignal<BoardStateSaveData>{}
-public class WrongNumberPlaced: ASignal<Cell>{}
+
+//bool is for telling whether the number is placed by save file or player
+public class WrongNumberPlaced: ASignal<Cell, bool>{}
 
 
 public class BoardStateSaveRequested : ASignal<LevelData>{}
@@ -78,6 +82,7 @@ public class RewardedPopupRequested : ASignal<Action, Action>{}
 public class CellPointerDown : ASignal<Vector2Int>{}
 public class CellPointerUp : ASignal<Vector2Int>{}
 
-public class CellFilled : ASignal<Cell>{}
+//bool is for telling whether the cell is filled by player or not
+public class CellFilled : ASignal<Cell,bool>{}
 public class NumberButtonClicked : ASignal<int>{}
 public class NumberInputMade : ASignal<int, NumberInputMode>{}

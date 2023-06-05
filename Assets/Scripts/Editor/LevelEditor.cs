@@ -1,6 +1,5 @@
 using System;
 using Data;
-using DefaultNamespace;
 using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
 using UnityEditor;

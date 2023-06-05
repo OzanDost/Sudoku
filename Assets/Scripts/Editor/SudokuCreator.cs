@@ -1,8 +1,7 @@
 using System;
-using System.Collections.Generic;
 using Data;
 
-namespace DefaultNamespace
+namespace Editor
 {
     public static class SudokuCreator
     {

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using Data;
 using UnityEngine;
@@ -31,6 +30,14 @@ public static class Utils
         }
 
         return numberArray;
+    }
+
+    public static Vector2Int GetPositionFromArray(int[] array, int index)
+    {
+        int dimensionSize = (int)Mathf.Sqrt(array.Length);
+        int x = index % dimensionSize;
+        int y = index / dimensionSize;
+        return new Vector2Int(x, y);
     }
 
     public static string DifficultyEnumToStringFast(this LevelDifficulty difficulty)

@@ -23,6 +23,7 @@ namespace Game.Managers
             Signals.Get<CellFilled>().AddListener(OnCellFilled);
             Signals.Get<ReturnToMenuRequested>().AddListener(GameplayWindow_OnReturnToMenuRequested);
             Signals.Get<HintAuthorized>().AddListener(OnHintAuthorized);
+            Signals.Get<EraseRequested>().AddListener(OnEraseRequested);
         }
 
         private static void OnHintAuthorized(Cell cell)
@@ -38,24 +39,22 @@ namespace Game.Managers
 
         private static void GameplayWindow_OnReturnToMenuRequested()
         {
-            CurrentLevelData.levelGrid = Utils.GridToArray(LevelGrid);
+            CurrentLevelData.levelArray = Utils.GridToArray(LevelGrid);
             Signals.Get<BoardStateSaveRequested>().Dispatch(CurrentLevelData);
             Signals.Get<RequestGameStateChange>().Dispatch(GameState.Menu);
         }
 
 
-        private static void OnCellFilled(Cell cell)
+        private static void OnCellFilled(Cell cell, bool filledByPlayer)
         {
-            //means we erased or undid a cell so no validation needed
-            if (cell.Number == 0) return;
-
             if (!IsCorrectPlacement(cell.PositionOnGrid, cell.Number))
             {
-                Signals.Get<WrongNumberPlaced>().Dispatch(cell);
-                return;
+                if (cell.Number != 0)
+                {
+                    Signals.Get<WrongNumberPlaced>().Dispatch(cell,filledByPlayer);
+                }
             }
 
-            //doing this after return since we dont want to save the number if it is wrong
             LevelGrid[cell.PositionOnGrid.x, cell.PositionOnGrid.y] = cell.Number;
 
             if (IsBoardFull())
@@ -93,10 +92,27 @@ namespace Game.Managers
 
         private static void OnLevelLoaded(LevelData levelData, bool fromContinue)
         {
-            LevelGrid = Utils.ArrayToGrid(levelData.levelGrid);
+            LevelGrid = Utils.ArrayToGrid(levelData.levelArray);
             SolutionGrid = Utils.ArrayToGrid(levelData.solutionGrid);
             CurrentLevelData = levelData;
+            Signals.Get<BoardReady>().Dispatch(levelData, fromContinue);
         }
+
+        // private static void CheckForWrongNumbers()
+        // {
+        //     int dimensionSize = LevelGrid.GetLength(0);
+        //
+        //     for (int i = 0; i < dimensionSize; i++)
+        //     {
+        //         for (int j = 0; j < dimensionSize; j++)
+        //         {
+        //             if (LevelGrid[i, j] == 0) continue;
+        //             if (LevelGrid[i, j] == SolutionGrid[i, j]) continue;
+        //
+        //             Signals.Get<WrongNumberPlaced>().Dispatch(new Vector2Int(i, j));
+        //         }
+        //     }
+        // }
 
         private static void OnCellPointerDown(Vector2Int position)
         {
@@ -108,6 +124,19 @@ namespace Game.Managers
             DispatchSameNumbersOnBoard(position);
         }
 
+        private static void OnEraseRequested(Cell cell)
+        {
+            bool deletedNotes = cell.EraseCellNotes();
+            bool deletedNumber = cell.EraseCellNumber();
+
+            if (deletedNotes || deletedNumber)
+            {
+                cell.GetFilled(0, true);
+                LevelGrid[cell.PositionOnGrid.x, cell.PositionOnGrid.y] = 0;
+            }
+
+            Signals.Get<CellEraseResponseSent>().Dispatch(deletedNotes || deletedNumber);
+        }
 
         private static void DispatchColorizationList(Vector2Int position)
         {
@@ -124,7 +153,7 @@ namespace Game.Managers
                 positionsToDispatch.Add(pos);
             }
 
-            Signals.Get<ColorizationListDispatched>().Dispatch(positionsToDispatch);
+            Signals.Get<ColorizationListDispatched>().Dispatch(positionsToDispatch, position);
         }
 
 

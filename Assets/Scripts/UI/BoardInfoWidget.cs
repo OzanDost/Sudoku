@@ -17,7 +17,7 @@ namespace UI
         private void Awake()
         {
             Signals.Get<BoardInfoUpdated>().AddListener(OnBoardInfoUpdated);
-            Signals.Get<LevelLoaded>().AddListener(OnLevelLoaded);
+            Signals.Get<BoardReady>().AddListener(OnLevelLoaded);
         }
 
         private void OnLevelLoaded(LevelData levelData, bool fromContinue)

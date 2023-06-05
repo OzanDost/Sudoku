@@ -9,5 +9,6 @@ namespace UI
 
         public Button Button => button;
         public abstract void Animate();
+        public abstract void NoFunctionAnimate();
     }
 }
