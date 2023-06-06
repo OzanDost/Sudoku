@@ -1,9 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Data;
 using deVoid.Utils;
-using Managers;
+using Sirenix.OdinInspector;
+using UI;
 using UnityEngine;
 
 namespace Game.Managers
@@ -40,10 +39,15 @@ namespace Game.Managers
         private static void GameplayWindow_OnReturnToMenuRequested()
         {
             CurrentLevelData.levelArray = Utils.GridToArray(LevelGrid);
-            Signals.Get<BoardStateSaveRequested>().Dispatch(CurrentLevelData);
             Signals.Get<RequestGameStateChange>().Dispatch(GameState.Menu);
+            SendLevelSaveRequest();
         }
 
+        public static void SendLevelSaveRequest()
+        {
+            if (CurrentLevelData == null) return;
+            Signals.Get<BoardStateSaveRequested>().Dispatch(CurrentLevelData);
+        }
 
         private static void OnCellFilled(Cell cell, bool filledByPlayer)
         {
@@ -51,7 +55,8 @@ namespace Game.Managers
             {
                 if (cell.Number != 0)
                 {
-                    Signals.Get<WrongNumberPlaced>().Dispatch(cell,filledByPlayer);
+                    Signals.Get<WrongNumberPlaced>().Dispatch(cell, filledByPlayer);
+                    cell.OnWrongNumberPlaced();
                 }
             }
 
@@ -59,8 +64,7 @@ namespace Game.Managers
 
             if (IsBoardFull())
             {
-                Signals.Get<LevelSuccess>()
-                    .Dispatch(new LevelSuccessData(new TimeSpan(0, 0, 0), 0, LevelDifficulty.Easy));
+                Signals.Get<BoardFilledSuccessfully>().Dispatch(CurrentLevelData);
             }
         }
 
@@ -98,22 +102,6 @@ namespace Game.Managers
             Signals.Get<BoardReady>().Dispatch(levelData, fromContinue);
         }
 
-        // private static void CheckForWrongNumbers()
-        // {
-        //     int dimensionSize = LevelGrid.GetLength(0);
-        //
-        //     for (int i = 0; i < dimensionSize; i++)
-        //     {
-        //         for (int j = 0; j < dimensionSize; j++)
-        //         {
-        //             if (LevelGrid[i, j] == 0) continue;
-        //             if (LevelGrid[i, j] == SolutionGrid[i, j]) continue;
-        //
-        //             Signals.Get<WrongNumberPlaced>().Dispatch(new Vector2Int(i, j));
-        //         }
-        //     }
-        // }
-
         private static void OnCellPointerDown(Vector2Int position)
         {
             DispatchColorizationList(position);
@@ -122,6 +110,7 @@ namespace Game.Managers
         private static void OnCellPointerUp(Vector2Int position)
         {
             DispatchSameNumbersOnBoard(position);
+            //todo 
         }
 
         private static void OnEraseRequested(Cell cell)
@@ -135,32 +124,50 @@ namespace Game.Managers
                 LevelGrid[cell.PositionOnGrid.x, cell.PositionOnGrid.y] = 0;
             }
 
-            Signals.Get<CellEraseResponseSent>().Dispatch(deletedNotes || deletedNumber);
+            Signals.Get<CellEraseResponseSent>().Dispatch(deletedNotes || deletedNumber, cell);
         }
 
         private static void DispatchColorizationList(Vector2Int position)
         {
-            Vector2Int[] boxPositions = BoardHelper.GetBox(position);
-            Vector2Int[] rowPositions = BoardHelper.GetRow(position);
-            Vector2Int[] colPositions = BoardHelper.GetColumn(position);
-
-            Vector2Int[] collectivePositions = boxPositions.Concat(rowPositions).Concat(colPositions).ToArray();
-
             HashSet<Vector2Int> positionsToDispatch = new HashSet<Vector2Int>();
 
-            foreach (var pos in collectivePositions)
+            List<Vector2Int> boxPositions = BoardHelper.GetBox(position);
+            foreach (var boxPosition in boxPositions)
             {
-                positionsToDispatch.Add(pos);
+                positionsToDispatch.Add(boxPosition);
             }
 
-            Signals.Get<ColorizationListDispatched>().Dispatch(positionsToDispatch, position);
+            List<Vector2Int> rowPositions = BoardHelper.GetRow(position);
+            foreach (var rowPosition in rowPositions)
+            {
+                positionsToDispatch.Add(rowPosition);
+            }
+
+            List<Vector2Int> columnPositions = BoardHelper.GetColumn(position);
+            foreach (var colPosition in columnPositions)
+            {
+                positionsToDispatch.Add(colPosition);
+            }
+
+            List<Vector2Int> sameNumberPositions = DispatchSameNumbersOnBoard(position);
+            foreach (var sameNumberPosition in sameNumberPositions)
+            {
+                positionsToDispatch.Add(sameNumberPosition);
+            }
+
+            ColorizationData colorizationData =
+                new ColorizationData(boxPositions, rowPositions, columnPositions, sameNumberPositions);
+
+            Signals.Get<ColorizationListDispatched>().Dispatch(colorizationData, position);
         }
 
 
-        private static void DispatchSameNumbersOnBoard(Vector2Int position)
+        private static List<Vector2Int> DispatchSameNumbersOnBoard(Vector2Int position)
         {
             int dimensionSize = LevelGrid.GetLength(0);
             int number = LevelGrid[position.x, position.y];
+
+            if (number == 0) return new List<Vector2Int>();
 
             List<Vector2Int> numberPositions = new List<Vector2Int>(9);
 
@@ -168,6 +175,7 @@ namespace Game.Managers
             {
                 for (int j = 0; j < dimensionSize; j++)
                 {
+                    if (i == position.x && j == position.y) continue;
                     if (LevelGrid[i, j] == number)
                     {
                         numberPositions.Add(new Vector2Int(i, j));
@@ -175,7 +183,7 @@ namespace Game.Managers
                 }
             }
 
-            Signals.Get<SameNumberListDispatched>().Dispatch(numberPositions);
+            return numberPositions;
         }
     }
 }

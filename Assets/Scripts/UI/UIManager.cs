@@ -2,7 +2,7 @@ using System;
 using Data;
 using deVoid.UIFramework;
 using deVoid.Utils;
-using Managers;
+using Game.Managers;
 using UI.Popups;
 using UI.Windows;
 using UnityEngine;

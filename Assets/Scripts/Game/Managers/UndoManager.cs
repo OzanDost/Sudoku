@@ -19,7 +19,7 @@ namespace Game.Managers
         private static void OnUndoRequested()
         {
             Signals.Get<UndoResponseSent>().Dispatch(_undoStack.Count > 0);
-            
+
             if (_undoStack.Count == 0) return;
 
             Action undoAction = _undoStack.Pop();
@@ -29,14 +29,13 @@ namespace Game.Managers
 
         private static void OnUndoableActionMade(UndoableAction action)
         {
-            // Action undoableAction = ConvertToUndoAction(action);
             _undoStack.Push(action.UndoAction);
         }
     }
 
     public class UndoableAction
     {
-        public Action UndoAction { get; set; }
+        public Action UndoAction { get; }
 
         public UndoableAction(Action undoAction)
         {

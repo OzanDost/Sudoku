@@ -5,7 +5,7 @@ using Data;
 using deVoid.Utils;
 using Game;
 using Game.Managers;
-using Managers;
+using UI;
 using UI.Windows;
 using UnityEngine;
 
@@ -34,7 +34,7 @@ public class UndoResponseSent : ASignal<bool>{}
 
 public class EraseButtonClicked : ASignal{}
 public class EraseRequested : ASignal<Cell>{}
-public class CellEraseResponseSent : ASignal<bool>{}
+public class CellEraseResponseSent : ASignal<bool, Cell>{}
 public class NoteModeToggleRequested : ASignal{}
 
 
@@ -44,7 +44,7 @@ public class HintCountUpdated : ASignal<int>{}
 public class HintUsed : ASignal{}
 public class HintAuthorized : ASignal<Cell>{}
 
-public class ColorizationListDispatched : ASignal<HashSet<Vector2Int>, Vector2Int>{}
+public class ColorizationListDispatched : ASignal<ColorizationData, Vector2Int>{}
 public class SameNumberListDispatched : ASignal<List<Vector2Int>>{}
 public class LevelContinued : ASignal<BoardStateSaveData>{}
 
@@ -52,9 +52,9 @@ public class LevelContinued : ASignal<BoardStateSaveData>{}
 public class WrongNumberPlaced: ASignal<Cell, bool>{}
 
 
+public class BoardStateDispatched : ASignal<BoardStateSaveData>{}
 public class BoardStateSaveRequested : ASignal<LevelData>{}
 public class BoardInfoUpdated: ASignal<TimeSpan, int,int>{}
-
 public class ReturnToMenuRequested : ASignal{}
 
 
@@ -63,6 +63,8 @@ public class GamePaused : ASignal<bool>{}
 public class GameUnpaused : ASignal{}
 public class PausePopupClosed : ASignal{}
 public class PausePopupRequested : ASignal{}
+
+public class BoardFilledSuccessfully : ASignal<LevelData>{}
 
 
 #region UI Signals

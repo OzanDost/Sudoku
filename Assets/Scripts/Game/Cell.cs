@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using deVoid.Utils;
 using DG.Tweening;
@@ -23,7 +24,7 @@ namespace Game
         public bool IsWrongNumber { get; set; }
 
         private Sequence _wrongNumberSequence;
-
+        private Sequence _colorizationSequence;
 
         public void GetFilled(int number, bool filledByPlayer)
         {
@@ -74,17 +75,6 @@ namespace Game
             cellBackground.color = color;
         }
 
-        public void SetNumberColor(Color color)
-        {
-            numberText.color = color;
-        }
-
-        public void PunchScale()
-        {
-            _punchTween?.Kill();
-            _punchTween = numberText.rectTransform.DOPunchScale(Vector3.one * 1.1f, 0.4f, 1, 0.5f)
-                .OnKill(() => numberText.rectTransform.localScale = Vector3.one);
-        }
 
         public void AddNote(int number, bool shouldAddToUndoStack)
         {
@@ -144,18 +134,51 @@ namespace Game
             return true;
         }
 
+        public Sequence ColorizeCell(Color? backgroundColor, Color? textColor, float duration)
+        {
+            if (duration == 0)
+            {
+                if (backgroundColor != null)
+                {
+                    cellBackground.color = backgroundColor.Value;
+                }
+
+                numberText.color = textColor ?? numberText.color;
+                return null;
+            }
+
+            _colorizationSequence = DOTween.Sequence();
+            if (backgroundColor.HasValue)
+            {
+                _colorizationSequence.Join(cellBackground.DOColor(backgroundColor.Value, duration)
+                    .SetEase(Ease.Linear));
+            }
+
+            if (textColor.HasValue)
+            {
+                _colorizationSequence.Join(numberText.DOColor(textColor.Value, duration).SetEase(Ease.Linear));
+            }
+
+            return _colorizationSequence;
+        }
+
+        public Tween PunchScale()
+        {
+            _punchTween?.Kill();
+            return _punchTween = numberText.rectTransform.DOPunchScale(Vector3.one * 0.3f, 0.2f, 1, 0.05f)
+                .OnKill(() => numberText.rectTransform.localScale = Vector3.one);
+        }
+
         public bool EraseCellNumber()
         {
             if (!IsWrongNumber) return false;
             IsWrongNumber = false;
-            SetNumberColor(Color.white);
             return true;
         }
 
 
         public void OnWrongNumberPlaced()
         {
-            SetNumberColor(Color.red);
             IsWrongNumber = true;
         }
     }

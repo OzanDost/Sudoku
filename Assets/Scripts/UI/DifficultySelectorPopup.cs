@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using Data;
 using deVoid.UIFramework;
 using deVoid.Utils;
 using DG.Tweening;
+using Game.Managers;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,10 +13,10 @@ namespace UI
     {
         [SerializeField] private RectTransform buttonContainer;
         [SerializeField] private Button closeButton;
-        [SerializeField] private Button easyButton;
-        [SerializeField] private Button mediumButton;
-        [SerializeField] private Button hardButton;
-        [SerializeField] private Button extremeButton;
+        [SerializeField] private DifficultyButton easyButton;
+        [SerializeField] private DifficultyButton mediumButton;
+        [SerializeField] private DifficultyButton hardButton;
+        [SerializeField] private DifficultyButton extremeButton;
         [SerializeField] private float containerTargetPosition;
         [SerializeField] private float containerAnimationSpeed;
 
@@ -26,10 +28,10 @@ namespace UI
         {
             base.Awake();
 
-            easyButton.onClick.AddListener(OnEasyButtonClicked);
-            mediumButton.onClick.AddListener(OnMediumButtonClicked);
-            hardButton.onClick.AddListener(OnHardButtonClicked);
-            extremeButton.onClick.AddListener(OnExtremeButtonClicked);
+            easyButton.Button.onClick.AddListener(OnEasyButtonClicked);
+            mediumButton.Button.onClick.AddListener(OnMediumButtonClicked);
+            hardButton.Button.onClick.AddListener(OnHardButtonClicked);
+            extremeButton.Button.onClick.AddListener(OnExtremeButtonClicked);
             closeButton.onClick.AddListener(OnCloseButtonClicked);
 
             _containerStartPosition = buttonContainer.anchoredPosition;
@@ -45,14 +47,37 @@ namespace UI
                 .SetSpeedBased().OnComplete(() => { CloseRequest?.Invoke(this); });
         }
 
-        protected override void OnPropertiesSet()
+        protected override void On_UIOPen()
         {
-            base.OnPropertiesSet();
             _visibilityTween?.Kill();
             buttonContainer.anchoredPosition = _containerStartPosition;
             _visibilityTween = buttonContainer.DOAnchorPosY(containerTargetPosition, containerAnimationSpeed)
                 .SetEase(Ease.OutBack)
                 .SetSpeedBased();
+
+            var statsData = SaveManager.PlayerStatsData;
+
+            Dictionary<LevelDifficulty, int> winCounts = new Dictionary<LevelDifficulty, int>(4)
+            {
+                { LevelDifficulty.Easy, 0 }, { LevelDifficulty.Medium, 0 }, { LevelDifficulty.Hard, 0 },
+                { LevelDifficulty.Extreme, 0 }
+            };
+
+            foreach (var statData in statsData.levelSuccessDataList)
+            {
+                winCounts[statData.difficulty]++;
+            }
+
+            easyButton.Configure(false, 0);
+
+            mediumButton.Configure(winCounts[LevelDifficulty.Easy] < GlobalGameConfigs.WinCountForMedium,
+                GlobalGameConfigs.WinCountForMedium);
+            hardButton.Configure(winCounts[LevelDifficulty.Medium] < GlobalGameConfigs.WinCountForHard,
+                GlobalGameConfigs.WinCountForHard);
+            extremeButton.Configure(winCounts[LevelDifficulty.Hard] < GlobalGameConfigs.WinCountForExtreme,
+                GlobalGameConfigs.WinCountForExtreme);
+            
+            //todo maybe show this on button
         }
 
 

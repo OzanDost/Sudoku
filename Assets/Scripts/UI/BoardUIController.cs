@@ -37,7 +37,7 @@ namespace UI
         {
             if (SelectedCell == null)
             {
-                Signals.Get<CellEraseResponseSent>().Dispatch(false);
+                Signals.Get<CellEraseResponseSent>().Dispatch(false, SelectedCell);
                 return;
             }
 

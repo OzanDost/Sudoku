@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using Data;
 using deVoid.Utils;
-using Managers;
 using UnityEngine;
 
 namespace Game.Managers
@@ -27,11 +26,20 @@ namespace Game.Managers
             Signals.Get<BoardStateSaveRequested>().AddListener(OnBoardStateSaveRequested);
             Signals.Get<GamePaused>().AddListener(OnGamePaused);
             Signals.Get<GameUnpaused>().AddListener(OnPausePopupClosed);
+            Signals.Get<BoardFilledSuccessfully>().AddListener(OnBoardFilledSuccessfully);
 
 
             _oneSecondSpan = new TimeSpan(0, 0, 1);
             _oneSecondWait = new WaitForSeconds(1);
             BoardInfoUpdatedSignal = Signals.Get<BoardInfoUpdated>();
+        }
+
+        private void OnBoardFilledSuccessfully(LevelData levelData)
+        {
+            StopTimer();
+            
+            string timeSpent = _currentPlayTime.ToString();
+            Signals.Get<LevelSuccess>().Dispatch(new LevelSuccessData(timeSpent, _currentScore, levelData.difficulty));
         }
 
         private void OnPausePopupClosed()
@@ -52,7 +60,7 @@ namespace Game.Managers
         {
             BoardStateSaveData stateSaveData = new BoardStateSaveData(_currentScore, _currentPlayTime.ToString(),
                 _mistakeCount, levelData);
-            SaveManager.SaveContinueLevel(stateSaveData);
+            Signals.Get<BoardStateDispatched>().Dispatch(stateSaveData);
         }
 
         private void OnGameStateChanged(GameState oldState, GameState newState)

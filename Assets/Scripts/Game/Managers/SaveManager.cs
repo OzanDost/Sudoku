@@ -1,27 +1,82 @@
+using System.Collections.Generic;
 using Data;
+using deVoid.Utils;
 using UnityEngine;
 
 namespace Game.Managers
 {
     public static class SaveManager
     {
+        private static PlayerStatsData _playerStatsData;
+        private static int _remainingHintCount;
+        private static BoardStateSaveData _continueLevelData;
+
         private const string ContinueLevelJson = "continueLevelJson";
-        private const string PlayerDataJson = "playerDataJson";
-        private const string HintData = "hintData";
+        private const string HintDataJson = "hintData";
+        private const string PlayerStatDataJson = "playerStatDataJson";
+
+        public static PlayerStatsData PlayerStatsData { get; private set; }
+        public static BoardStateSaveData CurrentBoardStateSaveData { get; private set; }
+        public static int RemainingHintCount { get; private set; }
 
 
-        public static bool CanContinueLevel()
+        public static void Initialize()
+        {
+            PlayerStatsData = GetPlayerStatsDataFromSave();
+            if (PlayerStatsData is null)
+            {
+                PlayerStatsData = new PlayerStatsData(new List<LevelSuccessData>());
+            }
+
+            if (HasContinueLevel())
+            {
+                CurrentBoardStateSaveData = GetContinueLevelFromSave();
+            }
+
+            RemainingHintCount = GetHintCountFromSave();
+
+
+            //subscribe to events
+            Signals.Get<LevelSuccess>().AddListener(OnLevelSuccess);
+            Signals.Get<BoardStateDispatched>().AddListener(OnBoardStateDispatched);
+            Signals.Get<HintCountUpdated>().AddListener(OnHintCountUpdated);
+        }
+
+        private static void OnHintCountUpdated(int count)
+        {
+            RemainingHintCount = count;
+        }
+
+        private static void OnBoardStateDispatched(BoardStateSaveData boardStateSaveData)
+        {
+            CurrentBoardStateSaveData = boardStateSaveData;
+            SaveContinueLevel();
+        }
+
+        private static void OnLevelSuccess(LevelSuccessData levelSuccessData)
+        {
+            ClearContinueLevelSaveData();
+            PlayerStatsData.levelSuccessDataList.Add(levelSuccessData);
+        }
+
+
+        private static bool HasContinueLevel()
         {
             return PlayerPrefs.HasKey(ContinueLevelJson);
         }
 
-        public static void SaveContinueLevel(BoardStateSaveData level)
+        public static bool CanContinueLevel()
         {
-            string json = JsonUtility.ToJson(level);
+            return CurrentBoardStateSaveData != null;
+        }
+
+        public static void SaveContinueLevel()
+        {
+            string json = JsonUtility.ToJson(CurrentBoardStateSaveData);
             PlayerPrefs.SetString(ContinueLevelJson, json);
         }
 
-        public static BoardStateSaveData GetContinueLevel()
+        public static BoardStateSaveData GetContinueLevelFromSave()
         {
             string json = PlayerPrefs.GetString(ContinueLevelJson, "");
 
@@ -31,19 +86,42 @@ namespace Game.Managers
             return JsonUtility.FromJson<BoardStateSaveData>(json);
         }
 
-        public static void ClearContinueLevel()
+        public static void ClearContinueLevelSaveData()
         {
             PlayerPrefs.DeleteKey(ContinueLevelJson);
         }
 
-        public static int GetHintCount()
+        public static int GetHintCountFromSave()
         {
-            return PlayerPrefs.GetInt(HintData, GlobalGameConfigs.StartingHints);
+            return PlayerPrefs.GetInt(HintDataJson, GlobalGameConfigs.StartingHints);
         }
 
-        public static void SaveHintCount(int hintCount)
+        public static void SaveHintCount()
         {
-            PlayerPrefs.SetInt(HintData, hintCount);
+            PlayerPrefs.SetInt(HintDataJson, RemainingHintCount);
+        }
+
+        private static PlayerStatsData GetPlayerStatsDataFromSave()
+        {
+            string json = PlayerPrefs.GetString(PlayerStatDataJson, "");
+
+            if (string.IsNullOrEmpty(json))
+                return null;
+
+            try
+            {
+                return JsonUtility.FromJson<PlayerStatsData>(json);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public static void SavePlayerStatsData()
+        {
+            string json = JsonUtility.ToJson(PlayerStatDataJson);
+            PlayerPrefs.SetString(PlayerStatDataJson, json);
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Data;
@@ -38,6 +39,18 @@ namespace Game.Managers
             }
         }
 
+        private LevelData _loadedLevel;
+
+        private void Update()
+        {
+#if UNITY_EDITOR
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                Signals.Get<BoardFilledSuccessfully>().Dispatch(_loadedLevel);
+            }
+#endif
+        }
+
         public void CreateLevel(LevelDifficulty levelDifficulty, bool retryLevel = false)
         {
             LevelData levelData = null;
@@ -64,12 +77,13 @@ namespace Game.Managers
             targetLevelSaveData = _categoryLevelDictionary[levelDifficulty].GetRandomElement();
             levelData = GetLevelData(targetLevelSaveData);
             Signals.Get<LevelLoaded>().Dispatch(levelData, false);
+            _loadedLevel = levelData;
             _lastActiveLevel = targetLevelSaveData;
         }
 
         public void ContinueLevel()
         {
-            var boardState = SaveManager.GetContinueLevel();
+            var boardState = SaveManager.CurrentBoardStateSaveData;
             _lastActiveLevel = _levelList.Find(x => x.id == boardState.levelData.id);
             Signals.Get<LevelContinued>().Dispatch(boardState);
             Signals.Get<LevelLoaded>().Dispatch(boardState.levelData, true);

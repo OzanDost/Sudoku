@@ -1,9 +1,9 @@
+using System;
 using Data;
 using deVoid.Utils;
-using Game.Managers;
 using UnityEngine;
 
-namespace Managers
+namespace Game.Managers
 {
     public class GameManager : MonoBehaviour
     {
@@ -23,9 +23,10 @@ namespace Managers
             Signals.Get<LevelSuccess>().AddListener(OnLevelSuccess);
             Signals.Get<LevelDifficultySelected>().AddListener(OnLevelDifficultySelected);
 
-
             ChangeGameState(GameState.Loading);
 
+
+            SaveManager.Initialize();
             levelManager.Initialize();
             UndoManager.Initialize();
             BoardManager.Initialize();
@@ -57,12 +58,13 @@ namespace Managers
         private void OnLevelQuit()
         {
             ChangeGameState(GameState.Menu);
+            SaveManager.SaveContinueLevel();
         }
 
         private void OnLevelFailed()
         {
             ChangeGameState(GameState.Fail);
-            SaveManager.ClearContinueLevel();
+            SaveManager.ClearContinueLevelSaveData();
         }
 
 
@@ -96,6 +98,23 @@ namespace Managers
             var oldGameState = CurrentGameState;
             CurrentGameState = newGameState;
             Signals.Get<GameStateChanged>().Dispatch(oldGameState, newGameState);
+        }
+
+        private void OnApplicationQuit()
+        {
+            BoardManager.SendLevelSaveRequest();
+            SaveManager.SaveHintCount();
+            SaveManager.SavePlayerStatsData();
+        }
+
+        private void OnApplicationPause(bool pauseStatus)
+        {
+            if (pauseStatus)
+            {
+                BoardManager.SendLevelSaveRequest();
+                SaveManager.SaveHintCount();
+                SaveManager.SavePlayerStatsData();
+            }
         }
     }
 

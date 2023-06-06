@@ -1,7 +1,6 @@
 using deVoid.UIFramework;
 using deVoid.Utils;
 using Game.Managers;
-using Managers;
 using UnityEngine;
 using UnityEngine.UI;
 

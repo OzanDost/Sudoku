@@ -1,4 +1,5 @@
 using deVoid.Utils;
+using Game;
 using UnityEngine;
 
 namespace UI
@@ -42,7 +43,7 @@ namespace UI
             Signals.Get<UndoRequested>().Dispatch();
         }
 
-        private void OnCellEraseResponseSent(bool erased)
+        private void OnCellEraseResponseSent(bool erased, Cell cell)
         {
             if (erased)
             {

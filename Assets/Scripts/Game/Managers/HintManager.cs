@@ -11,11 +11,10 @@ namespace Game.Managers
         private void Awake()
         {
             Signals.Get<BoardReady>().AddListener(OnLevelLoaded);
-            Signals.Get<GamePaused>().AddListener(OnGamePaused);
             Signals.Get<HintRequested>().AddListener(OnHintRequested);
             Signals.Get<HintUsed>().AddListener(OnHintUsed);
 
-            _remainingHints = SaveManager.GetHintCount();
+            _remainingHints = SaveManager.RemainingHintCount;
         }
 
         private void OnHintRequested(Cell cell)
@@ -26,7 +25,7 @@ namespace Game.Managers
                 {
                     Signals.Get<HintAuthorized>().Dispatch(cell);
                 }
-                
+
                 Signals.Get<RewardedPopupRequested>().Dispatch(SuccessActionCallBack, null);
             }
             else
@@ -34,12 +33,6 @@ namespace Game.Managers
                 _remainingHints--;
                 Signals.Get<HintAuthorized>().Dispatch(cell);
             }
-        }
-
-
-        private void OnGamePaused(bool showPausePopup)
-        {
-            SaveManager.SaveHintCount(_remainingHints);
         }
 
         private void OnLevelLoaded(LevelData levelData, bool fromContinue)
@@ -64,7 +57,6 @@ namespace Game.Managers
         private void OnHintUsed()
         {
             Signals.Get<HintCountUpdated>().Dispatch(_remainingHints);
-            SaveManager.SaveHintCount(_remainingHints);
         }
     }
 }
