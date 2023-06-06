@@ -27,11 +27,17 @@ namespace Game.Managers
             Signals.Get<GamePaused>().AddListener(OnGamePaused);
             Signals.Get<GameUnpaused>().AddListener(OnPausePopupClosed);
             Signals.Get<BoardFilledSuccessfully>().AddListener(OnBoardFilledSuccessfully);
+            Signals.Get<ScoreUpdated>().AddListener(OnScoreUpdated);
 
 
             _oneSecondSpan = new TimeSpan(0, 0, 1);
             _oneSecondWait = new WaitForSeconds(1);
             BoardInfoUpdatedSignal = Signals.Get<BoardInfoUpdated>();
+        }
+
+        private void OnScoreUpdated(int newScore, bool isInstant)
+        {
+            _currentScore = newScore;
         }
 
         private void OnLevelLoaded(LevelData levelData, bool fromSave)
@@ -65,7 +71,7 @@ namespace Game.Managers
 
         private void OnBoardStateSaveRequested(LevelData levelData)
         {
-            StopTimer();
+            // StopTimer();
             BoardStateSaveData stateSaveData = new BoardStateSaveData(_currentScore, _currentPlayTime.ToString(),
                 _mistakeCount, levelData);
             Signals.Get<BoardStateDispatched>().Dispatch(stateSaveData);

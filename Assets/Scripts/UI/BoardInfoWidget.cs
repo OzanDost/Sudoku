@@ -1,6 +1,7 @@
 using System;
 using Data;
 using deVoid.Utils;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
@@ -14,10 +15,32 @@ namespace UI
         [SerializeField] private TextMeshProUGUI durationText;
         [SerializeField] private TextMeshProUGUI mistakesText;
 
+        private Tween _scoreTween;
+        private int _lastScore;
+
         private void Awake()
         {
             Signals.Get<BoardInfoUpdated>().AddListener(OnBoardInfoUpdated);
             Signals.Get<BoardReady>().AddListener(OnLevelLoaded);
+            Signals.Get<ScoreUpdated>().AddListener(OnScoreUpdated);
+        }
+
+        private void OnScoreUpdated(int newScore, bool instant)
+        {
+            int valueCopyOfLastScore = _lastScore;
+            if (instant)
+            {
+                scoreText.text = newScore.ToString();
+                _lastScore = newScore;
+            }
+            else
+            {
+                _scoreTween?.Kill();
+                _scoreTween = DOTween.To(() => valueCopyOfLastScore, x => scoreText.text = x.ToString(), newScore,
+                    0.5f);
+            }
+
+            _lastScore = newScore;
         }
 
         private void OnLevelLoaded(LevelData levelData, bool fromContinue)

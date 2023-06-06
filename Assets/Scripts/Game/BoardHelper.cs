@@ -46,6 +46,7 @@ namespace Game
 
             return colPositions;
         }
+        
 
         public static int GetRoundedCellDistance(Vector2Int position1, Vector2Int position2)
         {

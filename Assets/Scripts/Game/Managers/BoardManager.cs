@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Data;
 using deVoid.Utils;
-using Sirenix.OdinInspector;
 using UI;
 using UnityEngine;
 
@@ -11,7 +10,6 @@ namespace Game.Managers
     {
         private static int[,] LevelGrid { get; set; }
         private static int[,] SolutionGrid { get; set; }
-
         private static LevelData CurrentLevelData { get; set; }
 
         public static void Initialize()
@@ -46,12 +44,14 @@ namespace Game.Managers
         public static void SendLevelSaveRequest()
         {
             if (CurrentLevelData == null) return;
+            CurrentLevelData.levelArray = Utils.GridToArray(LevelGrid);
             Signals.Get<BoardStateSaveRequested>().Dispatch(CurrentLevelData);
         }
 
         private static void OnCellFilled(Cell cell, bool filledByPlayer)
         {
-            if (!IsCorrectPlacement(cell.PositionOnGrid, cell.Number))
+            bool isCorrectPlacement = IsCorrectPlacement(cell.PositionOnGrid, cell.Number);
+            if (!isCorrectPlacement)
             {
                 if (cell.Number != 0)
                 {
@@ -61,6 +61,11 @@ namespace Game.Managers
             }
 
             LevelGrid[cell.PositionOnGrid.x, cell.PositionOnGrid.y] = cell.Number;
+
+            if (filledByPlayer && isCorrectPlacement)
+            {
+                Signals.Get<ScoreCheckRequested>().Dispatch(LevelGrid, cell, CurrentLevelData.difficulty);
+            }
 
             if (IsBoardFull())
             {

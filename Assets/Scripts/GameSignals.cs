@@ -88,3 +88,6 @@ public class CellPointerUp : ASignal<Vector2Int>{}
 public class CellFilled : ASignal<Cell,bool>{}
 public class NumberButtonClicked : ASignal<int>{}
 public class NumberInputMade : ASignal<int, NumberInputMode>{}
+
+public class ScoreCheckRequested : ASignal<int[,], Cell, LevelDifficulty>{}
+public class ScoreUpdated : ASignal<int, bool>{}

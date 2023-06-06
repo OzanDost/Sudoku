@@ -1,4 +1,3 @@
-using System;
 using Data;
 using deVoid.Utils;
 using UnityEngine;
@@ -26,6 +25,7 @@ namespace Game.Managers
             ChangeGameState(GameState.Loading);
 
 
+            ScoreManager.Initialize();
             SaveManager.Initialize();
             levelManager.Initialize();
             UndoManager.Initialize();
@@ -111,7 +111,7 @@ namespace Game.Managers
         {
             if (pauseStatus)
             {
-                BoardManager.SendLevelSaveRequest();
+                // BoardManager.SendLevelSaveRequest();
                 SaveManager.SaveHintCount();
                 SaveManager.SavePlayerStatsData();
             }

@@ -1,5 +1,4 @@
 using System;
-using UnityEngine.Serialization;
 
 namespace Data
 {
@@ -8,7 +7,7 @@ namespace Data
     {
         public int id;
         public LevelDifficulty difficulty;
-        [FormerlySerializedAs("levelGrid")] public int[] levelArray;
+        public int[] levelArray;
         public int[] solutionGrid;
 
         public LevelData(int id, LevelDifficulty difficulty, int[] levelArray, int[] solutionGrid)
@@ -19,7 +18,7 @@ namespace Data
             this.solutionGrid = solutionGrid;
         }
     }
-    
+
     public enum LevelDifficulty
     {
         Easy,
