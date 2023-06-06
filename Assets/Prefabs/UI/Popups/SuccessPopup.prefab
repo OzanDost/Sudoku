@@ -172,7 +172,7 @@ GameObject:
   - component: {fileID: 3768648972086678987}
   - component: {fileID: 7864386267608785203}
   m_Layer: 5
-  m_Name: SuccessWindow
+  m_Name: SuccessPopup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

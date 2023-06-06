@@ -31,9 +31,11 @@ namespace DefaultNamespace.UI
             Signals.Get<RewardedPopupRequested>().AddListener(OnRewardedPopupRequested);
         }
 
+
         private void OnRewardedPopupRequested(Action successActionCallBack, Action failedActionCallBack)
         {
-            _uiFrame.OpenWindow("FakeRewardedPopup", new FakeRewardedPopupProperties(successActionCallBack, failedActionCallBack));
+            _uiFrame.OpenWindow("FakeRewardedPopup",
+                new FakeRewardedPopupProperties(successActionCallBack, failedActionCallBack));
         }
 
         private void OnNewGameButtonClicked()
@@ -48,7 +50,7 @@ namespace DefaultNamespace.UI
 
         private void OnLevelSuccess(LevelSuccessData data)
         {
-            _uiFrame.OpenWindow("SuccessWindow",
+            _uiFrame.OpenWindow("SuccessPopup",
                 new SuccessWindowProperties(data.duration, data.score, data.difficulty));
         }
 
@@ -57,6 +59,8 @@ namespace DefaultNamespace.UI
         {
             if (gameManager.CurrentGameState is GameState.Menu or GameState.Fail)
             {
+                _uiFrame.CloseWindow("DifficultySelectorPopup");
+                _uiFrame.CloseWindow("MainMenuWindow");
                 _uiFrame.OpenWindow("GameplayWindow", new GameplayWindowProperties(data));
             }
         }
@@ -72,12 +76,13 @@ namespace DefaultNamespace.UI
 
             if (newState == GameState.Menu)
             {
+                _uiFrame.CloseWindow("GameplayWindow");
                 _uiFrame.OpenWindow("MainMenuWindow");
             }
 
             if (newState == GameState.Fail)
             {
-                _uiFrame.OpenWindow("FailWindow");
+                _uiFrame.OpenWindow("FailPopup");
             }
         }
     }

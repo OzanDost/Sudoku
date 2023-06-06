@@ -20,8 +20,8 @@ namespace Game.Managers
         private void Awake()
         {
             Signals.Get<LevelContinued>().AddListener(OnLevelContinued);
-            Signals.Get<BoardReady>().AddListener(OnLevelLoaded);
-            Signals.Get<GameStateChanged>().AddListener(OnGameStateChanged);
+            Signals.Get<LevelLoaded>().AddListener(OnLevelLoaded);
+            Signals.Get<BoardReady>().AddListener(OnBoardReady);
             Signals.Get<WrongNumberPlaced>().AddListener(OnWrongNumberPlaced);
             Signals.Get<BoardStateSaveRequested>().AddListener(OnBoardStateSaveRequested);
             Signals.Get<GamePaused>().AddListener(OnGamePaused);
@@ -34,12 +34,19 @@ namespace Game.Managers
             BoardInfoUpdatedSignal = Signals.Get<BoardInfoUpdated>();
         }
 
+        private void OnLevelLoaded(LevelData levelData, bool fromSave)
+        {
+            if (!fromSave)
+                ResetValues();
+        }
+
         private void OnBoardFilledSuccessfully(LevelData levelData)
         {
             StopTimer();
-            
+
             string timeSpent = _currentPlayTime.ToString();
             Signals.Get<LevelSuccess>().Dispatch(new LevelSuccessData(timeSpent, _currentScore, levelData.difficulty));
+            ResetValues();
         }
 
         private void OnPausePopupClosed()
@@ -58,18 +65,12 @@ namespace Game.Managers
 
         private void OnBoardStateSaveRequested(LevelData levelData)
         {
+            StopTimer();
             BoardStateSaveData stateSaveData = new BoardStateSaveData(_currentScore, _currentPlayTime.ToString(),
                 _mistakeCount, levelData);
             Signals.Get<BoardStateDispatched>().Dispatch(stateSaveData);
         }
 
-        private void OnGameStateChanged(GameState oldState, GameState newState)
-        {
-            if (oldState == GameState.Gameplay)
-            {
-                ResetValues();
-            }
-        }
 
         private void ResetValues()
         {
@@ -80,7 +81,7 @@ namespace Game.Managers
             _currentScore = 0;
         }
 
-        private void OnLevelLoaded(LevelData data, bool fromContinue)
+        private void OnBoardReady(LevelData data, bool fromContinue)
         {
             StartTimer();
         }
@@ -106,6 +107,8 @@ namespace Game.Managers
             _currentPlayTime = TimeSpan.Parse(data.timeSpan);
             _currentScore = data.score;
             _mistakeCount = data.mistakes;
+
+            BoardInfoUpdatedSignal?.Dispatch(_currentPlayTime, _currentScore, _mistakeCount);
         }
 
         private void StartTimer()

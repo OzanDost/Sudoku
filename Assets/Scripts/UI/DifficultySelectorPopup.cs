@@ -76,7 +76,7 @@ namespace UI
                 GlobalGameConfigs.WinCountForHard);
             extremeButton.Configure(winCounts[LevelDifficulty.Hard] < GlobalGameConfigs.WinCountForExtreme,
                 GlobalGameConfigs.WinCountForExtreme);
-            
+
             //todo maybe show this on button
         }
 
