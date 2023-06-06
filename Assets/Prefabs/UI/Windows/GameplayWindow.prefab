@@ -2359,6 +2359,7 @@ MonoBehaviour:
   selectedCellColor: {r: 0.56941175, g: 0.851463, b: 0.8627451, a: 1}
   sameNumberColor: {r: 0.7937255, g: 0.9019608, b: 0.8407843, a: 1}
   otherCellColor: {r: 0.9025, g: 0.9479348, b: 0.95, a: 1}
+  elementCompletedColor: {r: 0.629895, g: 0.8962264, b: 0.74403703, a: 1}
   wrongNumberColor: {r: 0.9019608, g: 0.22352941, b: 0.27450982, a: 1}
   correctNumberColor: {r: 0.11372549, g: 0.20784314, b: 0.34117648, a: 1}
   colorizationDuration: 0.03
@@ -3158,16 +3159,8 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7868413313311557071, guid: 5d4766426924341799135f657d33769a, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7868413313311557071, guid: 5d4766426924341799135f657d33769a, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7868413313311557071, guid: 5d4766426924341799135f657d33769a, type: 3}
-      propertyPath: m_LocalScale.z
+    - target: {fileID: 8787012900315040718, guid: 5d4766426924341799135f657d33769a, type: 3}
+      propertyPath: m_SortingLayer
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8912799845510094158, guid: 5d4766426924341799135f657d33769a, type: 3}

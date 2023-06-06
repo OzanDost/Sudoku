@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Data;
 using deVoid.Utils;
 using Game;
@@ -19,7 +18,6 @@ namespace UI
         {
             Signals.Get<BoardReady>().AddListener(OnLevelLoaded);
             Signals.Get<CellPointerDown>().AddListener(OnCellPointerDown);
-            Signals.Get<SameNumberListDispatched>().AddListener(BoardManager_OnSameNumberListDispatched);
             Signals.Get<NumberInputMade>().AddListener(OnNumberInputMade);
             Signals.Get<EraseButtonClicked>().AddListener(OnEraseButtonClicked);
             Signals.Get<HintButtonClicked>().AddListener(HintButtonClicked);
@@ -103,15 +101,6 @@ namespace UI
         }
 
 
-        private void BoardManager_OnSameNumberListDispatched(List<Vector2Int> positions)
-        {
-            foreach (var position in positions)
-            {
-                _cellGrid[position.x, position.y].PunchScale();
-            }
-        }
-
-
         private void OnLevelLoaded(LevelData levelData, bool fromContinue)
         {
             Signals.Get<BoardGridCreationRequested>().Dispatch(board);
@@ -135,11 +124,21 @@ namespace UI
         {
             for (int i = 0; i < cells.Length; i++)
             {
-                var fill = levelData.levelArray[i];
+                Cell cell = cells[i];
+                NoteSaveData cellNoteData = levelData.notes[i];
+
+                int fill = levelData.levelArray[i];
                 Vector2Int position = Utils.GetPositionFromArray(levelData.levelArray, i);
-                cells[i].SetPosition(position.x, position.y);
-                cells[i].GetFilled(fill, false);
+                cell.SetPosition(position.x, position.y);
+                cell.GetFilled(fill, false);
+
+                FillCellNotes(cell, cellNoteData);
             }
+        }
+
+        private void FillCellNotes(Cell cell, NoteSaveData noteSaveData)
+        {
+            cell.AddNotesInBulk(noteSaveData.notes);
         }
 
         private void AdjustCellSize()

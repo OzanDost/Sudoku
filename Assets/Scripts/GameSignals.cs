@@ -86,8 +86,13 @@ public class CellPointerUp : ASignal<Vector2Int>{}
 
 //bool is for telling whether the cell is filled by player or not
 public class CellFilled : ASignal<Cell,bool>{}
+
+//List is for all filled cells, Vector2Int is for the main cell that is filled
+public class ElementsFilled : ASignal<List<Vector2Int>, Vector2Int>{}
 public class NumberButtonClicked : ASignal<int>{}
 public class NumberInputMade : ASignal<int, NumberInputMode>{}
 
 public class ScoreCheckRequested : ASignal<int[,], Cell, LevelDifficulty>{}
 public class ScoreUpdated : ASignal<int, bool>{}
+
+public class NoteUpdatedOnCell : ASignal<Cell, int>{}

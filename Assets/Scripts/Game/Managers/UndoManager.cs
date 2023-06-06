@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Data;
 using deVoid.Utils;
 
 namespace Game.Managers
@@ -12,8 +13,14 @@ namespace Game.Managers
         {
             _undoStack = new Stack<Action>(30);
 
+            Signals.Get<LevelLoaded>().AddListener(OnLevelLoaded);
             Signals.Get<UndoableActionMade>().AddListener(OnUndoableActionMade);
             Signals.Get<UndoRequested>().AddListener(OnUndoRequested);
+        }
+
+        private static void OnLevelLoaded(LevelData levelData, bool fromSave)
+        {
+            if (!fromSave) _undoStack.Clear();
         }
 
         private static void OnUndoRequested()

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Data;
@@ -38,6 +37,8 @@ namespace Game.Managers
                 _categoryLevelDictionary[levelSaveData.difficulty].Add(levelSaveData);
             }
         }
+
+        //todo remove later
 
         private LevelData _loadedLevel;
 
@@ -87,6 +88,7 @@ namespace Game.Managers
             _lastActiveLevel = _levelList.Find(x => x.id == boardState.levelData.id);
             Signals.Get<LevelContinued>().Dispatch(boardState);
             Signals.Get<LevelLoaded>().Dispatch(boardState.levelData, true);
+            _loadedLevel = boardState.levelData;
         }
 
         public void RetryLevel()
@@ -102,7 +104,7 @@ namespace Game.Managers
         {
             var levelData = new LevelData(levelSaveData.id, levelSaveData.difficulty,
                 levelSaveData.levelGrid,
-                levelSaveData.solutionGrid);
+                levelSaveData.solutionGrid, null);
             return levelData;
         }
     }

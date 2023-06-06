@@ -17,6 +17,7 @@ namespace UI
         [SerializeField] private Color selectedCellColor;
         [SerializeField] private Color sameNumberColor;
         [SerializeField] private Color otherCellColor;
+        [SerializeField] private Color elementCompletedColor;
 
         [SerializeField] private Color wrongNumberColor;
         [SerializeField] private Color correctNumberColor;
@@ -31,7 +32,6 @@ namespace UI
         private Vector2Int _lastColorizedCellPosition;
         private List<Vector2Int> _lastColorizedCellPositions;
 
-
         private void Awake()
         {
             Signals.Get<ColorizationListDispatched>().AddListener(OnColorizationListDispatched);
@@ -39,13 +39,24 @@ namespace UI
             Signals.Get<WrongNumberPlaced>().AddListener(OnWrongNumberPlaced);
             Signals.Get<CellEraseResponseSent>().AddListener(OnCellEraseResponseSent);
             Signals.Get<SameNumberListDispatched>().AddListener(OnSameNumberListDispatched);
+            Signals.Get<ElementsFilled>().AddListener(OnElementsFilled);
 
             _lastColorizedCellPosition = new Vector2Int(-1, -1);
             _lastColorizedCellPositions = new List<Vector2Int>(21);
         }
 
-        private void OnSameNumberListDispatched(List<Vector2Int> cells)
+        private void OnElementsFilled(List<Vector2Int> otherCells, Vector2Int cell)
         {
+            var tempSeq = DOTween.Sequence();
+            foreach (var otherCellPosition in otherCells)
+            {
+                Cell otherCell = _cells[otherCellPosition.x, otherCellPosition.y];
+                var innerSeq = DOTween.Sequence()
+                    .Join(otherCell.PunchScale(0.2f, 0.3f, Ease.OutFlash))
+                    .Join(otherCell.ColorizeCell(elementCompletedColor, null, 0.3f))
+                    .Append(otherCell.ColorizeCell(null, null, 0.25f, true));
+                tempSeq.Join(innerSeq);
+            }
         }
 
         private void OnCellsConfigured(Cell[,] cells)
@@ -53,7 +64,6 @@ namespace UI
             _cells = cells;
             ResetSelectionHighlight();
         }
-
 
         private void OnColorizationListDispatched(ColorizationData colorizationData, Vector2Int mainCellPosition)
         {
@@ -139,6 +149,14 @@ namespace UI
             _lastColorizedCellPositions = allCells;
         }
 
+        private void OnSameNumberListDispatched(List<Vector2Int> sameNumbersList)
+        {
+            foreach (var position in sameNumbersList)
+            {
+                _cells[position.x, position.y].PunchScale(0.3f, 0.2f, Ease.Linear);
+            }
+        }
+
         private Sequence GetSameNumberSequence(List<Vector2Int> sameNumberPositions)
         {
             Sequence sameNumberSequence = DOTween.Sequence();
@@ -147,9 +165,8 @@ namespace UI
             {
                 Cell cell = _cells[sameNumberPosition.x, sameNumberPosition.y];
                 sameNumberSequence.Join(cell
-                        .ColorizeCell(sameNumberColor, null, colorizationDuration)
-                        .SetEase(Ease.Linear))
-                    .Join(cell.PunchScale());
+                    .ColorizeCell(sameNumberColor, null, colorizationDuration)
+                    .SetEase(Ease.Linear));
             }
 
             return sameNumberSequence;
@@ -165,7 +182,7 @@ namespace UI
                 if (i != 0)
                 {
                     var previousCell = cellsOnLine[i - 1];
-                    if (BoardHelper.IsSameDistanceToBox(previousCell, rowCellPosition, mainCellPosition))
+                    if (Utils.IsSameDistanceToBox(previousCell, rowCellPosition, mainCellPosition))
                     {
                         rowColorizationSequence.Join(_cells[rowCellPosition.x, rowCellPosition.y]
                             .ColorizeCell(otherCellColor, null, colorizationDuration)
@@ -198,7 +215,7 @@ namespace UI
                 sortedCells.Add(otherCell);
             }
 
-            var boxCenter = BoardHelper.GetBoxCenter(cellPosition);
+            var boxCenter = Utils.GetBoxCenter(cellPosition);
             sortedCells.Sort((a, b) =>
             {
                 var distanceA = Vector2Int.Distance(a, boxCenter);

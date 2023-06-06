@@ -2,6 +2,7 @@ using Coffee.UIExtensions;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace UI
@@ -9,7 +10,8 @@ namespace UI
     public class EraseButton : AWidgetButton
     {
         [SerializeField] private RectTransform eraseIcon;
-        [SerializeField] private UIParticle eraseUIParticle;
+        [SerializeField] private UIParticle eraseUIParticleLeft;
+        [SerializeField] private UIParticle eraseUIParticleRight;
         [SerializeField] private VerticalLayoutGroup layout;
 
         private Sequence _animationSequence;
@@ -24,7 +26,7 @@ namespace UI
             _animationSequence = DOTween.Sequence()
                 .Append(eraseIcon.DOScale(new Vector3(1.2f, 0.7f, 1f), 0.1f).SetEase(Ease.Linear))
                 .Append(eraseIcon.DOScale(new Vector3(0.85f, 1.1f, 1f), 0.1f).SetEase(Ease.Linear))
-                .AppendCallback(() => { eraseUIParticle.Play(); })
+                .AppendCallback(() => { ToggleParticles(true); })
                 .Append(eraseIcon.DOScale(Vector3.one, 0.1f).SetEase(Ease.Linear))
                 .OnComplete(() => { layout.enabled = true; });
         }
@@ -47,9 +49,23 @@ namespace UI
                 .OnComplete(() => { layout.enabled = true; });
         }
 
+        private void ToggleParticles(bool toggle)
+        {
+            if (toggle)
+            {
+                eraseUIParticleLeft.Play();
+                eraseUIParticleRight.Play();
+            }
+            else
+            {
+                eraseUIParticleLeft.Stop();
+                eraseUIParticleRight.Stop();
+            }
+        }
+
         private void OnDisable()
         {
-            eraseUIParticle.Stop();
+            ToggleParticles(false);
             layout.enabled = true;
         }
     }

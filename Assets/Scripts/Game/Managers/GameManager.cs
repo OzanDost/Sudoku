@@ -1,5 +1,7 @@
+using System;
 using Data;
 using deVoid.Utils;
+using DG.Tweening;
 using UnityEngine;
 
 namespace Game.Managers
@@ -8,6 +10,11 @@ namespace Game.Managers
     {
         [SerializeField] private LevelManager levelManager;
         public GameState CurrentGameState { get; private set; }
+
+        private void Awake()
+        {
+            DOTween.Init().SetCapacity(200, 150);
+        }
 
         private void Start()
         {

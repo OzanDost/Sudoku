@@ -1,6 +1,9 @@
 
+using System;
+
 namespace Data
 {
+    [Serializable]
     public class BoardStateSaveData
     {
         public int score;

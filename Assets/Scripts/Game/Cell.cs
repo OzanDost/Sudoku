@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using deVoid.Utils;
 using DG.Tweening;
@@ -25,6 +24,14 @@ namespace Game
 
         private Sequence _wrongNumberSequence;
         private Sequence _colorizationSequence;
+        private Color _lastBackgroundColor;
+        private Color _lastTextColor;
+
+        private void Awake()
+        {
+            _lastBackgroundColor = cellBackground.color;
+            _lastTextColor = numberText.color;
+        }
 
         public void GetFilled(int number, bool filledByPlayer)
         {
@@ -90,6 +97,8 @@ namespace Game
             {
                 Signals.Get<UndoableActionMade>().Dispatch(new UndoableAction(() => { RemoveNote(number, false); }));
             }
+
+            Signals.Get<NoteUpdatedOnCell>().Dispatch(this, number);
         }
 
         private bool RemoveNote(int number, bool shouldAddToUndoStack)
@@ -102,7 +111,16 @@ namespace Game
                 Signals.Get<UndoableActionMade>().Dispatch(new UndoableAction(() => { AddNote(number, false); }));
             }
 
+            Signals.Get<NoteUpdatedOnCell>().Dispatch(this, number);
             return true;
+        }
+
+        public void AddNotesInBulk(bool[] noteToggles)
+        {
+            for (var i = 0; i < noteToggles.Length; i++)
+            {
+                noteNumbers[i].SetActive(noteToggles[i]);
+            }
         }
 
         public bool EraseCellNotes(bool shouldAddToUndoStack = true)
@@ -134,38 +152,64 @@ namespace Game
             return true;
         }
 
-        public Sequence ColorizeCell(Color? backgroundColor, Color? textColor, float duration)
+        public Sequence ColorizeCell(Color? backgroundColor, Color? textColor, float duration,
+            bool returnToLastColor = false)
         {
+            _lastBackgroundColor = cellBackground.color;
+            _lastTextColor = numberText.color;
+
             if (duration == 0)
             {
-                if (backgroundColor != null)
+                if (returnToLastColor)
                 {
-                    cellBackground.color = backgroundColor.Value;
+                    cellBackground.color = _lastBackgroundColor;
+                    numberText.color = _lastTextColor;
+                }
+                else
+                {
+                    if (backgroundColor != null)
+                    {
+                        cellBackground.color = backgroundColor.Value;
+                    }
+
+                    numberText.color = textColor ?? numberText.color;
                 }
 
-                numberText.color = textColor ?? numberText.color;
                 return null;
             }
 
-            _colorizationSequence = DOTween.Sequence();
-            if (backgroundColor.HasValue)
-            {
-                _colorizationSequence.Join(cellBackground.DOColor(backgroundColor.Value, duration)
-                    .SetEase(Ease.Linear));
-            }
 
-            if (textColor.HasValue)
+            _colorizationSequence?.Kill(true);
+            _colorizationSequence = DOTween.Sequence();
+
+            if (returnToLastColor)
             {
-                _colorizationSequence.Join(numberText.DOColor(textColor.Value, duration).SetEase(Ease.Linear));
+                _colorizationSequence.Append(cellBackground.DOColor(_lastBackgroundColor, duration)
+                    .SetEase(Ease.Linear));
+                _colorizationSequence.Join(numberText.DOColor(_lastTextColor, duration).SetEase(Ease.Linear));
+            }
+            else
+            {
+                if (backgroundColor.HasValue)
+                {
+                    _colorizationSequence.Join(cellBackground.DOColor(backgroundColor.Value, duration)
+                        .SetEase(Ease.Linear));
+                }
+
+                if (textColor.HasValue)
+                {
+                    _colorizationSequence.Join(numberText.DOColor(textColor.Value, duration).SetEase(Ease.Linear));
+                }
             }
 
             return _colorizationSequence;
         }
 
-        public Tween PunchScale()
+        public Tween PunchScale(float punchScale, float duration, Ease ease)
         {
             _punchTween?.Kill();
-            return _punchTween = numberText.rectTransform.DOPunchScale(Vector3.one * 0.3f, 0.2f, 1, 0.05f)
+            return _punchTween = numberText.rectTransform.DOPunchScale(Vector3.one * punchScale, duration, 1, 0.05f)
+                .SetEase(ease)
                 .OnKill(() => numberText.rectTransform.localScale = Vector3.one);
         }
 
