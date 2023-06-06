@@ -23,15 +23,16 @@ namespace UI.Windows
             Signals.Get<ContinueLevelRequested>().Dispatch();
         }
 
-        protected override void OnPropertiesSet()
+        protected override void On_UIOPen()
         {
-            base.OnPropertiesSet();
+            base.On_UIOPen();
             continueButton.gameObject.SetActive(false);
             if (SaveManager.CanContinueLevel())
             {
                 continueButton.gameObject.SetActive(true);
             }
         }
+
 
         private void OnPlayButtonClicked()
         {

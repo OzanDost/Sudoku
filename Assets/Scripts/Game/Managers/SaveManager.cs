@@ -88,6 +88,7 @@ namespace Game.Managers
 
         public static void ClearContinueLevelSaveData()
         {
+            CurrentBoardStateSaveData = null;
             PlayerPrefs.DeleteKey(ContinueLevelJson);
         }
 

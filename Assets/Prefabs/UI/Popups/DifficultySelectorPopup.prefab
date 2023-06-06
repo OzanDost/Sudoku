@@ -465,6 +465,7 @@ GameObject:
   - component: {fileID: 2756838293214714309}
   - component: {fileID: 734165986124242215}
   - component: {fileID: 4411803635942703043}
+  - component: {fileID: 7434196535445825167}
   - component: {fileID: 9172854816623453510}
   m_Layer: 5
   m_Name: ButtonContainer
@@ -521,7 +522,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.27058825, g: 0.48235294, b: 0.6156863, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -538,6 +539,29 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 0.75
+--- !u!114 &7434196535445825167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7659379510855673275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fb48d82dc0e94a2b9246d17d04f8748, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Direction: 1
+  m_Color1: {r: 0.9289216, g: 0.98039216, b: 0.91176474, a: 1}
+  m_Color2: {r: 0.65882355, g: 0.85490197, b: 0.8627451, a: 1}
+  m_Color3: {r: 1, g: 1, b: 1, a: 1}
+  m_Color4: {r: 1, g: 1, b: 1, a: 1}
+  m_Rotation: 0
+  m_Offset1: 0.4
+  m_Offset2: 0
+  m_GradientStyle: 0
+  m_ColorSpace: -1
+  m_IgnoreAspectRatio: 1
 --- !u!114 &9172854816623453510
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -808,6 +832,10 @@ PrefabInstance:
     - target: {fileID: 3902116726904590760, guid: 047e3b115893b4946bc3d27e86acdf55, type: 3}
       propertyPath: m_Name
       value: DifficultyButton_Easy
+      objectReference: {fileID: 0}
+    - target: {fileID: 7224343859698731815, guid: 047e3b115893b4946bc3d27e86acdf55, type: 3}
+      propertyPath: m_Interactable
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9209469684468235369, guid: 047e3b115893b4946bc3d27e86acdf55, type: 3}
       propertyPath: m_Pivot.x
