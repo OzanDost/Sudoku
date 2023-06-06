@@ -158,6 +158,8 @@ namespace Game
             _lastBackgroundColor = cellBackground.color;
             _lastTextColor = numberText.color;
 
+            _colorizationSequence?.Kill(true);
+
             if (duration == 0)
             {
                 if (returnToLastColor)
@@ -179,7 +181,6 @@ namespace Game
             }
 
 
-            _colorizationSequence?.Kill(true);
             _colorizationSequence = DOTween.Sequence();
 
             if (returnToLastColor)

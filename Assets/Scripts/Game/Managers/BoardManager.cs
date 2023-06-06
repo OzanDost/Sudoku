@@ -198,7 +198,7 @@ namespace Game.Managers
             ColorizationData colorizationData =
                 new ColorizationData(boxPositions, rowPositions, columnPositions, sameNumberPositions);
 
-            Signals.Get<ColorizationListDispatched>().Dispatch(colorizationData, position);
+            Signals.Get<TapColorizationListDispatched>().Dispatch(colorizationData, position);
         }
 
 

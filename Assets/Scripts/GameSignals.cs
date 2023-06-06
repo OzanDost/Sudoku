@@ -44,7 +44,7 @@ public class HintCountUpdated : ASignal<int>{}
 public class HintUsed : ASignal{}
 public class HintAuthorized : ASignal<Cell>{}
 
-public class ColorizationListDispatched : ASignal<ColorizationData, Vector2Int>{}
+public class TapColorizationListDispatched : ASignal<ColorizationData, Vector2Int>{}
 public class SameNumberListDispatched : ASignal<List<Vector2Int>>{}
 public class LevelContinued : ASignal<BoardStateSaveData>{}
 

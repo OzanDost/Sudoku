@@ -29,12 +29,13 @@ namespace UI
         private Sequence _colorizationSequence;
         private Sequence _sameNumberColorizationSequence;
         private Sequence _colorClearingSequence;
+        private Sequence _elementFillSequence;
         private Vector2Int _lastColorizedCellPosition;
         private List<Vector2Int> _lastColorizedCellPositions;
 
         private void Awake()
         {
-            Signals.Get<ColorizationListDispatched>().AddListener(OnColorizationListDispatched);
+            Signals.Get<TapColorizationListDispatched>().AddListener(OnTapColorizationListDispatched);
             Signals.Get<CellsConfigured>().AddListener(OnCellsConfigured);
             Signals.Get<WrongNumberPlaced>().AddListener(OnWrongNumberPlaced);
             Signals.Get<CellEraseResponseSent>().AddListener(OnCellEraseResponseSent);
@@ -47,15 +48,15 @@ namespace UI
 
         private void OnElementsFilled(List<Vector2Int> otherCells, Vector2Int cell)
         {
-            var tempSeq = DOTween.Sequence();
+            _elementFillSequence = DOTween.Sequence();
             foreach (var otherCellPosition in otherCells)
             {
                 Cell otherCell = _cells[otherCellPosition.x, otherCellPosition.y];
                 var innerSeq = DOTween.Sequence()
-                    .Join(otherCell.PunchScale(0.2f, 0.3f, Ease.OutFlash))
-                    .Join(otherCell.ColorizeCell(elementCompletedColor, null, 0.3f))
-                    .Append(otherCell.ColorizeCell(null, null, 0.25f, true));
-                tempSeq.Join(innerSeq);
+                    .Join(otherCell.PunchScale(0.2f, 0.2f, Ease.OutFlash))
+                    .Join(otherCell.ColorizeCell(elementCompletedColor, null, 0.2f))
+                    .Append(otherCell.ColorizeCell(null, null, 0.2f, true));
+                _elementFillSequence.Join(innerSeq);
             }
         }
 
@@ -65,7 +66,7 @@ namespace UI
             ResetSelectionHighlight();
         }
 
-        private void OnColorizationListDispatched(ColorizationData colorizationData, Vector2Int mainCellPosition)
+        private void OnTapColorizationListDispatched(ColorizationData colorizationData, Vector2Int mainCellPosition)
         {
             if (mainCellPosition == _lastColorizedCellPosition) return;
 
@@ -115,6 +116,7 @@ namespace UI
             columnCells = SortCellsByDistanceToBoxCenter(columnCells, mainCellPosition);
 
 
+            _elementFillSequence?.Kill(true);
             if (_lastColorizedCellPositions.Count > 0)
             {
                 foreach (var cell in _lastColorizedCellPositions)
