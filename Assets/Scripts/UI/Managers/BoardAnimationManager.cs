@@ -67,7 +67,6 @@ namespace UI.Managers
             ResetSelectionHighlight();
         }
 
-        //todo refactor
         private void OnTapColorizationListDispatched(ColorizationData colorizationData, Vector2Int mainCellPosition)
         {
             if (mainCellPosition == _lastColorizedCellPosition) return;
@@ -75,49 +74,51 @@ namespace UI.Managers
             _lastColorizedCellPosition = mainCellPosition;
 
             List<Vector2Int> allCells = new List<Vector2Int>(14) { mainCellPosition };
-
-            List<Vector2Int> sameNumberCells = colorizationData.sameNumberPositions;
-            allCells.AddRange(sameNumberCells);
-
-            List<Vector2Int> boxCells = new List<Vector2Int>(8);
-            foreach (var boxCell in colorizationData.boxPositions)
-            {
-                if (!allCells.Contains(boxCell))
-                {
-                    boxCells.Add(boxCell);
-                    allCells.Add(boxCell);
-                }
-            }
-
-            allCells.AddRange(boxCells);
-
-            List<Vector2Int> rowCells = new List<Vector2Int>(6);
-
-            foreach (var rowPosition in colorizationData.rowPositions)
-            {
-                if (!allCells.Contains(rowPosition))
-                {
-                    rowCells.Add(rowPosition);
-                    allCells.Add(rowPosition);
-                }
-            }
-
+            allCells.AddRange(colorizationData.sameNumberPositions);
+            
+            CreateAndAddToList(colorizationData.boxPositions, ref allCells);
+            
+            List<Vector2Int> rowCells = CreateAndAddToList(colorizationData.rowPositions, ref allCells);
             rowCells = SortCellsByDistanceToBoxCenter(rowCells, mainCellPosition);
-
-            List<Vector2Int> columnCells = new List<Vector2Int>(6);
-
-            foreach (var columnPosition in colorizationData.columnPositions)
-            {
-                if (!allCells.Contains(columnPosition))
-                {
-                    columnCells.Add(columnPosition);
-                    allCells.Add(columnPosition);
-                }
-            }
-
+            
+            List<Vector2Int> columnCells = CreateAndAddToList(colorizationData.columnPositions, ref allCells);
             columnCells = SortCellsByDistanceToBoxCenter(columnCells, mainCellPosition);
 
+            ClearLastColorizedCellPositions();
 
+            _colorizationSequence?.Kill();
+            _colorizationSequence = DOTween.Sequence();
+            Sequence sameNumberSequence = GetSameNumberSequence(colorizationData.sameNumberPositions);
+            _colorizationSequence.Join(_cells[mainCellPosition.x, mainCellPosition.y]
+                    .ColorizeCell(selectedCellColor, null, colorizationDuration).SetEase(Ease.Linear))
+                .Join(sameNumberSequence);
+
+            AddColorizationSequenceForCells(colorizationData.boxPositions, otherCellColor);
+            Sequence columnSequence = GetLinearSequence(columnCells, mainCellPosition);
+            Sequence rowSequence = GetLinearSequence(rowCells, mainCellPosition);
+            _colorizationSequence.Join(rowSequence).Join(columnSequence);
+
+            _lastColorizedCellPositions = allCells;
+        }
+
+        private List<Vector2Int> CreateAndAddToList(List<Vector2Int> positions, ref List<Vector2Int> allCells)
+        {
+            List<Vector2Int> uniqueCells = new List<Vector2Int>();
+
+            foreach (var position in positions)
+            {
+                if (!allCells.Contains(position))
+                {
+                    uniqueCells.Add(position);
+                    allCells.Add(position);
+                }
+            }
+
+            return uniqueCells;
+        }
+
+        private void ClearLastColorizedCellPositions()
+        {
             _elementFillSequence?.Kill(true);
             if (_lastColorizedCellPositions.Count > 0)
             {
@@ -126,32 +127,18 @@ namespace UI.Managers
                     _cells[cell.x, cell.y].ColorizeCell(defaultCellColor, null, 0);
                 }
             }
+        }
 
-            _colorizationSequence?.Kill();
-            _colorizationSequence = DOTween.Sequence();
-
-            Sequence sameNumberSequence = GetSameNumberSequence(sameNumberCells);
-
-            _colorizationSequence.Join(_cells[mainCellPosition.x, mainCellPosition.y]
-                    .ColorizeCell(selectedCellColor, null, colorizationDuration).SetEase(Ease.Linear))
-                .Join(sameNumberSequence);
-
-            foreach (var cellPos in boxCells)
+        private void AddColorizationSequenceForCells(List<Vector2Int> cells, Color color)
+        {
+            foreach (var cellPos in cells)
             {
                 _colorizationSequence.Join(_cells[cellPos.x, cellPos.y]
-                    .ColorizeCell(otherCellColor, null, colorizationDuration)
+                    .ColorizeCell(color, null, colorizationDuration)
                     .SetEase(Ease.Linear));
             }
-
-
-            Sequence columnSequence = GetLinearSequence(columnCells, mainCellPosition);
-            Sequence rowSequence = GetLinearSequence(rowCells, mainCellPosition);
-
-            _colorizationSequence.Join(rowSequence);
-            _colorizationSequence.Join(columnSequence);
-
-            _lastColorizedCellPositions = allCells;
         }
+
 
         private void OnSameNumberListDispatched(List<Vector2Int> sameNumbersList)
         {
