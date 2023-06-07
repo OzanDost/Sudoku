@@ -9,7 +9,7 @@
     "type": "git",
     "url": "git+https://github.com/mob-sakai/UIEffect.git"
   },
-  "src": "Assets/Coffee/UIExtensions/UIEffect",
+  "src": "Assets/ThirdParty/Coffee/UIExtensions/UIEffect",
 	"author": "mob-sakai <sakai861104@gmail.com> (https://github.com/mob-sakai)",
   "editorOnly": false,
   "upmSupport": false,

@@ -1,4 +1,4 @@
-Shader "TextMeshPro/Distance Field (UITransition)" {
+Shader "TextMeshPro/Distance Field (UIDissolve)" {
 
 Properties {
 	_FaceTex			("Face Texture", 2D) = "white" {}
@@ -125,33 +125,33 @@ SubShader {
 
 		#include "UnityCG.cginc"
 		#include "UnityUI.cginc"
-		#include "Assets/TextMesh Pro/Resources/Shaders/TMPro_Properties.cginc"
-		#include "Assets/TextMesh Pro/Resources/Shaders/TMPro.cginc"
+		#include "Assets/TextMesh Pro/Shaders/TMPro_Properties.cginc"
+		#include "Assets/TextMesh Pro/Shaders/TMPro.cginc"
 		
-		#define ADD 1
-		#define UI_TRANSITION 1
-		#include "Assets/Coffee/UIExtensions/UIEffect/Shaders/UI-Effect.cginc"
+		#define UI_DISSOLVE 1
+		#define DISSOLVE 1
+		#include "Assets/ThirdParty/Coffee/UIExtensions/UIEffect/Shaders/UI-Effect.cginc"
 		#include "UI-Effect-TMPro.cginc"
-		#pragma shader_feature __ FADE CUTOFF DISSOLVE
+		#pragma shader_feature __ ADD SUBTRACT FILL
 
 		fixed4 frag(pixel_t IN) : SV_Target
 		{
 			half4 color = PixShader(IN);
 
-			// Transition
+			// Dissolve
 			color = ApplyTransitionEffect(color, IN.eParam);
 			color.rgb *= color.a;
 			
 		#if UNITY_UI_ALPHACLIP
 			clip(color.a - 0.001);
 		#endif
-
+			
 			return color * IN.color.a;
 		}
 		ENDCG
 	}
 }
 
-Fallback "TextMeshPro/Mobile/Distance Field (UITransition)"
+Fallback "TextMeshPro/Mobile/Distance Field (UIDissolve)"
 CustomEditor "Coffee.UIEffect.Editors.TMP_SDFShaderGUI"
 }

@@ -1,4 +1,4 @@
-﻿Shader "TextMeshPro/Sprite (UITransition)"
+﻿Shader "TextMeshPro/Sprite (UIShiny)"
 {
 	Properties
 	{
@@ -57,13 +57,11 @@
 
 			#pragma multi_compile __ UNITY_UI_CLIP_RECT
 			#pragma multi_compile __ UNITY_UI_ALPHACLIP
-
+            
 			#define TMP_SPRITE 1
-			#define UI_TRANSITION 1
-			#define ADD 1
-            #include "Assets/Coffee/UIExtensions/UIEffect/Shaders/UI-Effect.cginc"
-            #include "Assets/Coffee/UIExtensions/UIEffect/Shaders/UI-Effect-Sprite.cginc"
-			#pragma shader_feature __ FADE CUTOFF DISSOLVE
+			#define UI_SHINY 1
+            #include "Assets/ThirdParty/Coffee/UIExtensions/UIEffect/Shaders/UI-Effect.cginc"
+            #include "Assets/ThirdParty/Coffee/UIExtensions/UIEffect/Shaders/UI-Effect-Sprite.cginc"
 
 			fixed4 frag(v2f IN) : SV_Target
 			{
@@ -77,10 +75,9 @@
 					clip (color.a - 0.001);
 				#endif
                 
-				// Transition
-				color = ApplyTransitionEffect(color, IN.eParam);
-				color.rgb *= color.a;
-                
+				// Shiny
+				color = ApplyShinyEffect(color, IN.eParam);
+
 				return color;
 			}
 		ENDCG

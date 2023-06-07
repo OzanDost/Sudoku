@@ -1,9 +1,9 @@
-// Simplified SDF shader:
+﻿// Simplified SDF shader:
 // - No Shading Option (bevel / bump / env map)
 // - No Glow Option
 // - Softness is applied on both side of the outline
 
-Shader "TextMeshPro/Mobile/Distance Field (UIShiny)" {
+Shader "TextMeshPro/Mobile/Distance Field (UIDissolve)" {
 
 Properties {
 	_FaceColor			("Face Color", Color) = (1,1,1,1)
@@ -91,29 +91,32 @@ SubShader {
 
 		#include "UnityCG.cginc"
 		#include "UnityUI.cginc"
-		#include "Assets/TextMesh Pro/Resources/Shaders/TMPro_Properties.cginc"
+		#include "Assets/TextMesh Pro/Shaders/TMPro_Properties.cginc"
 		
 		#define MOBILE 1
-		#define UI_SHINY 1
-        #include "Assets/Coffee/UIExtensions/UIEffect/Shaders/UI-Effect.cginc"
+		#define UI_DISSOLVE 1
+		#define DISSOLVE 1
+		#include "Assets/ThirdParty/Coffee/UIExtensions/UIEffect/Shaders/UI-Effect.cginc"
 		#include "UI-Effect-TMPro.cginc"
+		#pragma shader_feature __ ADD SUBTRACT FILL
 
 		fixed4 frag(pixel_t IN) : SV_Target
 		{
 			half4 color = PixShader(IN);
 
+			// Dissolve
+			color = ApplyTransitionEffect(color, IN.eParam);
+			color.rgb *= color.a;
+			
 		#if UNITY_UI_ALPHACLIP
 			clip(color.a - 0.001);
 		#endif
-
-			// Shiny
-			color = ApplyShinyEffect(color, IN.eParam);
-
+			
 			return color * IN.color.a;
 		}
 		ENDCG
 	}
 }
 
-CustomEditor "TMPro.EditorUtilities.TMP_SDFShaderGUI"
+CustomEditor "Coffee.UIEffect.Editors.TMP_SDFShaderGUI"
 }

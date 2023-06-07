@@ -1,4 +1,4 @@
-Shader "TextMeshPro/Distance Field (UIEffect)" {
+Shader "TextMeshPro/Distance Field (UIShiny)" {
 
 Properties {
 	_FaceTex			("Face Texture", 2D) = "white" {}
@@ -80,6 +80,8 @@ Properties {
 	_StencilReadMask	("Stencil Read Mask", Float) = 255
 
 	_ColorMask			("Color Mask", Float) = 15
+	
+	_NoiseTex("Noise Texture (A)", 2D) = "white" {}
 }
 
 SubShader {
@@ -120,54 +122,33 @@ SubShader {
 		#pragma multi_compile __ UNITY_UI_CLIP_RECT
 		#pragma multi_compile __ UNITY_UI_ALPHACLIP
 
-		#pragma shader_feature __ GRAYSCALE SEPIA NEGA PIXEL 
-		#pragma shader_feature __ ADD SUBTRACT FILL
-		#pragma shader_feature __ FASTBLUR MEDIUMBLUR DETAILBLUR
-		#pragma shader_feature __ EX
-		
-		float4 _MainTex_TexelSize;
+
 		#include "UnityCG.cginc"
 		#include "UnityUI.cginc"
-		#include "Assets/TextMesh Pro/Resources/Shaders/TMPro_Properties.cginc"
-		#include "Assets/TextMesh Pro/Resources/Shaders/TMPro.cginc"
+		#include "Assets/TextMesh Pro/Shaders/TMPro_Properties.cginc"
+		#include "Assets/TextMesh Pro/Shaders/TMPro.cginc"
 		
-		#define UI_EFFECT 1
-		#include "Assets/Coffee/UIExtensions/UIEffect/Shaders/UI-Effect.cginc"
+		#define UI_SHINY 1
+		#include "Assets/ThirdParty/Coffee/UIExtensions/UIEffect/Shaders/UI-Effect.cginc"
 		#include "UI-Effect-TMPro.cginc"
-
+		
 		fixed4 frag(pixel_t IN) : SV_Target
 		{
-			fixed4 param = tex2D(_ParamTex, float2(0.5, IN.eParam));
-		    fixed effectFactor = param.x;
-		    fixed colorFactor = param.y;
-		    fixed blurFactor = param.z;
+			half4 color = PixShader(IN);
 
-			#if PIXEL
-			half2 pixelSize = max(2, (1-effectFactor*0.95) * float2(_TextureWidth, _TextureHeight));
-			UV(IN).xy = round(UV(IN).xy * pixelSize) / pixelSize;
-			#endif
+		#if UNITY_UI_ALPHACLIP
+			clip(color.a - 0.001);
+		#endif
 
-			#if defined(UI_BLUR) && EX
-			half4 color = Tex2DBlurring(IN, blurFactor * float2(1/_TextureWidth, 1/_TextureHeight) * 4, IN.uvMask);
-			#elif defined(UI_BLUR)
-			half4 color = Tex2DBlurring(IN, blurFactor * float2(1/_TextureWidth, 1/_TextureHeight) * 4);
-			#else
-			half4 color = PixShader(IN) * IN.color.a;
-			#endif
-			
-			#if defined (UI_TONE)
-			color = ApplyToneEffect(color, effectFactor);
-			#endif
+			// Shiny
+			color = ApplyShinyEffect(color, IN.eParam);
 
-			color = ApplyColorEffect(color, fixed4(IN.color.rgb, colorFactor));
-			color.rgb *= color.a;
-			
 			return color * IN.color.a;
 		}
 		ENDCG
 	}
 }
 
-Fallback "TextMeshPro/Mobile/Distance Field (UIEffect)"
-CustomEditor "Coffee.UIEffect.Editors.TMP_SDFShaderGUI"
+Fallback "TextMeshPro/Mobile/Distance Field (UIShiny)"
+CustomEditor "TMPro.EditorUtilities.TMP_SDFShaderGUI"
 }
