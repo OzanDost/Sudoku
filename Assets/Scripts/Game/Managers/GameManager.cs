@@ -2,6 +2,7 @@ using System;
 using Data;
 using deVoid.Utils;
 using DG.Tweening;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Game.Managers
@@ -107,6 +108,7 @@ namespace Game.Managers
             Signals.Get<GameStateChanged>().Dispatch(oldGameState, newGameState);
         }
 
+
         private void OnApplicationQuit()
         {
             BoardManager.SendLevelSaveRequest();
@@ -114,15 +116,18 @@ namespace Game.Managers
             SaveManager.SavePlayerStatsData();
         }
 
+#if UNITY_ANDROID || UNITY_IOS
         private void OnApplicationPause(bool pauseStatus)
         {
             if (pauseStatus)
             {
-                // BoardManager.SendLevelSaveRequest();
+                BoardManager.SendLevelSaveRequest();
                 SaveManager.SaveHintCount();
-                // SaveManager.SavePlayerStatsData();
+                SaveManager.SavePlayerStatsData();
             }
         }
+
+#endif
     }
 
     public enum GameState
