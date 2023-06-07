@@ -1,5 +1,4 @@
-using System;
-using Data;
+using Lofelt.NiceVibrations;
 using ThirdParty;
 using ThirdParty.uiframework.Window;
 using UI.UIWidgets;

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using DG.Tweening;
 using Game.Managers;
+using Lofelt.NiceVibrations;
 using ThirdParty;
 using TMPro;
 using UnityEngine;
@@ -79,7 +80,6 @@ namespace Game
 
         public void OnPointerUp(PointerEventData eventData)
         {
-            //todo add some effect
             Signals.Get<CellPointerUp>().Dispatch(PositionOnGrid);
         }
 

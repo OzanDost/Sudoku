@@ -8,11 +8,12 @@ namespace UI.Popups
     public class PausePopup : AWindowController
     {
         [SerializeField] private Button resumeButton;
-
+        [SerializeField] private Button backgroundTapButton;
         protected override void Awake()
         {
             base.Awake();
             resumeButton.onClick.AddListener(OnResumeButtonClicked);
+            backgroundTapButton.onClick.AddListener(OnResumeButtonClicked);
         }
 
         private void OnResumeButtonClicked()

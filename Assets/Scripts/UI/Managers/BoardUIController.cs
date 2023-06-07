@@ -1,5 +1,6 @@
 using Data;
 using Game;
+using Lofelt.NiceVibrations;
 using ThirdParty;
 using UI.Enums;
 using UnityEngine;
@@ -45,6 +46,7 @@ namespace UI.Managers
         private void OnCellPointerDown(Vector2Int position)
         {
             SelectedCell = _cellGrid[position.x, position.y];
+            HapticPatterns.PlayPreset(HapticPatterns.PresetType.LightImpact);
         }
 
         private void OnNumberInputMade(int number, NumberInputMode inputMode)

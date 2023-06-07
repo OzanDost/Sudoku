@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Data;
 using DG.Tweening;
 using Game.Managers;
+using Lofelt.NiceVibrations;
 using ThirdParty;
 using ThirdParty.uiframework.Window;
 using UI.Buttons;
@@ -83,21 +84,25 @@ namespace UI.Popups
         private void OnExtremeButtonClicked()
         {
             _difficultySelectedSignal.Dispatch(LevelDifficulty.Extreme);
+            HapticPatterns.PlayPreset(HapticPatterns.PresetType.LightImpact);
         }
 
         private void OnHardButtonClicked()
         {
             _difficultySelectedSignal.Dispatch(LevelDifficulty.Hard);
+            HapticPatterns.PlayPreset(HapticPatterns.PresetType.LightImpact);
         }
 
         private void OnMediumButtonClicked()
         {
             _difficultySelectedSignal.Dispatch(LevelDifficulty.Medium);
+            HapticPatterns.PlayPreset(HapticPatterns.PresetType.LightImpact);
         }
 
         private void OnEasyButtonClicked()
         {
             _difficultySelectedSignal.Dispatch(LevelDifficulty.Easy);
+            HapticPatterns.PlayPreset(HapticPatterns.PresetType.LightImpact);
         }
     }
 }

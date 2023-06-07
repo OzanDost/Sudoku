@@ -1,4 +1,5 @@
 using Game.Managers;
+using Lofelt.NiceVibrations;
 using ThirdParty;
 using ThirdParty.uiframework.Window;
 using UnityEngine;

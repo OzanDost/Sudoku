@@ -42,7 +42,8 @@ namespace Game.Managers
 
         private void ApplyConfigs()
         {
-            Application.targetFrameRate = GlobalGameConfigs.TargetFrameRate;
+            int refreshRate = Screen.currentResolution.refreshRate;
+            Application.targetFrameRate = refreshRate % 60 == 0 ? 60 : Screen.currentResolution.refreshRate;
         }
 
         private void MainMenu_OnContinueButtonClicked()
@@ -109,23 +110,25 @@ namespace Game.Managers
 
         private void OnApplicationQuit()
         {
+#if UNITY_EDITOR
+
             BoardManager.SendLevelSaveRequest();
             SaveManager.SaveHintCount();
             SaveManager.SavePlayerStatsData();
+#endif
         }
 
-#if UNITY_ANDROID || UNITY_IOS
         private void OnApplicationPause(bool pauseStatus)
         {
+#if UNITY_ANDROID || UNITY_IOS
             if (pauseStatus)
             {
                 BoardManager.SendLevelSaveRequest();
                 SaveManager.SaveHintCount();
                 SaveManager.SavePlayerStatsData();
             }
-        }
-
 #endif
+        }
     }
 
     public enum GameState

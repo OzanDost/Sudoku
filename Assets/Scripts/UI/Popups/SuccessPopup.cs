@@ -26,7 +26,6 @@ namespace UI.Popups
         private Sequence _starSequence;
 
 
-        //todo
         protected override void Awake()
         {
             base.Awake();

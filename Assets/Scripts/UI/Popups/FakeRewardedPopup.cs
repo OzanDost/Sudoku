@@ -48,6 +48,7 @@ namespace UI.Popups
                 CloseRequest?.Invoke(this);
                 Properties.failedActionCallBack?.Invoke();
             });
+
         }
 
         private void OnFinishRewarded()
