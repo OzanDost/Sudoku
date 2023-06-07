@@ -33,8 +33,12 @@ namespace Game
             _lastTextColor = numberText.color;
         }
 
+
+        //this should've been split into two methods
+        //it does both erasing wrong cells and regular filling
         public void GetFilled(int number, bool filledByPlayer)
         {
+            int previousNumber = Number;
             Number = number;
             string fill = number == 0 ? "" : number.ToString();
             numberText.SetText(fill);
@@ -42,12 +46,14 @@ namespace Game
             EraseCellNotes();
 
             Signals.Get<CellFilled>().Dispatch(this, filledByPlayer);
-            if (filledByPlayer && number != 0)
+
+            if (filledByPlayer)
             {
                 Signals.Get<UndoableActionMade>()
                     .Dispatch(new UndoableAction(() =>
                     {
-                        GetFilled(0, false);
+                        int undoNumber = number == 0 ? previousNumber : 0;
+                        GetFilled(undoNumber, false);
                         OnPointerDown(null);
                     }));
             }
@@ -208,13 +214,11 @@ namespace Game
                 .OnKill(() => numberText.rectTransform.localScale = Vector3.one);
         }
 
-        public bool EraseCellNumber()
+        public bool CanEraseCellNumber()
         {
-            if (!IsWrongNumber) return false;
-            IsWrongNumber = false;
+            if (!IsWrongNumber || Number == 0) return false;
             return true;
         }
-
 
         public void OnWrongNumberPlaced()
         {

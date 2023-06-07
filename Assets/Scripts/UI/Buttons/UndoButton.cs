@@ -26,7 +26,7 @@ namespace UI.Buttons
             _rotateSequence = DOTween.Sequence();
             _rotateSequence
                 .Join(undoIcon.DOScale(_initalIconScale + 0.1f, 0.1f))
-                .Join(undoIcon.DORotate(new Vector3(0f, 0f, 360), 0.5f, RotateMode.FastBeyond360).SetEase(Ease.Linear))
+                .Join(undoIcon.DORotate(new Vector3(0f, 0f, 360), 0.3f, RotateMode.FastBeyond360).SetEase(Ease.Linear))
                 .Join(undoIcon.DOScale(_initalIconScale, 0.15f));
         }
 

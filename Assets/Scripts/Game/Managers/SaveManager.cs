@@ -7,10 +7,6 @@ namespace Game.Managers
 {
     public static class SaveManager
     {
-        private static PlayerStatsData _playerStatsData;
-        private static int _remainingHintCount;
-        private static BoardStateSaveData _continueLevelData;
-
         private const string ContinueLevelJson = "continueLevelJson";
         private const string HintDataJson = "hintData";
         private const string PlayerStatDataJson = "playerStatDataJson";

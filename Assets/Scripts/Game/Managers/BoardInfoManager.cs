@@ -15,7 +15,7 @@ namespace Game.Managers
         private IEnumerator _timerRoutine;
         private TimeSpan _oneSecondSpan;
         private WaitForSeconds _oneSecondWait;
-        private ASignal<TimeSpan, int, int> BoardInfoUpdatedSignal;
+        private ASignal<TimeSpan, int, int> _boardInfoUpdatedSignal;
 
         private void Awake()
         {
@@ -32,7 +32,7 @@ namespace Game.Managers
 
             _oneSecondSpan = new TimeSpan(0, 0, 1);
             _oneSecondWait = new WaitForSeconds(1);
-            BoardInfoUpdatedSignal = Signals.Get<BoardInfoUpdated>();
+            _boardInfoUpdatedSignal = Signals.Get<BoardInfoUpdated>();
         }
 
         private void OnScoreUpdated(int newScore, bool isInstant)
@@ -96,7 +96,7 @@ namespace Game.Managers
         {
             if (!filledByPlayer) return;
             _mistakeCount++;
-            BoardInfoUpdatedSignal.Dispatch(_currentPlayTime, _currentScore, _mistakeCount);
+            _boardInfoUpdatedSignal.Dispatch(_currentPlayTime, _currentScore, _mistakeCount);
             if (_mistakeCount >= GlobalGameConfigs.MistakeLimit)
             {
                 Signals.Get<LevelFailed>().Dispatch();
@@ -114,7 +114,7 @@ namespace Game.Managers
             _currentScore = data.score;
             _mistakeCount = data.mistakes;
 
-            BoardInfoUpdatedSignal?.Dispatch(_currentPlayTime, _currentScore, _mistakeCount);
+            _boardInfoUpdatedSignal?.Dispatch(_currentPlayTime, _currentScore, _mistakeCount);
         }
 
         private void StartTimer()
@@ -136,7 +136,7 @@ namespace Game.Managers
             while (true)
             {
                 _currentPlayTime = _currentPlayTime.Add(_oneSecondSpan);
-                BoardInfoUpdatedSignal.Dispatch(_currentPlayTime, _currentScore, _mistakeCount);
+                _boardInfoUpdatedSignal.Dispatch(_currentPlayTime, _currentScore, _mistakeCount);
                 yield return _oneSecondWait;
             }
         }

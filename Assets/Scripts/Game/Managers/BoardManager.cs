@@ -1,8 +1,8 @@
 using System.Collections.Generic;
+using System.Linq;
 using Data;
 using ThirdParty;
 using UI.Data;
-using UI.Managers;
 using UnityEngine;
 
 namespace Game.Managers
@@ -43,9 +43,11 @@ namespace Game.Managers
 
         private static void OnNoteUpdatedOnCell(Cell cell, int number)
         {
-            //todo add comment here
-            NoteSaveData noteSaveData = Notes[cell.PositionOnGrid.x, cell.PositionOnGrid.y];
-            noteSaveData.notes[number - 1] = !noteSaveData.notes[number - 1];
+            //flipping the note toggle of the number on the cell
+            //just for save purposes
+
+            Notes[cell.PositionOnGrid.x, cell.PositionOnGrid.y].notes[number - 1] =
+                !Notes[cell.PositionOnGrid.x, cell.PositionOnGrid.y].notes[number - 1];
         }
 
         private static void OnLevelLoaded(LevelData levelData, bool fromContinue)
@@ -175,7 +177,7 @@ namespace Game.Managers
         private static void OnEraseRequested(Cell cell)
         {
             bool deletedNotes = cell.EraseCellNotes();
-            bool deletedNumber = cell.EraseCellNumber();
+            bool deletedNumber = cell.CanEraseCellNumber();
 
             if (deletedNotes || deletedNumber)
             {
@@ -188,34 +190,20 @@ namespace Game.Managers
 
         private static void DispatchColorizationList(Vector2Int position)
         {
-            HashSet<Vector2Int> positionsToDispatch = new HashSet<Vector2Int>();
+            HashSet<Vector2Int> boxPositions = new HashSet<Vector2Int>(Utils.GetBox(position));
 
-            List<Vector2Int> boxPositions = Utils.GetBox(position);
-            foreach (var boxPosition in boxPositions)
-            {
-                positionsToDispatch.Add(boxPosition);
-            }
+            HashSet<Vector2Int> rowPositions = new HashSet<Vector2Int>(Utils.GetRow(position));
+            rowPositions.ExceptWith(boxPositions);
 
-            List<Vector2Int> rowPositions = Utils.GetRow(position);
-            foreach (var rowPosition in rowPositions)
-            {
-                positionsToDispatch.Add(rowPosition);
-            }
-
-            List<Vector2Int> columnPositions = Utils.GetColumn(position);
-            foreach (var colPosition in columnPositions)
-            {
-                positionsToDispatch.Add(colPosition);
-            }
+            HashSet<Vector2Int> columnPositions = new HashSet<Vector2Int>(Utils.GetColumn(position));
+            columnPositions.ExceptWith(boxPositions);
+            columnPositions.ExceptWith(rowPositions);
 
             List<Vector2Int> sameNumberPositions = GetSameNumbersOnBoard(position);
-            foreach (var sameNumberPosition in sameNumberPositions)
-            {
-                positionsToDispatch.Add(sameNumberPosition);
-            }
 
             ColorizationData colorizationData =
-                new ColorizationData(boxPositions, rowPositions, columnPositions, sameNumberPositions);
+                new ColorizationData(boxPositions.ToList(), rowPositions.ToList(), columnPositions.ToList(),
+                    sameNumberPositions);
 
             Signals.Get<TapColorizationListDispatched>().Dispatch(colorizationData, position);
         }

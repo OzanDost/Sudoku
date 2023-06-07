@@ -10,9 +10,7 @@ namespace Game.Managers
     public class LevelManager : MonoBehaviour
     {
         private const string LevelSaveDataPath = "LevelSaveDatas";
-
-        [SerializeField] private bool debugTestLevel;
-
+        
         [ShowIf("debugTestLevel")]
         [AssetSelector(Paths = "Assets/Resources/LevelSaveDatas")]
         [SerializeField] private LevelSaveData testLevel;
@@ -38,20 +36,6 @@ namespace Game.Managers
             }
         }
 
-        //todo remove later
-
-        private LevelData _loadedLevel;
-
-        private void Update()
-        {
-#if UNITY_EDITOR
-            if (Input.GetKeyDown(KeyCode.S))
-            {
-                Signals.Get<BoardFilledSuccessfully>().Dispatch(_loadedLevel);
-            }
-#endif
-        }
-
         public void CreateLevel(LevelDifficulty levelDifficulty, bool retryLevel = false)
         {
             LevelData levelData = null;
@@ -63,22 +47,10 @@ namespace Game.Managers
                 Signals.Get<LevelLoaded>().Dispatch(levelData, false);
                 return;
             }
-
-#if UNITY_EDITOR
-
-            if (debugTestLevel)
-            {
-                targetLevelSaveData = testLevel;
-                levelData = GetLevelData(targetLevelSaveData);
-                Signals.Get<LevelLoaded>().Dispatch(levelData, false);
-                return;
-            }
-#endif
-
+            
             targetLevelSaveData = _categoryLevelDictionary[levelDifficulty].GetRandomElement();
             levelData = GetLevelData(targetLevelSaveData);
             Signals.Get<LevelLoaded>().Dispatch(levelData, false);
-            _loadedLevel = levelData;
             _lastActiveLevel = targetLevelSaveData;
         }
 
@@ -88,7 +60,6 @@ namespace Game.Managers
             _lastActiveLevel = _levelList.Find(x => x.id == boardState.levelData.id);
             Signals.Get<LevelContinued>().Dispatch(boardState);
             Signals.Get<LevelLoaded>().Dispatch(boardState.levelData, true);
-            _loadedLevel = boardState.levelData;
         }
 
         public void RetryLevel()

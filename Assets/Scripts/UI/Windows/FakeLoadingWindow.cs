@@ -9,7 +9,7 @@ namespace UI.Windows
     {
         [SerializeField] private ThreeDots threeDots;
 
-        private float _fakeLoadDuration = 5f;
+        private readonly float _fakeLoadDuration = 5f;
 
         protected override void OnPropertiesSet()
         {

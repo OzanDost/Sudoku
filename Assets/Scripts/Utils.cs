@@ -100,11 +100,10 @@ public static class Utils
     }
 
 
-    public static int GetRoundedCellDistance(Vector2Int position1, Vector2Int position2)
+    private static int GetRoundedCellDistance(Vector2Int position1, Vector2Int position2)
     {
         return Mathf.RoundToInt(Vector2.Distance(position1, position2));
     }
-
 
     public static bool IsSameDistanceToBox(Vector2Int cell1, Vector2Int cell2, Vector2Int boxCellPosition)
     {

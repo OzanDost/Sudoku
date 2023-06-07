@@ -9,7 +9,6 @@ namespace UI.UIWidgets
 {
     public class BoardInfoWidget : MonoBehaviour
     {
-        [SerializeField] private RectTransform rectTransform;
         [SerializeField] private TextMeshProUGUI difficultyText;
         [SerializeField] private TextMeshProUGUI scoreText;
         [SerializeField] private TextMeshProUGUI durationText;

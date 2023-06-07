@@ -239,7 +239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbe69eb2f66b4b8994cae9e2eb1459f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationSpeed: 3
+  animationSpeed: 1.5
   subtractedScale: 0.1
 --- !u!1 &2743006252632733702
 GameObject:
@@ -1016,7 +1016,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbe69eb2f66b4b8994cae9e2eb1459f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationSpeed: 3
+  animationSpeed: 1.5
   subtractedScale: 0.1
 --- !u!1 &7619202470297307529
 GameObject:

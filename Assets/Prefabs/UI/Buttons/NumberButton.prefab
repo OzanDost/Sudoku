@@ -136,7 +136,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33ec430e62924d68bf3edb04990909f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rectTransform: {fileID: 7453780719000645382}
   button: {fileID: 3467216225633036475}
   number: 0
   numberText: {fileID: 7895303807835665875}
@@ -152,7 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbe69eb2f66b4b8994cae9e2eb1459f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationSpeed: 3
+  animationSpeed: 1
   subtractedScale: 0.1
 --- !u!1 &8778068444415048077
 GameObject:

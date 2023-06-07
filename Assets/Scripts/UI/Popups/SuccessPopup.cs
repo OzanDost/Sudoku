@@ -39,7 +39,6 @@ namespace UI.Popups
             leftParticle.Play();
             rightParticle.Play();
 
-            scoreText.text = $"Score: {Properties.score}";
             durationText.text = $"Duration: {Properties.duration}";
             difficultyText.text = $"Difficulty: {Properties.difficulty}";
 

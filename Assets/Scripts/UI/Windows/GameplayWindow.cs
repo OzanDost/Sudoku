@@ -8,13 +8,12 @@ using UnityEngine.UI;
 
 namespace UI.Windows
 {
-    public class GameplayWindow : AWindowController<GameplayWindowProperties>
+    public class GameplayWindow : AWindowController
     {
         [SerializeField] private RectTransform boardGridContainer;
         [SerializeField] private NumberInputWidget numberInputWidget;
         [SerializeField] private Button pauseButton;
         [SerializeField] private Button quitButton;
-        [SerializeField] private BoardInfoWidget boardInfoWidget;
 
         protected override void Awake()
         {
@@ -37,27 +36,6 @@ namespace UI.Windows
         {
             base.OnPropertiesSet();
             numberInputWidget.Initialize(boardGridContainer);
-        }
-
-        private void Update()
-        {
-#if UNITY_EDITOR
-            if (Input.GetKeyDown(KeyCode.U))
-            {
-                Signals.Get<UndoRequested>().Dispatch();
-            }
-#endif
-        }
-    }
-
-    [Serializable]
-    public class GameplayWindowProperties : WindowProperties
-    {
-        public LevelData levelData;
-
-        public GameplayWindowProperties(LevelData levelData)
-        {
-            this.levelData = levelData;
         }
     }
 }

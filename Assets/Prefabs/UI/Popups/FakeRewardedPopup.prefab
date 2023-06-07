@@ -497,6 +497,7 @@ GameObject:
   - component: {fileID: 1530603719391686451}
   - component: {fileID: 4521040823978865724}
   - component: {fileID: 7609591180379661324}
+  - component: {fileID: 6664339330296085614}
   m_Layer: 5
   m_Name: CloseRewardedButton
   m_TagString: Untagged
@@ -607,6 +608,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6664339330296085614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7540815535651543307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe69eb2f66b4b8994cae9e2eb1459f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animationSpeed: 1.5
+  subtractedScale: 0.1
 --- !u!1 &7633095124715605579
 GameObject:
   m_ObjectHideFlags: 0
@@ -856,6 +871,7 @@ GameObject:
   - component: {fileID: 6420140922899877846}
   - component: {fileID: 3750511605387747033}
   - component: {fileID: 1852411675513167714}
+  - component: {fileID: 2473683352444936497}
   m_Layer: 5
   m_Name: FinishWatchingButton
   m_TagString: Untagged
@@ -966,3 +982,17 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2473683352444936497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8863706922176573194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe69eb2f66b4b8994cae9e2eb1459f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animationSpeed: 1.5
+  subtractedScale: 0.1

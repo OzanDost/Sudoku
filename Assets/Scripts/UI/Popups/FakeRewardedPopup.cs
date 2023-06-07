@@ -43,7 +43,11 @@ namespace UI.Popups
         private void OnCloseRewarded()
         {
             failedToFinishText.SetActive(true);
-            _delayedCloseTween = DOVirtual.DelayedCall(2f, () => { CloseRequest?.Invoke(this); });
+            _delayedCloseTween = DOVirtual.DelayedCall(2f, () =>
+            {
+                CloseRequest?.Invoke(this);
+                Properties.failedActionCallBack?.Invoke();
+            });
         }
 
         private void OnFinishRewarded()

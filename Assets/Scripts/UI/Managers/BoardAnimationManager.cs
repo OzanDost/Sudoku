@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Data;
 using DG.Tweening;
 using Game;
 using ThirdParty;
@@ -36,6 +37,7 @@ namespace UI.Managers
 
         private void Awake()
         {
+            Signals.Get<LevelLoaded>().AddListener(OnLevelLoaded);
             Signals.Get<TapColorizationListDispatched>().AddListener(OnTapColorizationListDispatched);
             Signals.Get<CellsConfigured>().AddListener(OnCellsConfigured);
             Signals.Get<WrongNumberPlaced>().AddListener(OnWrongNumberPlaced);
@@ -43,6 +45,12 @@ namespace UI.Managers
             Signals.Get<SameNumberListDispatched>().AddListener(OnSameNumberListDispatched);
             Signals.Get<ElementsFilled>().AddListener(OnElementsFilled);
 
+            _lastColorizedCellPosition = new Vector2Int(-1, -1);
+            _lastColorizedCellPositions = new List<Vector2Int>(21);
+        }
+
+        private void OnLevelLoaded(LevelData levelData, bool fromContinue)
+        {
             _lastColorizedCellPosition = new Vector2Int(-1, -1);
             _lastColorizedCellPositions = new List<Vector2Int>(21);
         }
@@ -75,12 +83,12 @@ namespace UI.Managers
 
             List<Vector2Int> allCells = new List<Vector2Int>(14) { mainCellPosition };
             allCells.AddRange(colorizationData.sameNumberPositions);
-            
+
             CreateAndAddToList(colorizationData.boxPositions, ref allCells);
-            
+
             List<Vector2Int> rowCells = CreateAndAddToList(colorizationData.rowPositions, ref allCells);
             rowCells = SortCellsByDistanceToBoxCenter(rowCells, mainCellPosition);
-            
+
             List<Vector2Int> columnCells = CreateAndAddToList(colorizationData.columnPositions, ref allCells);
             columnCells = SortCellsByDistanceToBoxCenter(columnCells, mainCellPosition);
 

@@ -61,7 +61,7 @@ namespace UI.Managers
             {
                 _uiFrame.CloseWindow("DifficultySelectorPopup");
                 _uiFrame.CloseWindow("MainMenuWindow");
-                _uiFrame.OpenWindow("GameplayWindow", new GameplayWindowProperties(data));
+                _uiFrame.OpenWindow("GameplayWindow");
             }
         }
 
