@@ -73,7 +73,7 @@ namespace UI.Managers
             FillTheCells(levelData);
             SelectedCell = null;
 
-            Signals.Get<LevelBoardConfigured>().Dispatch(levelData);
+            Signals.Get<LevelBoardConfiguredForUI>().Dispatch(levelData);
 
             _cellGrid = new Cell[9, 9];
             foreach (var cell in cells)

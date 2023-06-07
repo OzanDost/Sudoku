@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using DG.Tweening;
 using Game.Managers;
-using Lofelt.NiceVibrations;
 using ThirdParty;
 using TMPro;
 using UnityEngine;
@@ -43,6 +42,7 @@ namespace Game
             Number = number;
             string fill = number == 0 ? "" : number.ToString();
             numberText.SetText(fill);
+            
 
             EraseCellNotes();
 

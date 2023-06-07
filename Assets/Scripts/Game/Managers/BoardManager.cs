@@ -89,6 +89,8 @@ namespace Game.Managers
 
             int solution = GetSolutionForCell(cell);
             cell.GetFilled(solution, true);
+            Signals.Get<CellColorResetRequested>().Dispatch(cell);
+
             Signals.Get<HintUsed>().Dispatch();
         }
 

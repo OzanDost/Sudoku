@@ -44,6 +44,7 @@ namespace UI.Managers
             Signals.Get<CellEraseResponseSent>().AddListener(OnCellEraseResponseSent);
             Signals.Get<SameNumberListDispatched>().AddListener(OnSameNumberListDispatched);
             Signals.Get<ElementsFilled>().AddListener(OnElementsFilled);
+            Signals.Get<CellColorResetRequested>().AddListener(OnCellColorResetRequested);
 
             _lastColorizedCellPosition = new Vector2Int(-1, -1);
             _lastColorizedCellPositions = new List<Vector2Int>(21);
@@ -242,6 +243,11 @@ namespace UI.Managers
             {
                 cell.ColorizeCell(defaultCellColor, correctNumberColor, 0);
             }
+        }
+
+        private void OnCellColorResetRequested(Cell cell)
+        {
+            cell.ColorizeCell(selectedCellColor, correctNumberColor, 0);
         }
     }
 }

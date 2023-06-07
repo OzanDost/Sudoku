@@ -24,7 +24,7 @@ namespace UI.Managers
 
             // Subscribing to events
             Signals.Get<GameStateChanged>().AddListener(GameManager_OnGameStateChanged);
-            Signals.Get<LevelBoardConfigured>().AddListener(OnLevelBoardConfigured);
+            Signals.Get<LevelBoardConfiguredForUI>().AddListener(OnLevelBoardConfigured);
             Signals.Get<LevelSuccess>().AddListener(OnLevelSuccess);
             Signals.Get<PausePopupRequested>().AddListener(OnPausePopupRequested);
             Signals.Get<NewGameButtonClicked>().AddListener(OnNewGameButtonClicked);

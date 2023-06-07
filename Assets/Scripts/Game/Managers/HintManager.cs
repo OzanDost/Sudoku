@@ -13,8 +13,6 @@ namespace Game.Managers
             Signals.Get<BoardReady>().AddListener(OnLevelLoaded);
             Signals.Get<HintRequested>().AddListener(OnHintRequested);
             Signals.Get<HintUsed>().AddListener(OnHintUsed);
-
-            _remainingHints = SaveManager.RemainingHintCount;
         }
 
         private void OnHintRequested(Cell cell)
@@ -51,6 +49,7 @@ namespace Game.Managers
                 if (_remainingHints <= 0) _remainingHints = GlobalGameConfigs.HintOnNewLevel;
             }
 
+            _remainingHints = SaveManager.RemainingHintCount;
             Signals.Get<HintCountUpdated>().Dispatch(_remainingHints);
         }
 
