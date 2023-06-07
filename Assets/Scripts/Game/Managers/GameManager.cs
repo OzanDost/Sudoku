@@ -27,6 +27,7 @@ namespace Game.Managers
             Signals.Get<LevelRetryRequested>().AddListener(OnLevelRetryRequested);
             Signals.Get<LevelSuccess>().AddListener(OnLevelSuccess);
             Signals.Get<LevelDifficultySelected>().AddListener(OnLevelDifficultySelected);
+            Signals.Get<ReturnToMenuRequested>().AddListener(OnReturnToMenuRequested);
 
             ChangeGameState(GameState.Loading);
 
@@ -60,6 +61,11 @@ namespace Game.Managers
         private void OnLevelSuccess(LevelSuccessData data)
         {
             ChangeGameState(GameState.Success);
+        }
+
+        private void OnReturnToMenuRequested()
+        {
+            BoardManager.SendLevelSaveRequest();
         }
 
         private void OnLevelQuit()

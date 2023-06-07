@@ -54,7 +54,7 @@ namespace Game.Managers
 
         private static bool HasContinueLevel()
         {
-            return PlayerPrefs.HasKey(ContinueLevelJson);
+            return !string.IsNullOrEmpty(PlayerPrefs.GetString(ContinueLevelJson));
         }
 
         public static bool CanContinueLevel()
@@ -64,6 +64,7 @@ namespace Game.Managers
 
         public static void SaveContinueLevel()
         {
+            if (!CanContinueLevel()) return;
             string json = JsonUtility.ToJson(CurrentBoardStateSaveData);
             PlayerPrefs.SetString(ContinueLevelJson, json);
         }
@@ -81,7 +82,7 @@ namespace Game.Managers
         public static void ClearContinueLevelSaveData()
         {
             CurrentBoardStateSaveData = null;
-            PlayerPrefs.DeleteKey(ContinueLevelJson);
+            // PlayerPrefs.DeleteKey(ContinueLevelJson);
         }
 
         public static int GetHintCountFromSave()

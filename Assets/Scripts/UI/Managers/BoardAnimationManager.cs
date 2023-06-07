@@ -241,7 +241,7 @@ namespace UI.Managers
         {
             foreach (var cell in _cells)
             {
-                cell.ColorizeCell(defaultCellColor, correctNumberColor, 0);
+                cell.ColorizeCell(defaultCellColor, null, 0);
             }
         }
 

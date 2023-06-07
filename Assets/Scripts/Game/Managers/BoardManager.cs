@@ -90,7 +90,6 @@ namespace Game.Managers
             int solution = GetSolutionForCell(cell);
             cell.GetFilled(solution, true);
             Signals.Get<CellColorResetRequested>().Dispatch(cell);
-
             Signals.Get<HintUsed>().Dispatch();
         }
 
@@ -124,6 +123,10 @@ namespace Game.Managers
                     Signals.Get<WrongNumberPlaced>().Dispatch(cell, filledByPlayer);
                     cell.OnWrongNumberPlaced();
                 }
+            }
+            else
+            {
+                cell.ToggleWrongNumber(false);
             }
 
 
@@ -184,6 +187,7 @@ namespace Game.Managers
             if (deletedNotes || deletedNumber)
             {
                 cell.GetFilled(0, true);
+                cell.ToggleWrongNumber(false);
                 LevelGrid[cell.PositionOnGrid.x, cell.PositionOnGrid.y] = 0;
             }
 

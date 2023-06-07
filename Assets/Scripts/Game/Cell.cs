@@ -222,7 +222,12 @@ namespace Game
 
         public void OnWrongNumberPlaced()
         {
-            IsWrongNumber = true;
+            ToggleWrongNumber(true);
+        }
+
+        public void ToggleWrongNumber(bool isWrongNumber)
+        {
+            IsWrongNumber = isWrongNumber;
         }
     }
 }
