@@ -3,8 +3,10 @@ using Coffee.UIExtensions;
 using Data;
 using deVoid.UIFramework;
 using deVoid.Utils;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace UI.Windows
@@ -19,7 +21,11 @@ namespace UI.Windows
         [SerializeField] private UIParticle leftParticle;
         [SerializeField] private UIParticle rightParticle;
 
-        private float _targetScore;
+        [SerializeField] private RectTransform[] stars;
+
+        private Tween _scoreTween;
+        private Sequence _starSequence;
+
 
         //todo
         protected override void Awake()
@@ -37,6 +43,32 @@ namespace UI.Windows
             scoreText.text = $"Score: {Properties.score}";
             durationText.text = $"Duration: {Properties.duration}";
             difficultyText.text = $"Difficulty: {Properties.difficulty}";
+
+            foreach (var star in stars)
+            {
+                star.gameObject.SetActive(false);
+            }
+
+            _starSequence = DOTween.Sequence();
+            foreach (var star in stars)
+            {
+                _starSequence.Append(star.DOScale(1, 0.4f).From(2.3f).SetEase(Ease.InExpo)
+                    .OnStart(() => star.gameObject.SetActive(true)));
+            }
+
+            int startNumber = 0;
+
+            _scoreTween = DOTween.To(() => startNumber, x => startNumber = x, Properties.score, 2f)
+                .SetEase(Ease.InOutExpo)
+                .OnUpdate(() => { scoreText.SetText($"Score: {startNumber}"); });
+        }
+
+        protected override void On_UIClose()
+        {
+            base.On_UIClose();
+
+            _starSequence?.Kill(true);
+            _scoreTween?.Kill(true);
         }
 
         private void OnContinueButtonClicked()

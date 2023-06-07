@@ -120,7 +120,7 @@ namespace Game.Managers
             {
                 // BoardManager.SendLevelSaveRequest();
                 SaveManager.SaveHintCount();
-                SaveManager.SavePlayerStatsData();
+                // SaveManager.SavePlayerStatsData();
             }
         }
     }

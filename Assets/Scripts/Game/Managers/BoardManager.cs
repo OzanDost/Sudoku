@@ -15,9 +15,13 @@ namespace Game.Managers
 
         private static LevelData CurrentLevelData { get; set; }
 
+        private static bool HasData { get; set; }
+
         public static void Initialize()
         {
             Signals.Get<LevelLoaded>().AddListener(OnLevelLoaded);
+            Signals.Get<LevelSuccess>().AddListener(OnLevelSuccess);
+            Signals.Get<LevelFailed>().AddListener(OnLevelFailed);
             Signals.Get<CellPointerDown>().AddListener(OnCellPointerDown);
             Signals.Get<CellPointerUp>().AddListener(OnCellPointerUp);
             Signals.Get<CellFilled>().AddListener(OnCellFilled);
@@ -25,6 +29,15 @@ namespace Game.Managers
             Signals.Get<HintAuthorized>().AddListener(OnHintAuthorized);
             Signals.Get<EraseRequested>().AddListener(OnEraseRequested);
             Signals.Get<NoteUpdatedOnCell>().AddListener(OnNoteUpdatedOnCell);
+        }
+
+        private static void ResetValues()
+        {
+            LevelGrid = null;
+            SolutionGrid = null;
+            Notes = null;
+            CurrentLevelData = null;
+            HasData = false;
         }
 
         private static void OnNoteUpdatedOnCell(Cell cell, int number)
@@ -40,6 +53,7 @@ namespace Game.Managers
             SolutionGrid = Utils.ArrayToGrid(levelData.solutionGrid);
             CurrentLevelData = levelData;
             FetchNoteData(levelData, fromContinue);
+            HasData = true;
 
             Signals.Get<BoardReady>().Dispatch(levelData, fromContinue);
         }
@@ -93,7 +107,11 @@ namespace Game.Managers
 
         private static void OnCellFilled(Cell cell, bool filledByPlayer)
         {
+            if (!HasData) return;
             bool isCorrectPlacement = IsCorrectPlacement(cell.PositionOnGrid, cell.Number);
+
+            LevelGrid[cell.PositionOnGrid.x, cell.PositionOnGrid.y] = cell.Number;
+
             if (!isCorrectPlacement)
             {
                 if (cell.Number != 0)
@@ -103,7 +121,6 @@ namespace Game.Managers
                 }
             }
 
-            LevelGrid[cell.PositionOnGrid.x, cell.PositionOnGrid.y] = cell.Number;
 
             if (filledByPlayer && isCorrectPlacement)
             {
@@ -124,6 +141,7 @@ namespace Game.Managers
 
         private static bool IsBoardFull()
         {
+            if (!HasData) return false;
             int dimensionSize = LevelGrid.GetLength(0);
 
             for (int i = 0; i < dimensionSize; i++)
@@ -224,6 +242,16 @@ namespace Game.Managers
             }
 
             return numberPositions;
+        }
+
+        private static void OnLevelFailed()
+        {
+            ResetValues();
+        }
+
+        private static void OnLevelSuccess(LevelSuccessData levelSuccessData)
+        {
+            ResetValues();
         }
     }
 }

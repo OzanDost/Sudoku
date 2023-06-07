@@ -22,11 +22,7 @@ namespace Game.Managers
 
         public static void Initialize()
         {
-            PlayerStatsData = GetPlayerStatsDataFromSave();
-            if (PlayerStatsData is null)
-            {
-                PlayerStatsData = new PlayerStatsData(new List<LevelSuccessData>());
-            }
+            PlayerStatsData = GetPlayerStatsDataFromSave() ?? new PlayerStatsData(new List<LevelSuccessData>());
 
             if (HasContinueLevel())
             {
@@ -121,7 +117,7 @@ namespace Game.Managers
 
         public static void SavePlayerStatsData()
         {
-            string json = JsonUtility.ToJson(PlayerStatDataJson);
+            string json = JsonUtility.ToJson(PlayerStatsData);
             PlayerPrefs.SetString(PlayerStatDataJson, json);
         }
     }

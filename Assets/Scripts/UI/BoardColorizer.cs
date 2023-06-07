@@ -243,7 +243,7 @@ namespace UI
         {
             foreach (var cell in _cells)
             {
-                cell.SetBackgroundColor(defaultCellColor);
+                cell.ColorizeCell(defaultCellColor, correctNumberColor, 0);
             }
         }
     }

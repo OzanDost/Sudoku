@@ -77,12 +77,6 @@ namespace Game
             Signals.Get<CellPointerUp>().Dispatch(PositionOnGrid);
         }
 
-        public void SetBackgroundColor(Color color)
-        {
-            cellBackground.color = color;
-        }
-
-
         public void AddNote(int number, bool shouldAddToUndoStack)
         {
             GameObject targetNote = noteNumbers[number - 1];

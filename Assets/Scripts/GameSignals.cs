@@ -63,7 +63,6 @@ public class GamePaused : ASignal<bool>{}
 public class GameUnpaused : ASignal{}
 public class PausePopupClosed : ASignal{}
 public class PausePopupRequested : ASignal{}
-
 public class BoardFilledSuccessfully : ASignal<LevelData>{}
 
 
