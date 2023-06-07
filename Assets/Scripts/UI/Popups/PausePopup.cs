@@ -1,5 +1,5 @@
-using deVoid.UIFramework;
-using deVoid.Utils;
+using ThirdParty;
+using ThirdParty.uiframework.Window;
 using UnityEngine;
 using UnityEngine.UI;
 

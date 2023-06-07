@@ -1,12 +1,12 @@
 ﻿#if UNITY_EDITOR
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
 
-namespace Coffee.UIExtensions
+namespace ThirdParty.Coffee.UIExtensions.UIEffect.Scripts.Common
 {
 	public class MaterialResolver
 	{

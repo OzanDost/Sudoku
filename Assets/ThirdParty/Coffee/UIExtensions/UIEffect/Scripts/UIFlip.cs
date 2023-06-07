@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using BaseMeshEffect = ThirdParty.Coffee.UIExtensions.UIEffect.Scripts.Common.BaseMeshEffect;
 
-namespace Coffee.UIExtensions
+namespace ThirdParty.Coffee.UIExtensions.UIEffect.Scripts
 {
 
 	//[RequireComponent(typeof(Graphic))]
@@ -25,13 +24,13 @@ namespace Coffee.UIExtensions
 		// Public Members.
 		//################################
 		/// <summary>
-		/// Gets or sets a value indicating whether this <see cref="Coffee.UIExtensions.UIFlip"/> should be flipped horizontally.
+		/// Gets or sets a value indicating whether this <see cref="UIFlip"/> should be flipped horizontally.
 		/// </summary>
 		/// <value><c>true</c> if be flipped horizontally; otherwise, <c>false</c>.</value>
 		public bool horizontal { get { return this.m_Horizontal; } set { this.m_Horizontal = value; SetVerticesDirty (); } }
 
 		/// <summary>
-		/// Gets or sets a value indicating whether this <see cref="Coffee.UIExtensions.UIFlip"/> should be flipped vertically.
+		/// Gets or sets a value indicating whether this <see cref="UIFlip"/> should be flipped vertically.
 		/// </summary>
 		/// <value><c>true</c> if be flipped horizontally; otherwise, <c>false</c>.</value>
 		public bool vertical { get { return this.m_Veritical; } set { this.m_Veritical = value; SetVerticesDirty (); } }

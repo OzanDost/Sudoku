@@ -1,8 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿using ThirdParty.uiframework.Core;
+using UnityEngine;
 
-namespace deVoid.UIFramework {
+namespace ThirdParty.uiframework.Panel {
     /// <summary>
     /// This Layer controls Panels.
     /// Panels are Screens that have no history or queuing,

@@ -1,4 +1,6 @@
-﻿namespace deVoid.UIFramework {
+﻿using ThirdParty.uiframework.Core;
+
+namespace ThirdParty.uiframework.Panel {
     /// <summary>
     /// Base class for panels that need no special Properties
     /// </summary>

@@ -1,13 +1,13 @@
 using System;
 using Data;
-using deVoid.UIFramework;
-using deVoid.Utils;
 using Game.Managers;
+using ThirdParty;
+using ThirdParty.uiframework;
 using UI.Popups;
 using UI.Windows;
 using UnityEngine;
 
-namespace DefaultNamespace.UI
+namespace UI.Managers
 {
     public class UIManager : MonoBehaviour
     {
@@ -67,8 +67,6 @@ namespace DefaultNamespace.UI
 
         private void GameManager_OnGameStateChanged(GameState oldState, GameState newState)
         {
-            //todo gamestate change for UI
-
             if (newState == GameState.Loading)
             {
                 _uiFrame.OpenWindow("FakeLoadingWindow");

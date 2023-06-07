@@ -1,9 +1,8 @@
-﻿using UnityEngine;
-using UnityEngine.Serialization;
+﻿using ThirdParty.Coffee.UIExtensions.UIEffect.Scripts.Common;
+using UnityEngine;
 using UnityEngine.UI;
 
-
-namespace Coffee.UIExtensions
+namespace ThirdParty.Coffee.UIExtensions.UIEffect.Scripts
 {
 	/// <summary>
 	/// HSV Modifier.

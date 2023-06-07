@@ -1,7 +1,8 @@
-﻿using UnityEditor;
+﻿using ThirdParty.Coffee.UIExtensions.UIEffect.Scripts;
+using UnityEditor;
 using UnityEditor.UI;
 using UnityEngine;
-using DesamplingRate = Coffee.UIExtensions.UIEffectCapturedImage.DesamplingRate;
+using DesamplingRate = ThirdParty.Coffee.UIExtensions.UIEffect.Scripts.UIEffectCapturedImage.DesamplingRate;
 
 namespace Coffee.UIExtensions.Editors
 {

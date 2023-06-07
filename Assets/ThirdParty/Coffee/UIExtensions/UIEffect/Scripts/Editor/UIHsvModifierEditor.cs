@@ -1,7 +1,6 @@
 ﻿using UnityEditor;
-using UnityEditorInternal;
 using UnityEngine;
-using System.Linq;
+using ThirdParty.Coffee.UIExtensions.UIEffect.Scripts;
 
 namespace Coffee.UIExtensions.Editors
 {

@@ -1,7 +1,7 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
+using UnityEngine;
 
-namespace deVoid.UIFramework {
+namespace ThirdParty.uiframework.ScreenTransitions {
     /// <summary>
     /// Screens use ATransitionComponents to animate their in and out transitions.
     /// This can be extended to use Lerps, animations etc.

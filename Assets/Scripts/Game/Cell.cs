@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using deVoid.Utils;
 using DG.Tweening;
 using Game.Managers;
+using ThirdParty;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;

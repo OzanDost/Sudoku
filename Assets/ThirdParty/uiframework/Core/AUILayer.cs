@@ -1,7 +1,7 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
-namespace deVoid.UIFramework {
+namespace ThirdParty.uiframework.Core {
     /// <summary>
     /// Base class for UI Layers. Layers implement custom logic
     /// for Screen types when opening, closing etc.

@@ -1,7 +1,7 @@
-using deVoid.Utils;
+using ThirdParty;
 using UnityEngine;
 
-namespace DefaultNamespace.UI
+namespace UI.Managers
 {
     public class BoardBorderUIController : MonoBehaviour
     {
@@ -55,7 +55,6 @@ namespace DefaultNamespace.UI
             int n = 0;
             for (int i = 0; i < verticalGridLines.Length; i++)
             {
-                // n++;
                 if (i is 2 or 4)
                 {
                     n += 2;
@@ -65,10 +64,8 @@ namespace DefaultNamespace.UI
                     n++;
                 }
 
-
                 float targetX = boardSize / 9f * n - width / 2f;
 
-                // float x = ((2 * n) % 3 == 0 ? 2 * n - 1 : n + 1) * boardSize.x / 8f;
                 verticalGridLines[i].anchoredPosition = new Vector2(targetX, 0);
                 verticalGridLines[i].sizeDelta = new Vector2(width, boardSize);
             }

@@ -1,17 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
+using ThirdParty.Coffee.UIExtensions.UIEffect.Scripts.Common;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
-using System.Collections;
 
-#if UNITY_EDITOR
-using System.IO;
-using System.Linq;
-using UnityEditor;
-#endif
-
-namespace Coffee.UIExtensions
+namespace ThirdParty.Coffee.UIExtensions.UIEffect.Scripts
 {
 	/// <summary>
 	/// UIEffect.

@@ -1,4 +1,6 @@
-﻿namespace deVoid.UIFramework
+﻿using ThirdParty.uiframework.Core;
+
+namespace ThirdParty.uiframework.Window
 {
     /// <summary>
     /// Base implementation for Window ScreenControllers that need no special Properties

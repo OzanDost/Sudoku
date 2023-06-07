@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace Coffee.UIExtensions
+namespace ThirdParty.Coffee.UIExtensions.UIEffect.Scripts.Common
 {
 	/// <summary>
 	/// Area for effect.

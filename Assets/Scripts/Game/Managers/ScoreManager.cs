@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Data;
-using deVoid.Utils;
+using ThirdParty;
 using UnityEngine;
 
 namespace Game.Managers

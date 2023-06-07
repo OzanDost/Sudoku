@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using Data;
-using deVoid.Utils;
-using UI;
+using ThirdParty;
+using UI.Data;
+using UI.Managers;
 using UnityEngine;
 
 namespace Game.Managers

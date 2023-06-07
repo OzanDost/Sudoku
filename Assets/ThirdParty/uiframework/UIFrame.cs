@@ -1,8 +1,11 @@
 ﻿using System;
+using ThirdParty.uiframework.Core;
+using ThirdParty.uiframework.Panel;
+using ThirdParty.uiframework.Window;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace deVoid.UIFramework
+namespace ThirdParty.uiframework
 {
     /// <summary>
     /// This is the centralized access point for all things UI.

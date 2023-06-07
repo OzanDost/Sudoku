@@ -1,11 +1,11 @@
-using deVoid.UIFramework;
-using deVoid.Utils;
+using ThirdParty;
+using ThirdParty.uiframework.Window;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UI.Windows
+namespace UI.Popups
 {
-    public class FailWindow : AWindowController
+    public class FailPopup : AWindowController
     {
         [SerializeField] private Button retryButton;
         [SerializeField] private Button quitButton;

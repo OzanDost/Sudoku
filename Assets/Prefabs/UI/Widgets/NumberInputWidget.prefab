@@ -107,10 +107,6 @@ PrefabInstance:
       value: NumberButton
       objectReference: {fileID: 0}
     - target: {fileID: 7453780719000645382, guid: 5dbbe2feec4b84355b683b787bfa6396, type: 3}
-      propertyPath: m_Pivot.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7453780719000645382, guid: 5dbbe2feec4b84355b683b787bfa6396, type: 3}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}

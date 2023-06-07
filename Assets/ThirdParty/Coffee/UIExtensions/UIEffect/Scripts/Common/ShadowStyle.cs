@@ -1,4 +1,4 @@
-﻿namespace Coffee.UIExtensions
+﻿namespace ThirdParty.Coffee.UIExtensions.UIEffect.Scripts.Common
 {
 	/// <summary>
 	/// Shadow effect style.

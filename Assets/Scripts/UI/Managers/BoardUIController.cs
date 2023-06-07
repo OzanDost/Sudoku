@@ -1,10 +1,10 @@
 using Data;
-using deVoid.Utils;
 using Game;
-using UI.Windows;
+using ThirdParty;
+using UI.Enums;
 using UnityEngine;
 
-namespace UI
+namespace UI.Managers
 {
     public class BoardUIController : MonoBehaviour
     {
@@ -45,44 +45,6 @@ namespace UI
         private void OnCellPointerDown(Vector2Int position)
         {
             SelectedCell = _cellGrid[position.x, position.y];
-        }
-
-
-        //todo for testing only, remove later
-
-        private void Update()
-        {
-#if UNITY_EDITOR
-            //move SelectedCell with arrow keys
-            if (Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                if (SelectedCell == null) return;
-                if (SelectedCell.PositionOnGrid.y - 1 < 0) return;
-                SelectedCell = _cellGrid[SelectedCell.PositionOnGrid.x, SelectedCell.PositionOnGrid.y - 1];
-                SelectedCell.OnPointerDown(null);
-            }
-            else if (Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                if (SelectedCell == null) return;
-                if (SelectedCell.PositionOnGrid.y + 1 > 8) return;
-                SelectedCell = _cellGrid[SelectedCell.PositionOnGrid.x, SelectedCell.PositionOnGrid.y + 1];
-                SelectedCell.OnPointerDown(null);
-            }
-            else if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                if (SelectedCell == null) return;
-                if (SelectedCell.PositionOnGrid.x - 1 < 0) return;
-                SelectedCell = _cellGrid[SelectedCell.PositionOnGrid.x - 1, SelectedCell.PositionOnGrid.y];
-                SelectedCell.OnPointerDown(null);
-            }
-            else if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                if (SelectedCell == null) return;
-                if (SelectedCell.PositionOnGrid.x + 1 > 8) return;
-                SelectedCell = _cellGrid[SelectedCell.PositionOnGrid.x + 1, SelectedCell.PositionOnGrid.y];
-                SelectedCell.OnPointerDown(null);
-            }
-#endif
         }
 
         private void OnNumberInputMade(int number, NumberInputMode inputMode)

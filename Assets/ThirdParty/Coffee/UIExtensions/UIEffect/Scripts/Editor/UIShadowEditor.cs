@@ -1,6 +1,6 @@
-﻿using UnityEditor;
-using UnityEditorInternal;
-using UnityEngine;
+﻿using ThirdParty.Coffee.UIExtensions.UIEffect.Scripts;
+using ThirdParty.Coffee.UIExtensions.UIEffect.Scripts.Common;
+using UnityEditor;
 
 namespace Coffee.UIExtensions.Editors
 {

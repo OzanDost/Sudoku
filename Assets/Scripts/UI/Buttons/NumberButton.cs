@@ -1,20 +1,15 @@
-using deVoid.Utils;
+using ThirdParty;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UI.Windows
+namespace UI.Buttons
 {
     public class NumberButton : MonoBehaviour
     {
-        public RectTransform RectTransform => rectTransform;
-        [SerializeField] private RectTransform rectTransform;
         [SerializeField] private Button button;
         [SerializeField] private int number;
         [SerializeField] private TextMeshProUGUI numberText;
-        
-        //todo for testing only, remove later
-        public Button ButtonForTest => button;
         
         private void Awake()
         {
@@ -25,16 +20,6 @@ namespace UI.Windows
         {
             this.number = number;
             numberText.SetText(number.ToString());
-        }
-
-        public void SetPosition(Vector2 position)
-        {
-            rectTransform.anchoredPosition = position;
-        }
-
-        public void SetSize(Vector2 size)
-        {
-            rectTransform.sizeDelta = size;
         }
         private void OnNumberButtonClicked()
         {

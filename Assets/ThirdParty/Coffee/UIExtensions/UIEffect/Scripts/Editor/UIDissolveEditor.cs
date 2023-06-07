@@ -1,9 +1,8 @@
 ﻿using UnityEditor;
-using UnityEditorInternal;
 using UnityEngine;
 using System.Linq;
-using System.Collections.Generic;
-using UnityEngine.UI;
+using ThirdParty.Coffee.UIExtensions.UIEffect.Scripts;
+using ThirdParty.Coffee.UIExtensions.UIEffect.Scripts.Common;
 
 namespace Coffee.UIExtensions.Editors
 {

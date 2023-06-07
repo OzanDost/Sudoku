@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using Data;
-using deVoid.UIFramework;
-using deVoid.Utils;
 using DG.Tweening;
 using Game.Managers;
+using ThirdParty;
+using ThirdParty.uiframework.Window;
+using UI.Buttons;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UI
+namespace UI.Popups
 {
     public class DifficultySelectorPopup : AWindowController
     {

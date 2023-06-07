@@ -1,7 +1,10 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
+using ThirdParty.uiframework.Panel;
+using ThirdParty.uiframework.ScreenTransitions;
+using ThirdParty.uiframework.Window;
+using UnityEngine;
 
-namespace deVoid.UIFramework
+namespace ThirdParty.uiframework.Core
 {
     /// <summary>
     /// Base implementation for UI Screens. You'll probably want to inherit

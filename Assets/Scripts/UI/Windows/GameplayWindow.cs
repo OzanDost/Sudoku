@@ -1,7 +1,8 @@
 using System;
 using Data;
-using deVoid.UIFramework;
-using deVoid.Utils;
+using ThirdParty;
+using ThirdParty.uiframework.Window;
+using UI.UIWidgets;
 using UnityEngine;
 using UnityEngine.UI;
 

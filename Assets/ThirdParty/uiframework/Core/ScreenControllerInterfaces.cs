@@ -1,6 +1,8 @@
 ﻿using System;
+using ThirdParty.uiframework.Panel;
+using ThirdParty.uiframework.Window;
 
-namespace deVoid.UIFramework {
+namespace ThirdParty.uiframework.Core {
     /// <summary>
     /// Interface that all UI Screens must implement directly or indirectly
     /// </summary>

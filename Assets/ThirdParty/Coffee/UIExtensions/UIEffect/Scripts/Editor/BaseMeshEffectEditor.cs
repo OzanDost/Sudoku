@@ -1,5 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using ThirdParty.Coffee.UIExtensions.UIEffect.Scripts.Common;
 using UnityEditor;
 using UnityEngine;
 

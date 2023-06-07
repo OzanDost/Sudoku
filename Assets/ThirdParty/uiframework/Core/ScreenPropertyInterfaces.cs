@@ -1,4 +1,7 @@
-﻿namespace deVoid.UIFramework
+﻿using ThirdParty.uiframework.Panel;
+using ThirdParty.uiframework.Window;
+
+namespace ThirdParty.uiframework.Core
 {
     /// <summary>
     /// Base interface for all the screen properties

@@ -2,12 +2,14 @@
 using System;
 using System.Collections.Generic;
 using Data;
-using deVoid.Utils;
 using Game;
 using Game.Managers;
-using UI;
-using UI.Windows;
+using ThirdParty;
+using UI.Data;
+using UI.Enums;
+using UI.Managers;
 using UnityEngine;
+using static UI.UIWidgets.NumberInputWidget;
 
 /// <summary>
 /// First param is old state, second is new state

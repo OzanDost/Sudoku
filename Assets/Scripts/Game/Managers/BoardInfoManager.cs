@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using Data;
-using deVoid.Utils;
+using ThirdParty;
 using UnityEngine;
 
 namespace Game.Managers

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Data;
-using deVoid.Utils;
+using ThirdParty;
 
 namespace Game.Managers
 {

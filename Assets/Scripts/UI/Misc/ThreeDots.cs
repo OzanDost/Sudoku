@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace DefaultNamespace.UI.Misc
+namespace UI.Misc
 {
     public class ThreeDots : MonoBehaviour
     {

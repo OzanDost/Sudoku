@@ -1,10 +1,8 @@
-using System;
 using DG.Tweening;
-using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 
-namespace UI
+namespace UI.Buttons
 {
     public class HintButton : AWidgetButton
     {
@@ -45,7 +43,6 @@ namespace UI
             adIcon.SetActive(!hasHint);
         }
 
-        [Button]
         public override void Animate()
         {
             _animationSequence?.Kill(true);

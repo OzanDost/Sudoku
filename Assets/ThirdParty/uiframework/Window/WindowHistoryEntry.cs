@@ -1,4 +1,6 @@
-﻿namespace deVoid.UIFramework {
+﻿using ThirdParty.uiframework.Core;
+
+namespace ThirdParty.uiframework.Window {
     /// <summary>
     /// An entry for controlling window history and queue
     /// </summary>

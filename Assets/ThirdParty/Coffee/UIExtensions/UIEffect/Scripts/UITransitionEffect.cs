@@ -1,8 +1,8 @@
-﻿using UnityEngine;
+﻿using ThirdParty.Coffee.UIExtensions.UIEffect.Scripts.Common;
+using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Serialization;
 
-namespace Coffee.UIExtensions
+namespace ThirdParty.Coffee.UIExtensions.UIEffect.Scripts
 {
 	/// <summary>
 	/// Transition effect.

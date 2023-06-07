@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using BaseMeshEffect = ThirdParty.Coffee.UIExtensions.UIEffect.Scripts.Common.BaseMeshEffect;
 
-namespace Coffee.UIExtensions
+namespace ThirdParty.Coffee.UIExtensions.UIEffect.Scripts
 {
 	/// <summary>
 	/// UIGradient.

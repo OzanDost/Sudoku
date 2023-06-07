@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Linq;
+using ThirdParty.Coffee.UIExtensions.UIEffect.Scripts.Common;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.Rendering;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-namespace Coffee.UIExtensions
+namespace ThirdParty.Coffee.UIExtensions.UIEffect.Scripts
 {
 	/// <summary>
 	/// UIEffectCapturedImage

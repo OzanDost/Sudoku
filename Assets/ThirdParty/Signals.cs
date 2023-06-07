@@ -28,7 +28,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace deVoid.Utils
+namespace ThirdParty
 {
     /// <summary>
     /// Base interface for Signals

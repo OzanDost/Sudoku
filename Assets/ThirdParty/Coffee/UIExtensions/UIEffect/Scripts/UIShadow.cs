@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using ThirdParty.Coffee.UIExtensions.UIEffect.Scripts.Common;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using BaseMeshEffect = ThirdParty.Coffee.UIExtensions.UIEffect.Scripts.Common.BaseMeshEffect;
 
-#if UNITY_EDITOR
-using System.IO;
-using System.Linq;
-using UnityEditor;
-#endif
-
-namespace Coffee.UIExtensions
+namespace ThirdParty.Coffee.UIExtensions.UIEffect.Scripts
 {
 	/// <summary>
 	/// UIEffect.

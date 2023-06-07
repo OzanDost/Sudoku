@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace deVoid.UIFramework.Examples
+namespace ThirdParty.uiframework.ScreenTransitions
 {
     /// <summary>
     /// I have avoided using the Legacy Animation system for ages, but since I know people

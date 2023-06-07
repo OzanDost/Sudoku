@@ -1,8 +1,9 @@
-using deVoid.Utils;
 using Game;
+using ThirdParty;
+using UI.Buttons;
 using UnityEngine;
 
-namespace UI
+namespace UI.UIWidgets
 {
     public class ToolbarWidget : MonoBehaviour
     {

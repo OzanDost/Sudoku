@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using ThirdParty.uiframework.Core;
+using UnityEngine;
 
-namespace deVoid.UIFramework {
+namespace ThirdParty.uiframework.Panel {
     /// <summary>
     /// Properties common to all panels
     /// </summary>

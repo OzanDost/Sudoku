@@ -1,7 +1,7 @@
 using System;
-using deVoid.UIFramework;
-using deVoid.Utils;
 using DG.Tweening;
+using ThirdParty;
+using ThirdParty.uiframework.Window;
 using UnityEngine;
 using UnityEngine.UI;
 

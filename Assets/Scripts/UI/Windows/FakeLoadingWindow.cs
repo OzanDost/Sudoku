@@ -1,9 +1,9 @@
-using DefaultNamespace.UI.Misc;
-using deVoid.UIFramework;
-using deVoid.Utils;
+using ThirdParty;
+using ThirdParty.uiframework.Window;
+using UI.Misc;
 using UnityEngine;
 
-namespace DefaultNamespace.UI
+namespace UI.Windows
 {
     public class FakeLoadingWindow : AWindowController
     {

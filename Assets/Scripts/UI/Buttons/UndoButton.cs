@@ -1,10 +1,8 @@
-using System;
 using DG.Tweening;
-using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UI
+namespace UI.Buttons
 {
     public class UndoButton : AWidgetButton
     {
@@ -22,7 +20,6 @@ namespace UI
             _initalIconScale = undoIcon.localScale.x;
         }
 
-        [Button]
         public override void Animate()
         {
             _rotateSequence?.Kill(true);
@@ -33,7 +30,6 @@ namespace UI
                 .Join(undoIcon.DOScale(_initalIconScale, 0.15f));
         }
 
-        [Button]
         public override void NoFunctionAnimate()
         {
             if (!_isInitialPositionSet)

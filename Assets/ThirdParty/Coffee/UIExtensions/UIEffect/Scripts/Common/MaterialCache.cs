@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-namespace Coffee.UIExtensions
+namespace ThirdParty.Coffee.UIExtensions.UIEffect.Scripts.Common
 {
 	public class MaterialCache
 	{

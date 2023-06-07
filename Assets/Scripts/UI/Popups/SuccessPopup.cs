@@ -1,17 +1,16 @@
 using System;
 using Coffee.UIExtensions;
 using Data;
-using deVoid.UIFramework;
-using deVoid.Utils;
 using DG.Tweening;
+using ThirdParty;
+using ThirdParty.uiframework.Window;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-namespace UI.Windows
+namespace UI.Popups
 {
-    public class SuccessWindow : AWindowController<SuccessWindowProperties>
+    public class SuccessPopup : AWindowController<SuccessWindowProperties>
     {
         [SerializeField] private Button continueButton;
         [SerializeField] private TextMeshProUGUI scoreText;

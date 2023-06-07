@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using ThirdParty.uiframework.Core;
 using UnityEngine;
 
-namespace deVoid.UIFramework
+namespace ThirdParty.uiframework.Window
 {
     /// <summary>
     /// This layer controls all Windows.

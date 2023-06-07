@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-
 #if TMP_PRESENT
 using System.Collections.Generic;
 using TMPro;
@@ -12,7 +11,7 @@ using System.Linq;
 #endif
 #endif
 
-namespace Coffee.UIExtensions
+namespace ThirdParty.Coffee.UIExtensions.UIEffect.Scripts.Common
 {
 	/// <summary>
 	/// Base class for effects that modify the generated Mesh.

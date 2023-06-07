@@ -1,6 +1,6 @@
-using deVoid.UIFramework;
-using deVoid.Utils;
 using Game.Managers;
+using ThirdParty;
+using ThirdParty.uiframework.Window;
 using UnityEngine;
 using UnityEngine.UI;
 

@@ -2,10 +2,9 @@ using Coffee.UIExtensions;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-namespace UI
+namespace UI.Buttons
 {
     public class EraseButton : AWidgetButton
     {

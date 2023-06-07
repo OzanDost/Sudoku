@@ -1,11 +1,11 @@
 using System;
 using Data;
-using deVoid.Utils;
 using DG.Tweening;
+using ThirdParty;
 using TMPro;
 using UnityEngine;
 
-namespace UI
+namespace UI.UIWidgets
 {
     public class BoardInfoWidget : MonoBehaviour
     {

@@ -1,9 +1,10 @@
 ﻿using System;
+using ThirdParty.Coffee.UIExtensions.UIEffect.Scripts.Common;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
-namespace Coffee.UIExtensions
+namespace ThirdParty.Coffee.UIExtensions.UIEffect.Scripts
 {
 	/// <summary>
 	/// Dissolve effect for uGUI.
