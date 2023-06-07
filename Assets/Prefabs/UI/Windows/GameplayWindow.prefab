@@ -1103,6 +1103,7 @@ MonoBehaviour:
       difficulty: 0
       levelArray: 
       solutionGrid: 
+      notes: []
   boardGridContainer: {fileID: 8537576850875594812}
   numberInputWidget: {fileID: 819843347598296517}
   pauseButton: {fileID: 7997473795069553146}
