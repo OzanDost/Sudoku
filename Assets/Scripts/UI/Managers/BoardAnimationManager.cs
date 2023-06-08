@@ -78,8 +78,6 @@ namespace UI.Managers
 
         private void OnTapColorizationListDispatched(ColorizationData colorizationData, Vector2Int mainCellPosition)
         {
-            if (mainCellPosition == _lastColorizedCellPosition) return;
-
             _lastColorizedCellPosition = mainCellPosition;
 
             List<Vector2Int> allCells = new List<Vector2Int>(14) { mainCellPosition };

@@ -42,7 +42,6 @@ namespace Game
             Number = number;
             string fill = number == 0 ? "" : number.ToString();
             numberText.SetText(fill);
-            
 
             EraseCellNotes();
 
@@ -50,6 +49,7 @@ namespace Game
 
             if (filledByPlayer)
             {
+                OnPointerDown(null);
                 Signals.Get<UndoableActionMade>()
                     .Dispatch(new UndoableAction(() =>
                     {
