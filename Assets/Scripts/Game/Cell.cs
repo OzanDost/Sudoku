@@ -44,20 +44,20 @@ namespace Game
             numberText.SetText(fill);
 
             EraseCellNotes();
-
-            Signals.Get<CellFilled>().Dispatch(this, filledByPlayer);
-
+            
             if (filledByPlayer)
             {
-                OnPointerDown(null);
                 Signals.Get<UndoableActionMade>()
                     .Dispatch(new UndoableAction(() =>
                     {
                         int undoNumber = number == 0 ? previousNumber : 0;
                         GetFilled(undoNumber, false);
                         OnPointerDown(null);
+                        Signals.Get<CellColorResetRequested>().Dispatch(this);
                     }));
             }
+            Signals.Get<CellFilled>().Dispatch(this, filledByPlayer);
+
         }
 
         public void SetSizeDelta(Vector2 sizeDelta)

@@ -68,6 +68,8 @@ namespace UI.Managers
                     .Append(otherCell.ColorizeCell(null, null, 0.2f, true));
                 _elementFillSequence.Join(innerSeq);
             }
+
+            // _elementFillSequence.OnComplete(() => { _cells[cell.x, cell.y].OnPointerDown(null); });
         }
 
         private void OnCellsConfigured(Cell[,] cells)

@@ -89,7 +89,6 @@ namespace Game.Managers
 
             int solution = GetSolutionForCell(cell);
             cell.GetFilled(solution, true);
-            Signals.Get<CellColorResetRequested>().Dispatch(cell);
             Signals.Get<HintUsed>().Dispatch();
         }
 
@@ -128,7 +127,7 @@ namespace Game.Managers
             {
                 cell.ToggleWrongNumber(false);
             }
-
+            
 
             if (filledByPlayer && isCorrectPlacement)
             {
@@ -183,12 +182,13 @@ namespace Game.Managers
         {
             bool deletedNotes = cell.EraseCellNotes();
             bool deletedNumber = cell.CanEraseCellNumber();
-
+            
             if (deletedNotes || deletedNumber)
             {
                 cell.GetFilled(0, true);
                 cell.ToggleWrongNumber(false);
                 LevelGrid[cell.PositionOnGrid.x, cell.PositionOnGrid.y] = 0;
+                Signals.Get<CellColorResetRequested>().Dispatch(cell);
             }
 
             Signals.Get<CellEraseResponseSent>().Dispatch(deletedNotes || deletedNumber, cell);
